@@ -1,0 +1,68 @@
+<div class="container-fluid">
+    <div class="row p-5">
+        <div class="col-md-12 m-auto p-5">
+            <form id="myForm" action="/proform" method="post" onsubmit="return submitForm()" class="pt-5">
+                <label for="numInputs">Enter number of input boxes:</label>
+                <input type="number" id="numInputs" name="numInputs" min="1" required onchange="generateInputs()">
+                <div id="container">
+                    <!-- Input boxes will be dynamically added here -->
+                </div>
+                <small id="stopmax" class="text-danger" style="display: none;">Maximum Limit Reached</small>
+                <button id="submitButton" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateInputs() {
+        var numInputs = parseInt(document.getElementById('numInputs').value);
+        var container = document.getElementById('container');
+        container.innerHTML = ''; // Clear previous inputs
+
+        if(numInputs<21)
+        {
+            for (var i = 1; i <= numInputs; i++) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'input-box';
+            input.name = 'name' + i;
+            container.appendChild(input);
+        }
+        }
+        else
+        {
+            document.getElementById('stopmax').style.display = "flex"
+        }
+
+        // Show the submit button
+        document.getElementById('submitButton').style.display = 'block';
+    }
+
+    function submitForm() {
+        // You can add your form submission logic here if needed
+        return true; // Returning true to allow form submission
+    }
+</script>
+
+
+
+
+<style>
+    /* Some basic styling */
+    #container {
+        margin-top: 20px;
+    }
+
+    .input-box {
+        margin-bottom: 10px;
+        margin-right: 10px;
+        width: 200px;
+        /* Margin distance between input boxes */
+    }
+
+    /* Initially hide the submit button */
+    #submitButton {
+        display: none;
+    }
+</style>

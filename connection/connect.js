@@ -25,10 +25,10 @@ module.exports =
                 }
             })
         })
-    }
+    },
+    get : ()=>
+        {
+            return state.db;
+        }
 }
 
-var get = ()=>
-{
-    return state.db;
-}
