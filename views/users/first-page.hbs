@@ -1,23 +1,36 @@
 <div class="container-fluid" id="first">
-    <div class="row">
-        <div class="col-md-12">
-           
+    <div class="row" style="height: 100%;">
+        <div class="col-md-6" style="height: 100%;">
+        </div>
+        <div id="bus" class="col-md-6" style="height: 100%;">
         </div>
     </div>
 </div>
 
 <style>
-    #first {
-        background-image: url('/images/Ticketsmall.png');
+     #first {
+        background-image: url('/images/wave\ bg.png');
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: bottom;
         height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-align: center;
+    }
+    #bus {
+        background-image: url('/images/busssss.png');
+        background-size: 90%;
+        background-repeat: no-repeat;
+        background-position: 50% center;
+        height: 100%;
+        animation: fadeIn 5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
 </style>

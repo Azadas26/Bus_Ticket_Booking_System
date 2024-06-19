@@ -1,7 +1,8 @@
 const Promise = require('promise');
 const bcrypt = require('bcryptjs');
 const db = require('../connection/connect');
-const consts = require('../connection/consts')
+const consts = require('../connection/consts');
+var objectId = require('mongodb').ObjectId;
 
 module.exports =
 {
@@ -25,13 +26,34 @@ module.exports =
                         }
                         else {
                             console.log("Password Faild");
-                           reject()
+                            reject()
                         }
                     })
                 }
                 else {
                     console.log("Email Faild");
                     reject()
+                }
+            })
+        })
+    },
+    Inserty_Bus_AND_Stops_Details: (info) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).insertOne(info).then((obj) => {
+                resolve(obj.ops[0]._id);
+            })
+        })
+    },
+    Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not: (userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).findOne({ userId: objectId(userid) }).then((resc) => {
+                console.log(resc);
+                if (resc) {
+
+                    reject(false)
+                }
+                else {
+                    resolve(true)
                 }
             })
         })

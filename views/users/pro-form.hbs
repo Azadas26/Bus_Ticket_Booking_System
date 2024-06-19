@@ -1,42 +1,183 @@
-<div class="container-fluid">
+<div class="container-fluid" id="#proform">
     <div class="row p-5">
-        <div class="col-md-12 m-auto p-5">
-            <form id="myForm" action="/proform" method="post" onsubmit="return submitForm()" class="pt-5">
-                <label for="numInputs">Enter number of input boxes:</label>
-                <input type="number" id="numInputs" name="numInputs" min="1" required onchange="generateInputs()">
-                <div id="container">
-                    <!-- Input boxes will be dynamically added here -->
+        <div class="col-md-8 m-auto pt-5">
+            <div class="pt-5">
+                {{#if already}}
+                <div id="myForm" class="p-4 mt-5"
+                    style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
+                    <h1 id="hding" style="text-align: center;font-family: sans-serif;font-weight: 800;"
+                        class="mt-2 p-3">
+                        <b>ENTER YOUR BUS DETAILS</b>
+                    </h1>
+                    <form class="ml-5 mr-5 " action="/proform" method="post" onsubmit="return submitForm()"
+                        style="padding-top: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bname">Enter Bus Name</label>
+                                    <input type="text" name="bname" class="form-control" placeholder="Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="busnumber">BUS Number</label>
+                                    <input type="text" name="busnumber" class="form-control" placeholder="KL XX XXXX"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="stime">Starting Time</label>
+                                    <input type="time" name="stime" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: inline-block; margin-bottom: 5px;">Return or No Return
+                                    </label>
+                                    <br>
+                                    <br>
+                                    <input type="radio" value="no" name="isreturn" class="form-control" id="noReturn"
+                                        style="width: 20px;display: inline-block; margin-right: 15px; cursor: pointer;">
+                                    <label for="noReturn"
+                                        style="display: inline-block; margin-right: 15px; cursor: pointer;"
+                                        onclick="noReturn()">No</label>
+                                    <input type="radio" value="yes" name="isreturn" class="form-control" id="yesReturn"
+                                        style="width: 20px;display: inline-block; margin-right: 15px; cursor: pointer;">
+                                    <label for="yesReturn" style="display: inline-block; cursor: pointer;"
+                                        onclick="isreturn()">Yes</label>
+                                    <div id="isreturn" style="display: none; margin-top: 10px;">
+                                        <label for="retime">Return Time</label>
+                                        <input type="time" name="retime" id="retime" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lino">Bus Licence Number</label>
+                                    <input type="text" name="lino" class="form-control" placeholder="LI :- 23XXXXXXXX56"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="max">Maximum Capacity</label>
+                                    <input type="number" name="max" class="form-control" placeholder="40" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Ticket Rate</label>
+                                    <input type="text" name="price" class="form-control" placeholder="Rate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numInputs">Enter Number of Stops</label>
+                                    <input type="number" id="numInputs" name="numInputs" min="1" class="form-control"
+                                        required onchange="generateInputs()"> <br>
+                                    <div class="typing-container">
+
+                                    </div>
+                                    <small id="stopmax" class="text-danger" style="display: none;">Maximum Limit
+                                        Reached</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="stopname"></label>
+                            <div id="container">
+                                <!-- Input boxes and labels will be dynamically added here -->
+                            </div>
+                        </div>
+                        <button id="submitButton" type="submit" class="btn btn-primary mb-3"
+                            style="display: none; margin-top: 20px;width: 100%;">Submit</button>
+                    </form>
+                    <div class="typing-effect text-center" id="typingEffect" style="width: 100%;">
+                        <!-- Text will be dynamically inserted here -->
+                       
+                    </div>
                 </div>
-                <small id="stopmax" class="text-danger" style="display: none;">Maximum Limit Reached</small>
-                <button id="submitButton" type="submit">Submit</button>
-            </form>
+            </div>
+
+            {{else}}
+            <h1 id="hding" style="text-align: center;font-family: sans-serif;font-weight: 800;font-size: 100px;"
+                class=" p-3">
+                <b>YOU ALRADY REQUESTED WAITE FOR ADMIN RESPONSE</b>
+            </h1>
+            <style>
+                #hding {
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    height: 80vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    /* Ensure the overlay is positioned relative to the container */
+                }
+            </style>
+            {{/if}}
+
         </div>
     </div>
 </div>
+<script>
+    const text = "This Data Validated By Admin So If The Data Is Invalid User Request Must Bee Not Accepted";
+        const typingEffect = document.getElementById('typingEffect');
+
+        // Clear existing text
+        typingEffect.innerHTML = '';
+
+        // Split text into words and create spans for each character with animation delay
+        text.split(' ').forEach((word, index) => {
+            if (index > 0) {
+                const spaceSpan = document.createElement('span');
+                spaceSpan.textContent = ' ';
+                typingEffect.appendChild(spaceSpan);
+            }
+
+            word.split('').forEach((char, charIndex) => {
+                const charSpan = document.createElement('span');
+                charSpan.classList.add('char');
+                charSpan.style.animationDelay = `${index * 0.2 + charIndex * 0.1}s`; // Adjust delay between characters
+                charSpan.textContent = char;
+                typingEffect.appendChild(charSpan);
+            });
+        });
+</script>
 
 <script>
+    function isreturn() {
+        document.getElementById('isreturn').style.display = 'block';
+    }
+
+    function noReturn() {
+        document.getElementById('isreturn').style.display = 'none';
+    }
+
     function generateInputs() {
+       
         var numInputs = parseInt(document.getElementById('numInputs').value);
         var container = document.getElementById('container');
         container.innerHTML = ''; // Clear previous inputs
 
-        if(numInputs<21)
-        {
+        if (numInputs < 21) {
             for (var i = 1; i <= numInputs; i++) {
-            var input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'input-box';
-            input.name = 'name' + i;
-            container.appendChild(input);
-        }
-        }
-        else
-        {
-            document.getElementById('stopmax').style.display = "flex"
+                var label = document.createElement('label');
+                label.textContent = "Stop " + i;
+                container.appendChild(label);
+
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'input-box form-control';
+                input.name = 'name' + i;
+                container.appendChild(input);
+
+                // Add <br> tag after each input
+                container.appendChild(document.createElement('br'));
+            }
+             document.getElementById('stopname').innerHTML = "Enter Stop Names ";
+            document.getElementById('stopmax').style.display = 'none';
+            document.getElementById('submitButton').style.display = 'block';
+        } else {
+            document.getElementById('stopname').innerHTML = "";
+            document.getElementById('stopmax').style.display = 'block';
+            document.getElementById('submitButton').style.display = 'none';
         }
 
         // Show the submit button
-        document.getElementById('submitButton').style.display = 'block';
+
     }
 
     function submitForm() {
@@ -45,24 +186,66 @@
     }
 </script>
 
-
-
-
 <style>
-    /* Some basic styling */
-    #container {
-        margin-top: 20px;
+    #myForm {
+        opacity: 0;
+        /* Initially hide the form */
+        transform: translateY(-50px);
+        /* Start off-screen to the top */
+        animation: slideInFromTop 2.0s ease-in-out forwards;
     }
 
-    .input-box {
-        margin-bottom: 10px;
-        margin-right: 10px;
-        width: 200px;
-        /* Margin distance between input boxes */
+    @keyframes slideInFromTop {
+        0% {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    /* Initially hide the submit button */
-    #submitButton {
-        display: none;
+    input {
+        font-weight: 800;
     }
+
+    label {
+        font-weight: 800;
+    }
+
+    #hding {
+        text-align: center;
+        font-family: sans-serif;
+        font-weight: 800;
+        text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);
+    }
+     .typing-container {
+            width: 100%;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 10px; /* Adjust font size for small tag */
+            display: inline-block;
+            
+        }
+
+        .typing-effect {
+            display: inline-block;
+        }
+
+        .char {
+            display: inline-block;
+            opacity: 0;
+            animation: typing 1s forwards; /* Adjust timing to make it faster */
+            color: rgba(66, 94, 237, 0.8);
+            font-weight: 800;
+            /* Preserve white space */
+        }
+
+        @keyframes typing {
+            to {
+                opacity: 1;
+            }
+        }
 </style>

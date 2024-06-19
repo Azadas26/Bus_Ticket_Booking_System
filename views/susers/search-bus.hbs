@@ -1,0 +1,185 @@
+<style>
+    #root {
+        background-image: url('/images/wave bg.png');
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: auto;
+    }
+
+    .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        /* Adjust this for spacing between elements */
+    }
+
+    .form-group label {
+        margin-bottom: 0;
+        /* Ensure labels are aligned inline */
+    }
+
+    .form-group input {
+        margin-right: 10px;
+        /* Adjust this for spacing between inputs and labels */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animated-form {
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    .container-fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .bus-details {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        animation: fadeIn 3s ease-in-out;
+    }
+
+    .bus-details h2 {
+        font-size: 1.8em;
+        margin-top: 0;
+        color: #333;
+        font-weight: 800;
+        font-family: sans-serif;
+    }
+
+    .bus-details p {
+        margin: 5px 0;
+        line-height: 1.6;
+    }
+
+    .bus-details h3 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: 1.3em;
+        color: #555;
+        font-weight: 800;
+    }
+
+    .bus-details ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bus-details ul li {
+        margin-bottom: 5px;
+    }
+
+    {{#unless bus}}
+    #busfind {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    {{/unless}}
+</style>
+
+<div id="root" style="background-image: url('/images/vecteezy_vector-abstract-background-with-gradient-color-and-dynamic_9160485.jpg');">
+    <div id="busfind" class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mb-5 pb-5">
+                <form {{#if bus}}class="mt-5 pt-5 animated-form"{{else}} class="animated-form" {{/if}} action="/suser/findbus" method="post">
+                    <h1 class="text-center m-5" style="font-weight: 800; color: rgb(38, 38, 37); text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);">
+                        <b>FIND YOUR BUS</b>
+                    </h1>
+                    <p style="color: red;">
+                        {{#if err}}
+                        {{err}}
+                        {{/if}}
+                    </p>
+                    <div class="form-inline">
+                        <div class="form-group mr-2" style="font-weight: 800;">
+                            <label class="mr-2" for="from">From</label>
+                            <input id="from" name="from" type="text" class="form-control" placeholder="Kayamkulam" style="border: solid; font-weight: 800;">
+                        </div>
+                        <div class="form-group mr-2">
+                            <button type="button" onclick="reverseFields()" style="border-radius: 50%; font-weight: 800;">Rev</button>
+                        </div>
+                        <div class="form-group mr-2">
+                            <label class="mr-2" for="to">To</label>
+                            <input id="to" name="to" type="text" class="form-control" placeholder="Ramapuram" style="border: solid; font-weight: 800;">
+                        </div>
+                        <button type="submit" style="border-radius: 12px; background-color: rgb(60, 60, 149); font-weight: 800;" class="btn text-light">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{#if bus}}
+    <div class="container-fluid pb-5">
+        <div class="row mb-5 pt-5 pb-5">
+            {{#each bus}}
+            <div class="col-md-4 m-auto">
+                <div class="bus-details text-center mr-5 p-3"
+                    style="box-shadow: rgb(144, 144, 220) 0px 50px 100px -20px, rgb(146, 146, 212) 0px 30px 60px -30px, rgb(208, 208, 217) 0px -2px 6px 0px inset;">
+                    <h2>{{bname}}</h2>
+                    <h3>{{busnumber}}</h3>
+                    <p><strong>Start Time:</strong> {{stime}}</p>
+                    <p><strong>Is Return:</strong> {{isreturn}}</p>
+                    {{#if isreturn}}
+                    <p><strong>Return Time:</strong> {{retime}}</p>
+                    {{/if}}
+                    <p><strong>Line Number:</strong> {{lino}}</p>
+                    <p><strong>Maximum Capacity:</strong> {{max}}</p>
+                    <p><strong>Price:</strong> {{price}}</p>
+                    <h3>Stops:</h3>
+                    <ul>
+                        {{#each stops}}
+                        {{#if this.name1}}<li>{{this.name1}}</li>{{/if}}
+                        {{#if this.name2}}<li>{{this.name2}}</li>{{/if}}
+                        {{#if this.name3}}<li>{{this.name3}}</li>{{/if}}
+                        {{#if this.name4}}<li>{{this.name4}}</li>{{/if}}
+                        {{#if this.name5}}<li>{{this.name5}}</li>{{/if}}
+                        {{#if this.name6}}<li>{{this.name6}}</li>{{/if}}
+                        {{#if this.name7}}<li>{{this.name7}}</li>{{/if}}
+                        {{#if this.name8}}<li>{{this.name8}}</li>{{/if}}
+                        {{#if this.name9}}<li>{{this.name9}}</li>{{/if}}
+                        {{#if this.name10}}<li>{{this.name10}}</li>{{/if}}
+                        {{/each}}
+                    </ul>
+                    <a href="/suser/busticket?id={{this._id}}&userid={{userId}}" class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">More Info</a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<script>
+    function reverseFields() {
+        var from = document.getElementById('from').value;
+        var to = document.getElementById('to').value;
+        document.getElementById('from').value = to;
+        document.getElementById('to').value = from;
+        console.log(from, to)
+    }
+</script>

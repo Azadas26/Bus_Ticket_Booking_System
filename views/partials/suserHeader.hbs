@@ -2,31 +2,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link text-dark nav-hover-effect mr-4 " href="/" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                    Home
+                <a class="nav-link text-dark nav-hover-effect mr-4 " href="/suser" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    SHome
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark nav-hover-effect" href="/proform" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                <a class="nav-link text-dark nav-hover-effect" href="/suser/findbus" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
                     Link
                 </a>
             </li>
         </ul>
         <div class="dropdown">
             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); background: transparent; font-size: 20px;">
-                {{#if puser}}
-                {{puser.name}}
+                {{#if suser}}
+                {{suser.name}}
                 {{else}}
                 Account
                 {{/if}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#if puser}}
-                <a class="dropdown-item" href="/logout">Logout</a>
+                {{#if suser}}
+                <a class="dropdown-item" href="/suser/logout">Logout</a>
                 {{else}}
-                <a class="dropdown-item" href="/login">Login</a>
-                <a class="dropdown-item" href="/signup">signup</a>
+                <a class="dropdown-item" href="/suser/login">Login</a>
+                <a class="dropdown-item" href="/suser/signup">signup</a>
                 {{/if}}
             </div>
         </div>
@@ -41,16 +41,16 @@
     }
 
     .nav-hover-effect:hover {
-        color: rgba(0, 0, 0, 0.8); /* Change text color on hover */
+        color: rgba(66, 94, 237, 0.8); /* Change text color on hover */
     }
 
     .nav-hover-effect:hover::before {
         content: "";
         position: absolute;
         width: calc(100% - 20px); /* Adjust the width of the underline */
-        height: 3px;
+        height: 2px;
         bottom: -2px;
         left: 10px; /* Adjust the left spacing */
-        background-color: rgba(0, 0, 0, 0.4); /* Faded version of text shadow color */
+        background-color: rgba(14, 32, 118, 0.4); /* Faded version of text shadow color */
     }
 </style>

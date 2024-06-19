@@ -1,0 +1,109 @@
+<div class="container-fluid" style="background-image: url(/images/wave\ bg.png);">
+    <div class="row">
+        {{#each info}}
+        <div id="fdiv" class="col-md-6 mt-5 p-5">
+            <div class="card m-5 text-center p-5"
+                style="width: 100%;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+                <h1 style="font-weight: 800;">{{bname}}</h1>
+                <h1 style="font-weight: 800;">{{busnumber}}</h1>
+                <h3 class="mt-3" style="font-weight: 800;">Starting Time : {{stime}}</h3>
+                <h3 class="mt-2" style="font-weight: 800;">Licence Number : {{lino}}</h3>
+                <h3 class="mt-2" style="font-weight: 800;">Maximum Seat Capacity : {{max}}</h3>
+                <h3  class="mt-2" style="font-weight: 800;">Price Pr Head : {{price}} /-</h3>
+                <input id="fee" type="number" value="{{price}}" style="display: none;">
+                <h3 class="mt-2" style="font-weight: 800;">Reg.No : {{_id}}</h3>
+                <div class="card-body" style="font-weight: 800;">
+                    <h3 class="mt-2" style="font-weight: 800;">Bus Stops</h3> <br>
+                    {{#each stops}}
+                    {{#if this.name1}}{{this.name1}} , {{/if}}
+                    {{#if this.name2}}{{this.name2}} , {{/if}}
+                    {{#if this.name3}}{{this.name3}} , {{/if}}
+                    {{#if this.name4}}{{this.name4}} , {{/if}}
+                    {{#if this.name5}}{{this.name5}} , {{/if}}
+                    {{#if this.name6}}{{this.name6}} , {{/if}}
+                    {{#if this.name7}}{{this.name7}} , {{/if}}
+                    {{#if this.name8}}{{this.name8}} , {{/if}}
+                    {{#if this.name9}}{{this.name9}} , {{/if}}
+                    {{#if this.name10}}{{this.name10}} , {{/if}}
+                    {{/each}}
+                </div>
+                <h3 class="mt-2" style="font-weight: 800;">Available Seats : {{available}}</h3> <br>
+                <div>
+                    <small id="output" class="text-danger" style="font-weight: 800;"></small> <br>
+                    <h6 id="output2" style="color: green;font-weight: 800;"></h6>
+                    <label for="" style="font-weight: 800;">Enter Number of Seats You Want &nbsp;</label>
+                    <input id="price" type="number" placeholder="No.of Seats" style="font-weight: 800;"
+                        onchange="price()" required>
+                    <form action="/buspay" class="text-center m-auto">
+                        <input id="priceorg" type="number" placeholder="No.of Seats" style="font-weight: 800;display: none;"
+                            onchange="price()">
+                        <input id="submit" type="submit" value="Book Now" style="display: none;">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        <div id="sdiv" class="col-md-6 mt-5">
+            <img class="img-fluid" src="/addimage/bwbus-removebg-preview.png" alt="">
+        </div>
+    </div>
+</div>
+
+<script>
+    function price() {
+        var amount = document.getElementById('price').value;
+        if(amount<=0)
+        {
+            document.getElementById('output').innerHTML = "Invalid Selection"
+             document.getElementById('output2').innerHTML = ``
+        }         
+        else
+        {
+            var fee = document.getElementById('fee').value
+            document.getElementById('output2').innerHTML = `Total Amount is ${fee*amount}`
+            document.getElementById('output').innerHTML = ""
+            document.getElementById('submit').style.display = "flex"
+        }
+    }
+</script>
+
+<style>
+    .container-fluid {
+            width: 100%;
+            background-image: url('/images/wave bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    #fdiv,
+    #sdiv {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #fdiv {
+        animation: moveLeftToRight 2s linear forwards;
+    }
+
+    #sdiv {
+        animation: moveLeftToRight 2s linear forwards;
+    }
+
+    @keyframes moveLeftToRight {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        100% {
+            transform: translateX(0%);
+        }
+    }
+</style>

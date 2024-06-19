@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var puserdb = require('../database/pUser-db')
+var objectId = require('mongodb').ObjectId
 
 function verifyPrimaryUser(req, res, next) {
   if (req.session.user) {
@@ -62,11 +63,45 @@ router.get('/logout', (req, res) => {
   req.session.user = null;
   res.redirect('/login')
 })
-router.get("/proform", (req, res) => {
-  res.render('./users/pro-form', { userhd: true, puser: req.session.user })
+router.get("/proform", verifyPrimaryUser, (req, res) => {
+  puserdb. Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not(req.session.user._id).then((is)=>
+  {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user,already:is})
+  }).catch((is)=>
+  {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user,already:is})
+  })
 })
-router.post('/proform', (req, res) => {
+router.post('/proform', verifyPrimaryUser, async (req, res) => {
+  //console.log(req.body);
+  req.body.available = parseInt(req.body.max)
+  req.body.userId = objectId(req.session.user._id);
+  req.body.isaccept = false;
+  req.body.isbus = true;
+  req.body.already = true;
+  function convertAndRemoveNames(obj) {
+    const nameArray = [];
+    const numInputs = parseInt(obj.numInputs, 10);
+
+    for (let i = 1; i <= numInputs; i++) {
+      const key = `name${i}`;
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        nameArray.push({ [key]: obj[key].toUpperCase() });
+        delete obj[key]; // Remove the property from the original object
+      }
+    }
+
+    // Optionally, add the array of objects back to the original object
+    obj.stops = nameArray;
+
+    return obj;
+  }
+  await convertAndRemoveNames(req.body)
   console.log(req.body);
+  puserdb.Inserty_Bus_AND_Stops_Details(req.body).then(() => {
+    res.redirect('/')
+  })
+
 })
 
 module.exports = router;
