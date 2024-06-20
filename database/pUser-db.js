@@ -57,5 +57,32 @@ module.exports =
                 }
             })
         })
+    },
+    Insert_Checker_info_By_Primary_user: (data) => {
+        return new Promise(async (resolve, reject) => {
+            data.password = await bcrypt.hash(data.password, 10);
+            db.get().collection(consts.checkerbase).insertOne(data).then((info) => {
+                resolve(info.ops[0]._id)
+            })
+        })
+    },
+    View_Their_Own_Checkers: (userid) => {
+        return new Promise((resolve, reject) => {
+            var checkers = db.get().collection(consts.checkerbase).find({ userid: objectId(userid) }).toArray()
+            if (checkers) {
+                resolve(checkers)
+            }
+            else {
+                reject()
+            }
+        })
+    },
+    REmove_their_Own_cHeckers: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.checkerbase).deleteOne({_id:objectId(id)}).then(()=>
+            {
+                resolve()
+            })
+        })
     }
 }

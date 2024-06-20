@@ -2,5 +2,6 @@ module.exports=
 {
     userdb : "UserBase",
     busdetails : "BusDetails",
-    suserdb : "SuserDb"
+    suserdb : "SuserDb",
+    checkerbase : "CheckerBus"
 }

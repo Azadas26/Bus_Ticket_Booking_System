@@ -1,0 +1,89 @@
+<div class="container-fluid">
+    <div class="row p-5">
+        <div class="col-md-12 m-auto pt-5" style="text-align: center;">
+            {{#if checkers}}
+            <table class="table text-dark p-5">
+                <thead class="text-light" style="font-weight: 800;">
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Checker Name</th>
+                        <th scope="col">UserName (for login)</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Remove</th>
+                    </tr>
+                </thead>
+                <tbody style="font-weight: 800;">
+                    {{#each checkers}}
+                    <tr>
+                        <td class="pt-5">{{@index}}</td>
+                        <td class="pt-5">{{this.name}}</td>
+                        <td class="pt-5">{{this.uname}}</td>
+                        <td class="pt-5">{{this.ph}}</td>
+                        <td><img src="/checker-image/{{this._id}}.jpg" alt="Profile" style="width: 100px;height: 100px;"></td>
+                        <td class="pt-5">
+                            <a href="/removechecker?id={{this._id}}" class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            <h1 class="text-dark mt-5 pt-5 bounce" style="font-family: fantasy; font-weight: 800; font-size: 90px;text-shadow: 3px 3px 5px rgba(66, 94, 237, 0.8);">
+                NOTHING FOUND
+            </h1>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style for the table */
+    .table {
+        background-color: #ffffff;
+        /* White background color */
+        color: #000;
+        /* Dark text color */
+        border-radius: 10px;
+        /* Rounded corners */
+        font-weight: 800;
+    }
+
+    /* Style for table headings */
+    .table th {
+        background-color: #3f58d8;
+        /* Background color for headings */
+        border: none;
+        /* Remove border */
+    }
+
+    /* Style for table body */
+    .table tbody tr:nth-child(even) {
+        background-color: #e6e9f7;
+        /* Alternate row color */
+    }
+
+    /* Style for table cell content */
+    .table td,
+    .table th {
+        padding: 10px;
+        /* Padding for cell content */
+    }
+
+    /* Bounce animation */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-30px);
+        }
+        60% {
+            transform: translateY(-15px);
+        }
+    }
+
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+</style>

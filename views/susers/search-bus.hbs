@@ -165,7 +165,13 @@
                         {{#if this.name10}}<li>{{this.name10}}</li>{{/if}}
                         {{/each}}
                     </ul>
-                    <a href="/suser/busticket?id={{this._id}}&userid={{userId}}" class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">More Info</a>
+                    {{#if this.isaccept}}
+                    
+                        <a href="/suser/busticket?id={{this._id}}&userid={{userId}}" class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">More Info</a>
+                    {{else}}
+                        <button class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">Not Available</button>
+                    {{/if}}
+                    
                 </div>
             </div>
             {{/each}}

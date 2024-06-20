@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg" style="background: transparent; position: fixed; z-index: 2; width: 100%;">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-dark nav-hover-effect mr-4 " href="/admin" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    AdminHome
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark nav-hover-effect" href="/admin/busrequest" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    Link
+                </a>
+            </li>
+        </ul>
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); background: transparent; font-size: 20px;">
+                {{#if admin}}
+                Admin
+                {{else}}
+                Account
+                {{/if}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#if suser}}
+                <a class="dropdown-item" href="/admin/logout">Logout</a>
+                {{else}}
+                <a class="dropdown-item" href="/admin/login">Login</a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* CSS for nav-item hover effect */
+    .nav-hover-effect {
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .nav-hover-effect:hover {
+        color: rgba(66, 94, 237, 0.8); /* Change text color on hover */
+    }
+
+    .nav-hover-effect:hover::before {
+        content: "";
+        position: absolute;
+        width: calc(100% - 20px); /* Adjust the width of the underline */
+        height: 2px;
+        bottom: -2px;
+        left: 10px; /* Adjust the left spacing */
+        background-color: rgba(14, 32, 118, 0.4); /* Faded version of text shadow color */
+    }
+</style>

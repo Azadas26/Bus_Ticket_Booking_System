@@ -6,6 +6,7 @@ var logger = require('morgan');
 var hbs = require('express-handlebars')
 var db = require('./connection/connect')
 var session = require('express-session')
+const fileUpload = require('express-fileupload')
 
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
@@ -18,6 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layouts/',partialsDir:__dirname+'/views/partials/'}))
 app.use(session({secret:"ker",cookie:{maxAge:600000}}))
+app.use(fileUpload())
 
 
 app.use(logger('dev'));

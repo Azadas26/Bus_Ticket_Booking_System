@@ -7,10 +7,10 @@ router.get('/', function (req, res, next) {
     if (req.session.suser) {
         //console.log(req.session.suser);
         res.render('./susers/first-page', { suserhd: true, suser: req.session.suser })
-      }
-      else {
+    }
+    else {
         res.render('./susers/first-page', { suserhd: true })
-      }
+    }
 });
 router.get('/signup', (req, res) => {
     res.render('./susers/signup-page')
@@ -53,28 +53,27 @@ router.get('/logout', (req, res) => {
     req.session.suser = null;
     res.redirect('/suser/login')
 })
-router.get('/findbus',(req,res)=>
-{
-    res.render('./susers/search-bus',{suserhd: true})
+router.get('/findbus', (req, res) => {
+    res.render('./susers/search-bus', { suserhd: true })
 
 })
-router.post('/findbus',(req,res)=>
-{
+router.post('/findbus', (req, res) => {
     req.body.from = req.body.from.toUpperCase()
     req.body.to = req.body.to.toUpperCase()
     console.log(req.body);
-    suserdb.Find_Matching_Busess_Search_With_Placess(req.body).then((bus)=>
-    {
-        res.render('./susers/search-bus',{suserhd: true,bus})
+    suserdb.Find_Matching_Busess_Search_With_Placess(req.body).then((bus) => {
+        console.log(bus);
+        res.render('./susers/search-bus', { suserhd: true, bus })
     })
 })
-router.get('/busticket',(req,res)=>
-{
+router.get('/busticket', (req, res) => {
     console.log(req.query.userid);
-    suserdb.Get_Buse_info_Whe_User_Chose_a_BUS(req.query.id,req.query.userid).then((info)=>
-    {
-        res.render('./susers/bus-info',{suserhd: true,info})
+    suserdb.Get_Buse_info_Whe_User_Chose_a_BUS(req.query.id, req.query.userid).then((info) => {
+        res.render('./susers/bus-info', { suserhd: true, info })
     })
+})
+router.post('/buspay', (req, res) => {
+    console.log(req.body);
 })
 
 module.exports = router;

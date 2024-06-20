@@ -64,12 +64,10 @@ router.get('/logout', (req, res) => {
   res.redirect('/login')
 })
 router.get("/proform", verifyPrimaryUser, (req, res) => {
-  puserdb. Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not(req.session.user._id).then((is)=>
-  {
-    res.render('./users/pro-form', { userhd: true, puser: req.session.user,already:is})
-  }).catch((is)=>
-  {
-    res.render('./users/pro-form', { userhd: true, puser: req.session.user,already:is})
+  puserdb.Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not(req.session.user._id).then((is) => {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user, already: is })
+  }).catch((is) => {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user, already: is })
   })
 })
 router.post('/proform', verifyPrimaryUser, async (req, res) => {
@@ -102,6 +100,40 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
     res.redirect('/')
   })
 
+})
+router.get('/addchecker', verifyPrimaryUser, (req, res) => {
+  res.render('./users/checker-form', { userhd: true, puser: req.session.user })
+})
+router.post('/addchecker', verifyPrimaryUser, (req, res) => {
+  req.body.userid = objectId(req.session.user._id)
+  //console.log(req.body);
+  puserdb.Insert_Checker_info_By_Primary_user(req.body).then(async (id) => {
+    var image = req.files.image;
+    if (image) {
+      await image.mv(
+        "public/checker-image/" + id + ".jpg",
+        (err, data) => {
+          if (err) {
+            console.log(err);
+          }
+        }
+      );
+    }
+    res.render('./users/checker-form', { userhd: true, puser: req.session.user, added: true })
+  })
+})
+router.get('/viewchecker', verifyPrimaryUser, (req, res) => {
+  puserdb.View_Their_Own_Checkers(req.session.user._id).then((checkers) => {
+    console.log(checkers);
+    res.render('./users/list-checkers', { userhd: true, puser: req.session.user, checkers })
+  }).catch(() => {
+    res.render('./users/list-checkers', { userhd: true, puser: req.session.user })
+  })
+})
+router.get('/removechecker', (req, res) => {
+  puserdb.REmove_their_Own_cHeckers(req.query.id).then(() => {
+    res.redirect('/viewchecker')
+  })
 })
 
 module.exports = router;
