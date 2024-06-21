@@ -38,7 +38,8 @@
                     <script>
                         document.getElementById('myInput').addEventListener('input', function () {
                             var val = parseInt(this.value)
-                            if (val <= 0) {
+                            console.log(val)
+                            if (val <= 0 || val > '{{available}}' || isNaN(val)) {
                                 document.getElementById('output').innerHTML = "Invalid Selection ", val;
                                 document.getElementById('output2').innerHTML = ``
                                 document.getElementById('submit').style.display = "none"
@@ -48,6 +49,7 @@
                                 document.getElementById('output2').innerHTML = ` Total Amount is ${(val * fee)}`
                                 document.getElementById('output').innerHTML = '';
                                 document.getElementById('price').value = val;
+                                document.getElementById('total').value = val * fee;
                                 document.getElementById('submit').style.display = ""
                             }
                         });
@@ -55,6 +57,42 @@
                     <form id="buspay" action="/suser/buspay" class="text-center m-auto">
                         <input id="price" type="number" placeholder="No.of Seats" name="tkno"
                             style="font-weight: 800;display: none;">
+                        <input id="id" type="text" name="id" value="{{_id}}" style="font-weight: 800;display: none;">
+                        <input id="total" type="number" name="total" style="font-weight: 800;display: none;">
+                        <div class="mt-3">
+                            <label for="">To :</label>
+                            <select name="start" id="">
+                                <option value="null">Starting Stop</option>
+                                {{#each stops}}
+                                {{#if this.name1}}<option value="{{this.name1}}">{{this.name1}} </option> {{/if}}
+                                {{#if this.name2}}<option value="{{this.name2}}">{{this.name2}} </option> {{/if}}
+                                {{#if this.name3}}<option value="{{this.name3}}">{{this.name3}} </option> {{/if}}
+                                {{#if this.name4}}<option value="{{this.name4}}">{{this.name4}} </option> {{/if}}
+                                {{#if this.name5}}<option value="{{this.name5}}">{{this.name5}} </option> {{/if}}
+                                {{#if this.name6}}<option value="{{this.name6}}">{{this.name6}} </option> {{/if}}
+                                {{#if this.name7}}<option value="{{this.name7}}">{{this.name7}} </option> {{/if}}
+                                {{#if this.name8}}<option value="{{this.name8}}">{{this.name8}} </option> {{/if}}
+                                {{#if this.name9}}<option value="{{this.name9}}">{{this.name9}} </option> {{/if}}
+                                {{#if this.name10}}<option value="{{this.name10}}">{{this.name10}} </option> {{/if}}
+                                {{/each}}
+                            </select>
+                            <label for="" class="ml-2">From :</label>
+                            <select name="end" id="">
+                                <option value="null">End Stop</option>
+                                {{#each stops}}
+                                {{#if this.name1}}<option value="{{this.name1}}">{{this.name1}} </option> {{/if}}
+                                {{#if this.name2}}<option value="{{this.name2}}">{{this.name2}} </option> {{/if}}
+                                {{#if this.name3}}<option value="{{this.name3}}">{{this.name3}} </option> {{/if}}
+                                {{#if this.name4}}<option value="{{this.name4}}">{{this.name4}} </option> {{/if}}
+                                {{#if this.name5}}<option value="{{this.name5}}">{{this.name5}} </option> {{/if}}
+                                {{#if this.name6}}<option value="{{this.name6}}">{{this.name6}} </option> {{/if}}
+                                {{#if this.name7}}<option value="{{this.name7}}">{{this.name7}} </option> {{/if}}
+                                {{#if this.name8}}<option value="{{this.name8}}">{{this.name8}} </option> {{/if}}
+                                {{#if this.name9}}<option value="{{this.name9}}">{{this.name9}} </option> {{/if}}
+                                {{#if this.name10}}<option value="{{this.name10}}">{{this.name10}} </option> {{/if}}
+                                {{/each}}
+                            </select>
+                        </div>
                         <input id="submit" class="mt-3" type="submit" value="Book Now" style="display: none;">
                     </form>
                 </div>

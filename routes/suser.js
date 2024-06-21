@@ -2,6 +2,16 @@ var express = require('express');
 var router = express.Router();
 var suserdb = require('../database/sUser-db')
 var objectId = require('mongodb').ObjectId
+var qrcode = require('../public/javascripts/qrcode')
+
+function verifySecondaryUser(req, res, next) {
+    if (req.session.suser) {
+      next()
+    }
+    else {
+      res.redirect('/suser/login')
+    }
+  }
 
 router.get('/', function (req, res, next) {
     if (req.session.suser) {
@@ -53,8 +63,8 @@ router.get('/logout', (req, res) => {
     req.session.suser = null;
     res.redirect('/suser/login')
 })
-router.get('/findbus', (req, res) => {
-    res.render('./susers/search-bus', { suserhd: true })
+router.get('/findbus',verifySecondaryUser,(req, res) => {
+    res.render('./susers/search-bus', { suserhd: true, suser: req.session.suser })
 
 })
 router.post('/findbus', (req, res) => {
@@ -63,17 +73,39 @@ router.post('/findbus', (req, res) => {
     console.log(req.body);
     suserdb.Find_Matching_Busess_Search_With_Placess(req.body).then((bus) => {
         console.log(bus);
-        res.render('./susers/search-bus', { suserhd: true, bus })
+        res.render('./susers/search-bus', { suserhd: true, bus, suser: req.session.suser })
     })
 })
 router.get('/busticket', (req, res) => {
     console.log(req.query.userid);
     suserdb.Get_Buse_info_Whe_User_Chose_a_BUS(req.query.id, req.query.userid).then((info) => {
-        res.render('./susers/bus-info', { suserhd: true, info })
+        res.render('./susers/bus-info', { suserhd: true, info, suser: req.session.suser })
     })
 })
 router.post('/buspay', (req, res) => {
-    console.log(req.body);
+    req.body.suserid = objectId(req.session.suser._id);
+    req.body.id = objectId(req.body.id)
+    suserdb.Insert_Secndary_User_Payment_Details(req.body).then(async (id) => {
+       
+        await qrcode.GenerateOrder_Qr_Code(id).then((data) => {
+            suserdb.generateRazorpay(id,req.body.total).then((response)=>
+                {
+                    response.tkno = req.body.tkno;
+                    response.busid = req.body.id
+                    console.log(response);
+                    res.json(response)
+                })
+        })
+    })
 })
+router.post('/verfy-pay', (req, res) => {
+    console.log("findWork ID", req.body);
+    suserdb.verify_Payment(req.body).then(() => {
+        suserdb.Update_available_Seats_When_User_paceed_ticket(req.body['order[busid]'],parseInt(req.body['order[tkno]']))
+        res.json({ status: true })
+    }).catch(() => {
+      res.json({ status: 'Payment Failed' })
+    })
+  })
 
 module.exports = router;

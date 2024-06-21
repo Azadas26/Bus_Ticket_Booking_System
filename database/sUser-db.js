@@ -3,6 +3,13 @@ const bcrypt = require('bcryptjs');
 const db = require('../connection/connect');
 const consts = require('../connection/consts');
 var objectId = require('mongodb').ObjectId;
+var Razorpay = require('razorpay');
+var instance = new Razorpay({
+    key_id: 'rzp_test_NVSZaOyVAMHDJW',
+    key_secret: '6A9u2YGlYT7tbBTdibTbL9bq',
+});
+
+
 
 module.exports =
 {
@@ -132,7 +139,7 @@ module.exports =
                 },
                 {
                     $project: {
-                        _id: 1, 
+                        _id: 1,
                         bname: 1,
                         busnumber: 1,
                         stime: 1,
@@ -147,7 +154,7 @@ module.exports =
                         isbus: 1,
                         already: 1,
                         stops: 1,
-                        available:1,
+                        available: 1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -158,6 +165,65 @@ module.exports =
             ]).toArray()
             console.log(businfo);
             resolve(businfo)
+        })
+    },
+    Insert_Secndary_User_Payment_Details: (info) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).insertOne(info).then((resc) => {
+                resolve(resc.ops[0]._id);
+            })
+        })
+    },
+    generateRazorpay: (orderId, total) => {
+        return new Promise((resolve, reject) => {
+            var options = {
+                amount: total * 100,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: orderId
+            };
+            instance.orders.create(options, function (err, order) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    //console.log(order);
+                    resolve(order);
+                }
+            });
+        })
+    },
+    verify_Payment: (details) => {
+        return new Promise((resolve, reject) => {
+            const crypto = require("crypto");
+            const hmac = crypto.createHmac('sha256', '6A9u2YGlYT7tbBTdibTbL9bq');
+            hmac.update(details['payment[razorpay_order_id]'] + "|" + details['payment[razorpay_payment_id]']);
+            let generatedSignature = hmac.digest('hex');
+
+            if (generatedSignature == details['payment[razorpay_signature]']) {
+                console.log(" checked");
+                resolve()
+            }
+            else {
+                reject()
+            }
+        })
+    },
+    Update_available_Seats_When_User_paceed_ticket: (busid, tkno) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).findOne({_id:objectId(busid)}).then(async(data)=>
+            {
+                var availableis = data.available;
+                await db.get().collection(consts.busdetails).updateOne({ _id: objectId(busid) },
+                {
+                    $set:
+                    {
+                        available: availableis - tkno
+                    }
+                }).then(()=>
+                {
+                    resolve()
+                })
+            })
         })
     }
 }
