@@ -1,0 +1,101 @@
+<div class="container-fluid">
+    <div class="row p-5">
+        <div class="col-md-12 m-auto pt-5" style="text-align: center;">
+            {{#if details}}
+            <table class="table text-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Bus Name</th>
+                        <th scope="col">Bus Number</th>
+                        <th scope="col">Starting Time</th>
+                        <th scope="col">Starting Date</th>
+                        <th scope="col">Ending Date Date</th>
+                        <th scope="col">Licence Number</th>
+                        <th scope="col">Maximus Seating Capacity</th>
+                        <th scope="col">Price / Head</th>
+                        <th scope="col">No.of Stops</th>
+                        <th scope="col">Stops Name</th>
+                        <th scope="col">Owner Name</th>
+                        <th scope="col">Owner Email Address</th>
+                        <th scope="col">Owner Phone Number</th>
+                        <th scope="col">Customer Name</th>
+                         <th scope="col">Customer Email Addess</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each details}}
+                    <tr>
+                        <td>{{@index}}</td>
+                        <td>{{this.businfo.bname}}</td>
+                        <td>{{this.businfo.busnumber}}</td>
+                        <td>{{this.businfo.stime}}</td>
+                        <td>{{this.businfo.sdate}}</td>
+                        <td>{{this.businfo.edate}}</td>
+                        <td>{{this.businfo.lino}}</td>
+                        <td>{{this.businfo.max}}</td>
+                        <td>{{this.businfo.price}}</td>
+                        <td>{{this.businfo.numInputs}}</td>
+                        <td>
+                            {{#each this.businfo.stops}}
+                            {{#if this.name1}}{{this.name1}},{{/if}}
+                            {{#if this.name2}}{{this.name2}},{{/if}}
+                            {{#if this.name3}}{{this.name3}},{{/if}}
+                            {{#if this.name4}}{{this.name4}},{{/if}}
+                            {{#if this.name5}}{{this.name5}},{{/if}}
+                            {{#if this.name6}}{{this.name6}},{{/if}}
+                            {{#if this.name7}}{{this.name7}},{{/if}}
+                            {{#if this.name8}}{{this.name8}},{{/if}}
+                            {{#if this.name9}}{{this.name9}},{{/if}}
+                            {{#if this.name10}}{{this.name10}},{{/if}}
+                            {{/each}}
+                        </td>
+                        <td>{{this.primaryuser.name}}</td>
+                        <td>{{this.primaryuser.email}}</td>
+                        <td>{{this.primaryuser.ph}}</td>
+                        <td>{{this.suser.name}}</td>
+                        <td>{{this.suser.email}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            <h1 class="text-dark mt-5 pt-5" style="font-weight: 800; font-size: 90px;">Nothing Found...</h1>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style for the table */
+    .table {
+        background-color: #ffffff;
+        /* White background color */
+        color: #000;
+        /* Dark text color */
+        border-radius: 10px;
+        /* Rounded corners */
+        font-weight: 800;
+    }
+
+    /* Style for table headings */
+    .table th {
+        background-color: #a1aff2;
+        /* Background color for headings */
+        border: none;
+        /* Remove border */
+    }
+
+    /* Style for table body */
+    .table tbody tr:nth-child(even) {
+        background-color: #e6e9f7;
+        /* Alternate row color */
+    }
+
+    /* Style for table cell content */
+    .table td,
+    .table th {
+        padding: 10px;
+        /* Padding for cell content */
+    }
+</style>

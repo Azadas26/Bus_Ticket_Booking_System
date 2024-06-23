@@ -68,9 +68,22 @@ module.exports =
     },
     Delete_Admin_REmoved_Busss: (id) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.busdetails).deleteOne({_id:objectId(id)}).then(()=>
-            {
+            db.get().collection(consts.busdetails).deleteOne({ _id: objectId(id) }).then(() => {
                 resolve()
+            })
+        })
+    },
+    Do_Checker_admin_Login: (info) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.adminbase).findOne({ name: info.name ,password:info.password}).then((data) => {
+              if(data)
+                {
+                    resolve(data)
+                }
+                else
+                {
+                    reject()
+                }
             })
         })
     }

@@ -29,8 +29,8 @@
                                 <div class="form-group">
                                     <label style="display: inline-block; margin-bottom: 5px;">Return or No Return
                                     </label>
-                                    <br>
-                                    <br>
+                                    <br
+                                    <br> 
                                     <input type="radio" value="no" name="isreturn" class="form-control" id="noReturn"
                                         style="width: 20px;display: inline-block; margin-right: 15px; cursor: pointer;">
                                     <label for="noReturn"
@@ -43,6 +43,18 @@
                                     <div id="isreturn" style="display: none; margin-top: 10px;">
                                         <label for="retime">Return Time</label>
                                         <input type="time" name="retime" id="retime" class="form-control">
+                                    </div> 
+                                    <div class="form-group mt-3">
+                                        <label for="exampleInputEmail1"><b>Service Date</b></label>
+                                        <div style="display: flex;justify-content: space-between;">
+
+                                            <input name="sdate" type="date" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="Start" style="width: 40%;">
+                                            <label for="exampleInputEmail1"><b>To </b></label>
+                                            <input name="edate" type="date" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="End" style="width: 40%;">
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +95,7 @@
                     </form>
                     <div class="typing-effect text-center" id="typingEffect" style="width: 100%;">
                         <!-- Text will be dynamically inserted here -->
-                       
+
                     </div>
                 </div>
             </div>
@@ -114,27 +126,27 @@
 </div>
 <script>
     const text = "This Data Validated By Admin So If The Data Is Invalid User Request Must Bee Not Accepted";
-        const typingEffect = document.getElementById('typingEffect');
+    const typingEffect = document.getElementById('typingEffect');
 
-        // Clear existing text
-        typingEffect.innerHTML = '';
+    // Clear existing text
+    typingEffect.innerHTML = '';
 
-        // Split text into words and create spans for each character with animation delay
-        text.split(' ').forEach((word, index) => {
-            if (index > 0) {
-                const spaceSpan = document.createElement('span');
-                spaceSpan.textContent = ' ';
-                typingEffect.appendChild(spaceSpan);
-            }
+    // Split text into words and create spans for each character with animation delay
+    text.split(' ').forEach((word, index) => {
+        if (index > 0) {
+            const spaceSpan = document.createElement('span');
+            spaceSpan.textContent = ' ';
+            typingEffect.appendChild(spaceSpan);
+        }
 
-            word.split('').forEach((char, charIndex) => {
-                const charSpan = document.createElement('span');
-                charSpan.classList.add('char');
-                charSpan.style.animationDelay = `${index * 0.2 + charIndex * 0.1}s`; // Adjust delay between characters
-                charSpan.textContent = char;
-                typingEffect.appendChild(charSpan);
-            });
+        word.split('').forEach((char, charIndex) => {
+            const charSpan = document.createElement('span');
+            charSpan.classList.add('char');
+            charSpan.style.animationDelay = `${index * 0.2 + charIndex * 0.1}s`; // Adjust delay between characters
+            charSpan.textContent = char;
+            typingEffect.appendChild(charSpan);
         });
+    });
 </script>
 
 <script>
@@ -147,7 +159,7 @@
     }
 
     function generateInputs() {
-       
+
         var numInputs = parseInt(document.getElementById('numInputs').value);
         var container = document.getElementById('container');
         container.innerHTML = ''; // Clear previous inputs
@@ -167,7 +179,7 @@
                 // Add <br> tag after each input
                 container.appendChild(document.createElement('br'));
             }
-             document.getElementById('stopname').innerHTML = "Enter Stop Names ";
+            document.getElementById('stopname').innerHTML = "Enter Stop Names ";
             document.getElementById('stopmax').style.display = 'none';
             document.getElementById('submitButton').style.display = 'block';
         } else {
@@ -221,31 +233,34 @@
         font-weight: 800;
         text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);
     }
-     .typing-container {
-            width: 100%;
-            text-align: center;
-            font-family: sans-serif;
-            font-size: 10px; /* Adjust font size for small tag */
-            display: inline-block;
-            
-        }
 
-        .typing-effect {
-            display: inline-block;
-        }
+    .typing-container {
+        width: 100%;
+        text-align: center;
+        font-family: sans-serif;
+        font-size: 10px;
+        /* Adjust font size for small tag */
+        display: inline-block;
 
-        .char {
-            display: inline-block;
-            opacity: 0;
-            animation: typing 1s forwards; /* Adjust timing to make it faster */
-            color: rgba(66, 94, 237, 0.8);
-            font-weight: 800;
-            /* Preserve white space */
-        }
+    }
 
-        @keyframes typing {
-            to {
-                opacity: 1;
-            }
+    .typing-effect {
+        display: inline-block;
+    }
+
+    .char {
+        display: inline-block;
+        opacity: 0;
+        animation: typing 1s forwards;
+        /* Adjust timing to make it faster */
+        color: rgba(66, 94, 237, 0.8);
+        font-weight: 800;
+        /* Preserve white space */
+    }
+
+    @keyframes typing {
+        to {
+            opacity: 1;
         }
+    }
 </style>

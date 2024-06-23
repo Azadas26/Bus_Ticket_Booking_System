@@ -4,5 +4,6 @@ module.exports=
     busdetails : "BusDetails",
     suserdb : "SuserDb",
     checkerbase : "CheckerBus",
-    busorder : "BusOrder"
+    busorder : "BusOrder",
+    adminbase : "AdminBase"
 }

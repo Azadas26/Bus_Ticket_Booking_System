@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row p-5 text-center">
+        <div class="col-md-12 m-5 pt-5">
+            <h1 class="mr-5">BUS TICKETS</h1>
+        </div>
+        {{#each tickets}}
+        <div class="col-md-3 m-auto">
+            <div class="card"
+                style="width: 18rem; border-radius: 12px; position: relative;box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;">
+                <div class="card-body">
+                    <h3 class="card-title" id="bname">{{this.Bus.bname}}</h3>
+                    <h6 class="card-title">Bus Number : {{this.Bus.busnumber}}</h6>
+                    <h6 class="card-title">Starting Time : {{this.Bus.stime}} From {{#each this.Bus.stops}}
+                        {{this.name1}} {{/each}}</h6>
+                    <img class="card-img-top" src="/javascripts/qrcodes/{{this._id}}.png" alt="QR Code">
+                    <h6 class="card-title mt-4">Valid For <span style="font-size: 22px;"
+                            id="predate">{{this.preferredDates}}</span> Only</h6>
+
+                    <h6 class="card-title mt-4">Ticket Price : {{this.total}}/-</h6>
+
+                    <h6 class="card-title mt-4">Your Stops : <i>From</i> {{this.start}} <i>To</i> {{this.end}}</h6>
+
+                    <p class="card-title mt-4"><i>Thank you for your cooperation.
+                            Have a nice day.</i>
+                    </p>
+                    <img id="eximage" src="/images/expired-removebg-preview.png" alt="Validated" class="seal"
+                        style="z-index: 2;display: none;">
+                    {{#if this.isvalidated}}
+                    <img src="/images/green-seal.png" alt="Validated" class="seal" style="z-index: 2;">
+                    {{else}}
+                    <script>
+
+                        const currentDateIST = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+                        const [datePart] = currentDateIST.split(', '); // Extracting only the date part
+
+                        // Splitting datePart by '/' and reformatting to YYYY-MM-DD
+                        const [day, month, year] = datePart.split('/');
+                        const formattedMonth = ('0' + month).slice(-2); // Adding '0' prefix if necessary
+                        const formattedDay = ('0' + day).slice(-2); // Adding '0' prefix if necessary
+                        const formattedDateString = `${year}-${formattedMonth}-${formattedDay}`;
+
+                        console.log(formattedDateString); // Output: Today's date in YYYY-MM-DD format
+
+                        const predate = document.getElementById('predate').innerHTML
+
+                        console.log(predate)
+
+                        if (predate >= formattedDateString) {
+                            console.log(true)
+                        }
+                        else {
+                            document.getElementById('eximage').style.display = ''
+                            console.log(false)
+                        }
+
+                    </script>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<style>
+    h1 {
+        font-weight: 800;
+        font-family: fantasy;
+        text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);
+    }
+
+    .seal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 150px;
+        height: 150px;
+    }
+
+    #bname {
+        font-weight: 800;
+        font-family: fantasy;
+        text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);
+    }
+
+    h6 {
+        font-weight: 800;
+        font-family: fantasy;
+
+    }
+</style>
+<script>
+    var a = document.getElementById('bname').innerHTML
+    document.getElementById('bname').innerHTML = a.toUpperCase();
+</script>

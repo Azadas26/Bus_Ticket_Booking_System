@@ -2,8 +2,8 @@
 <div id="log" class="container-fluid">
     <div class="row">
         <div id="logindiv" class="col-md-12 p-5"
-            style="border-radius: 10px; width: auto;box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
-            <form class="text-dark" action="/login" method="post" id="login">
+            style="border-radius: 10px; width: auto; box-shadow: rgba(38, 28, 180, 0.92) 0px 10px 20px, rgba(14, 55, 188, 0.971) 0px 6px 6px;">
+            <form class="text-dark" action="/admin/login" method="post" id="login">
                 <h1 id="loginhd" class="text-center text-dark" style="font-weight: 800; color: rgb(38, 38, 37);">
                     <b>SWITCH TO YOUR ACCOUNT</b>
                 </h1>
@@ -13,8 +13,8 @@
                     {{/if}}
                 </p>
                 <div class="form-group">
-                    <label class="" for="exampleInputEmail1">Email address</label>
-                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                    <label class="" for="exampleInputEmail1">UserName</label>
+                    <input name="name" type="text" class="form-control" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="Email" required>
                 </div>
                 <div class="form-group">
@@ -23,9 +23,8 @@
                         placeholder="Password" required>
                 </div>
                 <div class="form-group" style="text-align: right;">
-                    <a href="/signup" class="" style="cursor: pointer;"><b>Create Your Account...</b></a>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;background-color: rgba(38, 28, 180, 0.92);" class="btn text-light">Submit</button>
+                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
             </form>
         </div>
     </div>

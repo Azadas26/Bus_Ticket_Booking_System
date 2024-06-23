@@ -1,0 +1,128 @@
+<div class="container-fluid" id="ticketinfo">
+    <div class="row">
+        <div class="col-md-12">
+            {{#if details}}
+            {{#each details}}
+            <div class="card pl-5 pr-5 pt-3 pb-3"
+                style="width: auto;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                <div class="card-body text-center" style="">
+                    <div id="businfo">
+                        <h2 class="card-title" style="font-weight: 800;">{{this.businfo.bname}}</h2>
+                        <h3 class="card-title" style="font-weight: 800;">Bus Number : {{this.businfo.busnumber}}</h3>
+                        <h5>Bus Starting Time : {{this.businfo.stime}}</h5>
+                        <h5>Available Seats : {{this.businfo.available}}</h5>
+                        <h5>Bus Stops</h5>
+                        <ul>
+                            {{#each this.businfo.stops}}
+                            {{#if this.name1}}{{this.name1}},{{/if}}
+                            {{#if this.name2}}{{this.name2}},{{/if}}
+                            {{#if this.name3}}{{this.name3}},{{/if}}
+                            {{#if this.name4}}{{this.name4}},{{/if}}
+                            {{#if this.name5}}{{this.name5}},{{/if}}
+                            {{#if this.name6}}{{this.name6}},{{/if}}
+                            {{#if this.name7}}{{this.name7}},{{/if}}
+                            {{#if this.name8}}{{this.name8}},{{/if}}
+                            {{#if this.name9}}{{this.name9}},{{/if}}
+                            {{#if this.name10}}{{this.name10}},{{/if}}
+                            {{/each}}
+                        </ul>
+
+                    </div>
+                    <div class="mt-3" id="suserinfo">
+                        <h3 class="card-title" style="font-weight: 800;">Passenger Information</h3>
+                        <h5 class="card-title">Name : {{this.suser.name}}</h5>
+                        <h5 class="card-title">Total Ticket Count {{this.tkno}}</h5>
+                        <h5 class="card-title">Total Price {{this.total}}/-</h5>
+                        <h5 class="card-title"><i>From</i> {{this.start}} <i>To</i> {{this.end}}</h5>
+                        <h5 class="card-title">Ticket Valid On <span id="predate">{{this.preferredDates}}</span></h5>
+                        <h5 class="card-title">Purchase Date </h5>
+                        <h6 style="font-weight: 800;" id="date">{{this.date}}</h6>
+                    </div>
+                    <div class="mt-3" id="puserinfo">
+                        <h3 class="card-title" style="font-weight: 800;">Owner Information</h3>
+                        <h5 class="card-title">Name : {{this.primaryuser.name}}</h5>
+                        <h5 class="card-title">email : {{this.primaryuser.email}}</h5>
+                    </div>
+                    <div>
+                        {{#if this.isvalidated}}
+                        <h3 style="font-weight: 800;color: green;">Also Verifyed</h3>
+                        {{else}}
+                        <a href="/checker/verifybusticket?id={{this._id}}" class="btn btn-outline-primary"
+                            style="width: 50%;font-weight: 800;" id="verify">Verify</a>
+                        <h3 id="ex" style="display: none;font-weight: 800;color: red;">Ticket Expired</h3>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{/if}}
+            {{#if noperm}}
+            <img class="img-fluid" src="/addimage/accessdenide-o6SWy-W56-transformed.png" alt=""
+                style="width: 100%;height: 100%;">
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+{{#if noperm}}
+<style>
+    #ticketinfo {
+        background-image: url();
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 67vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+{{else}}
+<style>
+    h5 {
+        font-weight: 800;
+    }
+
+    #ticketinfo {
+        background-image: url();
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+{{/if}}
+
+<script>
+
+    const currentDateIST = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const [datePart] = currentDateIST.split(', '); // Extracting only the date part
+
+    // Splitting datePart by '/' and reformatting to YYYY-MM-DD
+    const [day, month, year] = datePart.split('/');
+    const formattedMonth = ('0' + month).slice(-2); // Adding '0' prefix if necessary
+    const formattedDay = ('0' + day).slice(-2); // Adding '0' prefix if necessary
+    const formattedDateString = `${year}-${formattedMonth}-${formattedDay}`;
+
+    console.log(formattedDateString); // Output: Today's date in YYYY-MM-DD format
+
+    const predate = document.getElementById('predate').innerHTML
+
+    console.log(predate)
+
+    if(predate >= formattedDateString)
+    {
+        console.log(true)
+    }
+    else
+    {
+        document.getElementById('verify').style.display='none'
+        document.getElementById('ex').style.display = '';
+    }
+
+</script>

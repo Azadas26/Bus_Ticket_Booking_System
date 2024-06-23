@@ -68,23 +68,30 @@
 </div>
 
 <style>
-    #myForm {
+ 
+
+     #myForm {
         opacity: 0;
         /* Initially hide the form */
-        transform: translateY(-50px);
-        /* Start off-screen to the top */
-        animation: slideInFromTop 2.0s ease-in-out forwards;
+        transform: rotateX(90deg) translateY(-100%);
+        /* Start with the form rolled up and off-screen */
+        animation: slideInFromTop 2s ease-in-out forwards;
     }
 
     @keyframes slideInFromTop {
         0% {
             opacity: 0;
-            transform: translateY(-50px);
+            transform: rotateX(90deg) translateY(-100%);
+        }
+
+        50% {
+            opacity: 0.5;
+            transform: rotateX(-20deg) translateY(10%);
         }
 
         100% {
             opacity: 1;
-            transform: translateY(0);
+            transform: rotateX(0deg) translateY(0);
         }
     }
 

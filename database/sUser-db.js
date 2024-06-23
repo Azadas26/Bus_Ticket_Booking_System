@@ -155,6 +155,8 @@ module.exports =
                         already: 1,
                         stops: 1,
                         available: 1,
+                        sdate:1,
+                        edate:1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -210,20 +212,56 @@ module.exports =
     },
     Update_available_Seats_When_User_paceed_ticket: (busid, tkno) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.busdetails).findOne({_id:objectId(busid)}).then(async(data)=>
-            {
+            db.get().collection(consts.busdetails).findOne({ _id: objectId(busid) }).then(async (data) => {
                 var availableis = data.available;
                 await db.get().collection(consts.busdetails).updateOne({ _id: objectId(busid) },
-                {
-                    $set:
                     {
-                        available: availableis - tkno
-                    }
-                }).then(()=>
-                {
-                    resolve()
-                })
+                        $set:
+                        {
+                            available: availableis - tkno
+                        }
+                    }).then(() => {
+                        resolve()
+                    })
             })
+        })
+    },
+    Show_Users_Purchased_Tickets: (userid) => {
+        return new Promise((resolve, reject) => {
+            var tickets = db.get().collection(consts.busorder).aggregate([
+                {
+                    $match:
+                        { suserid: objectId(userid) }
+                },
+                {
+                    $lookup: {
+                        from: consts.busdetails,
+                        localField: "id",
+                        foreignField: "_id",
+                        as: "Bus",
+                    },
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        tkno:1,
+                        id:1,
+                        preferredDates:1,
+                        total:1,
+                        start:1,
+                        end:1,
+                        suserid:1,
+                        isvalidated:1,
+                        date:1,
+                        Bus:
+                        {
+                            $arrayElemAt: ["$Bus", 0],
+                        }
+
+                    },
+                },
+            ]).toArray();
+            resolve(tickets)
         })
     }
 }
