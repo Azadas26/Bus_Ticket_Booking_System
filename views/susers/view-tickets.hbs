@@ -1,12 +1,12 @@
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #15181e;">
     <div class="row p-5 text-center">
         <div class="col-md-12 m-5 pt-5">
-            <h1 class="mr-5">BUS TICKETS</h1>
+            <h1 class="mr-5 text-light">BUS TICKETS</h1>
         </div>
         {{#each tickets}}
         <div class="col-md-3 m-auto">
-            <div class="card"
-                style="width: 18rem; border-radius: 12px; position: relative;box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;">
+            <div class="card mt-4"
+                style="width: 18rem; border-radius: 12px; position: relative;box-shadow: rgb(255, 255, 255) 0px 20px 30px -10px;">
                 <div class="card-body">
                     <h3 class="card-title" id="bname">{{this.Bus.bname}}</h3>
                     <h6 class="card-title">Bus Number : {{this.Bus.busnumber}}</h6>

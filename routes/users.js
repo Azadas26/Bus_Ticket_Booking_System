@@ -64,10 +64,10 @@ router.get('/logout', (req, res) => {
   res.redirect('/login')
 })
 router.get("/proform", verifyPrimaryUser, (req, res) => {
-  puserdb.Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not(req.session.user._id).then((is) => {
-    res.render('./users/pro-form', { userhd: true, puser: req.session.user, already: is })
-  }).catch((is) => {
-    res.render('./users/pro-form', { userhd: true, puser: req.session.user, already: is })
+  puserdb.Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not(req.session.user._id).then((info) => {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user, info })
+  }).catch((ntg) => {
+    res.render('./users/pro-form', { userhd: true, puser: req.session.user })
   })
 })
 router.post('/proform', verifyPrimaryUser, async (req, res) => {
@@ -97,7 +97,7 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
   await convertAndRemoveNames(req.body)
   console.log(req.body);
   puserdb.Inserty_Bus_AND_Stops_Details(req.body).then(() => {
-    res.redirect('/')
+    res.redirect('/proform')
   })
 
 })
@@ -133,6 +133,12 @@ router.get('/viewchecker', verifyPrimaryUser, (req, res) => {
 router.get('/removechecker', (req, res) => {
   puserdb.REmove_their_Own_cHeckers(req.query.id).then(() => {
     res.redirect('/viewchecker')
+  })
+})
+router.get('/viewbuss', verifyPrimaryUser,(req, res) => {
+  puserdb.Get_User_added_Buss_Adnd__Its_Details(req.session.user._id).then((bus) => {
+    console.log(bus);
+    res.render('./users/view-bus', { userhd: true, puser: req.session.user,bus})
   })
 })
 

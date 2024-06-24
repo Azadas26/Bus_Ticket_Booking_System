@@ -72,8 +72,15 @@ router.post('/findbus', (req, res) => {
     req.body.to = req.body.to.toUpperCase()
     console.log(req.body);
     suserdb.Find_Matching_Busess_Search_With_Placess(req.body).then((bus) => {
-        console.log(bus);
-        res.render('./susers/search-bus', { suserhd: true, bus, suser: req.session.suser })
+        console.log(bus.length);
+        if (bus.length != 0) {
+            res.render('./susers/search-bus', { suserhd: true, bus, suser: req.session.suser })
+        }
+        else {
+            res.render('./susers/search-bus', { suserhd: true, suser: req.session.suser,err : "Bus Not Available" })
+        }
+
+
     })
 })
 router.get('/busticket', (req, res) => {
@@ -109,7 +116,7 @@ router.post('/verfy-pay', (req, res) => {
         res.json({ status: 'Payment Failed' })
     })
 })
-router.get('/viewtickets',verifySecondaryUser, (req, res) => {
+router.get('/viewtickets', verifySecondaryUser, (req, res) => {
     suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(tickets => {
         console.log(tickets);
         res.render('./susers/view-tickets', { suserhd: true, suser: req.session.suser, tickets })

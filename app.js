@@ -18,8 +18,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layouts/',partialsDir:__dirname+'/views/partials/'}))
-app.use(session({secret:"ker",cookie:{maxAge:600000}}))
+app.engine('hbs', hbs.engine({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/', partialsDir: __dirname + '/views/partials/' }))
+app.use(session({ secret: "ker", cookie: { maxAge: 86400000 } }))
 app.use(fileUpload())
 
 
@@ -29,26 +29,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-db.Database_Connection().then((resc)=>
-{
+db.Database_Connection().then((resc) => {
   console.log(resc);
-}).catch((err)=>
-{
-   console.log(err);
+}).catch((err) => {
+  console.log(err);
 })
 
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
-app.use('/suser',SuserRouter);
-app.use('/checker',CheckerRouter);
+app.use('/suser', SuserRouter);
+app.use('/checker', CheckerRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

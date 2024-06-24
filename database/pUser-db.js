@@ -46,14 +46,14 @@ module.exports =
     },
     Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not: (userid) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.busdetails).findOne({ userId: objectId(userid) }).then((resc) => {
+            db.get().collection(consts.busdetails).findOne({ userId: objectId(userid),isaccept:false }).then((resc) => {
                 console.log(resc);
                 if (resc) {
-
-                    reject(false)
+                    resolve(resc)
                 }
                 else {
-                    resolve(true)
+                    reject(false)
+
                 }
             })
         })
@@ -79,10 +79,15 @@ module.exports =
     },
     REmove_their_Own_cHeckers: (id) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.checkerbase).deleteOne({_id:objectId(id)}).then(()=>
-            {
+            db.get().collection(consts.checkerbase).deleteOne({ _id: objectId(id) }).then(() => {
                 resolve()
             })
+        })
+    },
+    Get_User_added_Buss_Adnd__Its_Details: (userid) => {
+        return new Promise(async(resolve, reject) => {
+          var buss =await  db.get().collection(consts.busdetails).find({userId : objectId(userid)}).toArray()
+          resolve(buss)
         })
     }
 }

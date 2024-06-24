@@ -155,8 +155,8 @@ module.exports =
                         already: 1,
                         stops: 1,
                         available: 1,
-                        sdate:1,
-                        edate:1,
+                        sdate: 1,
+                        edate: 1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -244,15 +244,15 @@ module.exports =
                 {
                     $project: {
                         _id: 1,
-                        tkno:1,
-                        id:1,
-                        preferredDates:1,
-                        total:1,
-                        start:1,
-                        end:1,
-                        suserid:1,
-                        isvalidated:1,
-                        date:1,
+                        tkno: 1,
+                        id: 1,
+                        preferredDates: 1,
+                        total: 1,
+                        start: 1,
+                        end: 1,
+                        suserid: 1,
+                        isvalidated: 1,
+                        date: 1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -263,5 +263,6 @@ module.exports =
             ]).toArray();
             resolve(tickets)
         })
-    }
+    },
+   
 }

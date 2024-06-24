@@ -1,29 +1,28 @@
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #15181e;">
     <div class="row">
         <div class="col-md-12" id="signuppage">
-            <div class="form-container">
+            <div class="form-container p-5" style="width: auto; box-shadow: #3e54e4 0px 5px 15px;">
                 <div style="width: 100%;" class="text-center">
-                    <h1><b>Create Your Account</b></h1>
+                    <h1 class="text-light"><b>Create Your Account</b></h1>
                 </div>
-                <form action="/suser/signup" method="post">
+                <form action="/suser/signup" method="post" class="text-light mt-5">
                     <div class="form-group">
                         <label for="exampleInputName1">Enter Your Name</label>
-                        <input name="name" type="text" class="form-control" id="exampleInputName1"
-                            placeholder="Name">
+                        <input name="name" type="text" class="form-control" id="exampleInputName1" placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small style="font-weight: 800;" id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <input name="password" type="password" class="form-control" id="exampleInputPassword1"
-                            placeholder="Password">
+                        <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                     </div>
-                    <button style="width: 100%;" type="submit" class="btn btn-primary">Submit</button>
+                    <div class="form-group text-right" style="width: 100%;">
+                        <a href="/suser/login">Already have an account!</a>
+                    </div>
+                    <button style="width: 100%; font-weight: 800; background-color: #3e54e4;" type="submit" class="btn btn-primary mt-4">Submit</button>
                 </form>
             </div>
         </div>
@@ -36,11 +35,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        opacity: 0;
+        animation: scaleUp 2.5s ease forwards;
     }
 
     .form-container {
         width: 100%;
         max-width: 500px;
-        /* Adjust max-width as needed */
+        background-color: #15181e
+        padding: 20px;
+        box-shadow: #3e54e4 0px 5px 15px;
+    }
+
+    label {
+        font-weight: 800;
+    }
+
+    @keyframes scaleUp {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
 </style>

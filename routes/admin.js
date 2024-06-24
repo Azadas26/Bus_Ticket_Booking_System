@@ -3,20 +3,17 @@ var router = express.Router();
 var admindb = require('../database/admin-db')
 
 
-function varifyAdminLogin(req,res,next)
-{
-  if(req.session.admin)
-    {
-      next()
-    }
-    else
-    {
-      res.redirect('/admin/login')
-    }
+function varifyAdminLogin(req, res, next) {
+  if (req.session.admin) {
+    next()
+  }
+  else {
+    res.redirect('/admin/login')
+  }
 }
 
-router.get('/', varifyAdminLogin,function (req, res, next) {
-  res.render('./admin/first-page', { admin:true,adminhd: true })
+router.get('/', varifyAdminLogin, function (req, res, next) {
+  res.render('./admin/first-page', { admin: true, adminhd: true })
 });
 router.get('/login', (req, res) => {
   if (req.session.adminfailed) {
@@ -46,21 +43,40 @@ router.get('/logout', (req, res) => {
   req.session.cuser = null;
   res.redirect('/admin/login')
 })
-router.get('/busrequest',varifyAdminLogin, (req, res) => {
+router.get('/busrequest', varifyAdminLogin, (req, res) => {
   admindb.Accept_PriMary_User_BUS_rEquEst().then((buss) => {
     res.render('./admin/bus-request', { adminhd: true, admin: true, buss })
   }).catch(() => {
     res.render('./admin/bus-request', { adminhd: true, admin: true })
   })
 })
-router.get('/acceptbus', varifyAdminLogin,(req, res) => {
+router.get('/acceptbus', varifyAdminLogin, (req, res) => {
   admindb.Update_Isrequest_When_after_admin_accept(req.query.id).then(() => {
     res.redirect('/admin/busrequest')
   })
 })
-router.get('/removebus',varifyAdminLogin, (req, res) => {
+router.get('/removebus', varifyAdminLogin, (req, res) => {
   admindb.Delete_Admin_REmoved_Busss(req.query.id).then(() => {
     res.redirect('/admin/busrequest')
+  })
+})
+router.get('/viewpuser', varifyAdminLogin, (req, res) => {
+  //console.log(":hello");
+  admindb.View_Primary_Users().then((users) => {
+    console.log(users);
+    res.render('./admin/view-puser', { users, adminhd: true, admin: true})
+  })
+})
+router.get('/viewsuser', varifyAdminLogin, (req, res) => {
+  
+  admindb.View_Secondary_Users().then((users) => {
+    console.log(users);
+    res.render('./admin/view-suser', { users, adminhd: true, admin: true})
+  })
+})
+router.get('/viewbus', varifyAdminLogin, (req, res) => {
+  admindb.View_all_Bus_DEtails().then((buss) => {
+    res.render('./admin/view-bus', { buss, adminhd: true, admin: true})
   })
 })
 

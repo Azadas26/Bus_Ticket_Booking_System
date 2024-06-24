@@ -75,16 +75,75 @@ module.exports =
     },
     Do_Checker_admin_Login: (info) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.adminbase).findOne({ name: info.name ,password:info.password}).then((data) => {
-              if(data)
-                {
+            db.get().collection(consts.adminbase).findOne({ name: info.name, password: info.password }).then((data) => {
+                if (data) {
                     resolve(data)
                 }
-                else
-                {
+                else {
                     reject()
                 }
             })
+        })
+    },
+    View_Primary_Users: () => {
+        return new Promise(async(resolve,reject)=>
+        {
+            var users =await db.get().collection(consts.userdb).find().toArray()
+            console.log(users);
+            resolve(users)
+        })
+    },
+    View_Secondary_Users: () => {
+        return new Promise(async(resolve,reject)=>
+        {
+            var users =await db.get().collection(consts.suserdb).find().toArray()
+            console.log(users);
+            resolve(users)
+        })
+    },
+    View_all_Bus_DEtails: () => {
+        return new Promise(async(resolve,reject)=>
+        {
+            var buss =await db.get().collection(consts.busdetails).aggregate([
+                {
+                    $lookup:
+                    {
+                        from: consts.userdb,
+                        localField: "userId",
+                        foreignField: "_id",
+                        as: "User",
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        bname: 1,
+                        busnumber: 1,
+                        stime: 1,
+                        isreturn: 1,
+                        retime: 1,
+                        lino: 1,
+                        max: 1,
+                        price: 1,
+                        numInputs: 1,
+                        userId: 1,
+                        isaccept: 1,
+                        isbus: 1,
+                        already: 1,
+                        stops: 1,
+                        available: 1,
+                        sdate: 1,
+                        edate: 1,
+                        user:
+                        {
+                            $arrayElemAt: ["$User", 0],
+                        }
+
+                    },
+                }
+            ]).toArray()
+            //console.log(buss);
+            resolve(buss)
         })
     }
 }
