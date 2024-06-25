@@ -2,24 +2,29 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link  nav-hover-effect mr-4 " href="/suser" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
+                <a class="nav-link  nav-hover-effect mr-4 " href="/suser"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
                     HOME
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  nav-hover-effect mr-4" href="/suser/findbus" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
+                <a class="nav-link  nav-hover-effect mr-4" href="/suser/findbus"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
                     BUS
                 </a>
             </li>
-              <li class="nav-item">
-                <a class="nav-link  nav-hover-effect" href="/suser/viewtickets" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
+            <li class="nav-item">
+                <a class="nav-link  nav-hover-effect" href="/suser/viewtickets"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); font-size: 20px;">
                     TICKETS
                 </a>
             </li>
         </ul>
         <div class="dropdown">
-            <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8);; background: transparent; font-size: 20px;">
+            <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"
+                style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); background: transparent; font-size: 20px;">
                 {{#if suser}}
                 {{suser.name}}
                 {{else}}
@@ -29,9 +34,11 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {{#if suser}}
                 <a class="dropdown-item" href="/suser/logout">Logout</a>
+                <a class="dropdown-item" href="/suser/about">About</a>
                 {{else}}
                 <a class="dropdown-item" href="/suser/login">Login</a>
                 <a class="dropdown-item" href="/suser/signup">signup</a>
+                <a class="dropdown-item" href="/suser/about">About</a>
                 {{/if}}
             </div>
         </div>
@@ -46,16 +53,20 @@
     }
 
     .nav-hover-effect:hover {
-        color: rgba(66, 94, 237, 0.8); /* Change text color on hover */
+        color: rgba(66, 94, 237, 0.8);
+        /* Change text color on hover */
     }
 
     .nav-hover-effect:hover::before {
         content: "";
         position: absolute;
-        width: calc(100% - 20px); /* Adjust the width of the underline */
+        width: calc(100% - 20px);
+        /* Adjust the width of the underline */
         height: 2px;
         bottom: -2px;
-        left: 10px; /* Adjust the left spacing */
-        background-color: rgba(14, 32, 118, 0.4); /* Faded version of text shadow color */
+        left: 10px;
+        /* Adjust the left spacing */
+        background-color: #ffff;
+        /* Faded version of text shadow color */
     }
 </style>

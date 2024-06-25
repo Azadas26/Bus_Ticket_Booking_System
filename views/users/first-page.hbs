@@ -1,14 +1,36 @@
 <div class="container-fluid" id="first">
     <div class="row" style="height: 100%;">
-        <div class="col-md-6" style="height: 100%;">
+        <div class="col-md-6 p-5 img-fluid" style="height: 100vh;" id="blank">
+            <img class="mt-5" id="background-image" src="/background/Now! (7).png" alt="" style="height: 800px;display: none;">
+            <video class="mt-5" id="background-video" style="height: 800px;" autoplay loop muted>
+                <source src="/background/Now! (4).mp4" type="video/mp4">
+
+            </video>
+
         </div>
         <div id="bus" class="col-md-6" style="height: 100%;">
         </div>
     </div>
 </div>
 
+<script>
+  var image = document.getElementById("background-image");
+  var video = document.getElementById("background-video");
+  setTimeout(()=>
+  {
+    video.style.display = 'none'
+    image.style.display = ''
+  },5000)
+</script>
+
 <style>
-     #first {
+    #blank {
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    #first {
         background-image: url('/images/wave\ bg.png');
         background-attachment: fixed;
         background-size: cover;
@@ -16,21 +38,25 @@
         background-position: bottom;
         height: 100vh;
     }
+
     #bus {
         background-image: url('/images/busssss.png');
         background-size: 90%;
         background-repeat: no-repeat;
         background-position: 50% center;
         height: 100%;
-        animation: fadeIn 5s ease-out;
+        animation: slideInFromLeft 5s ease-out;
     }
 
-    @keyframes fadeIn {
+    @keyframes slideInFromLeft {
         0% {
             opacity: 0;
+            transform: translateX(-50%);
         }
+
         100% {
             opacity: 1;
+            transform: translateX(0);
         }
     }
 </style>

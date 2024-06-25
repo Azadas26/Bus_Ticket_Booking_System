@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid fade-in">
     <div class="row p-5">
         <div class="col-md-12 m-auto pt-5" style="text-align: center;">
             {{#if bus}}
@@ -26,7 +26,7 @@
                         <td class="pt-5">{{this.busnumber}}</td>
                         <td class="pt-5">{{this.stime}}</td>
                         <td class="pt-5">{{this.isreturn}}</td>
-                        <td class="pt-5">{{#if this.retime}} {{else}}NaN{{/if}}</td>
+                        <td class="pt-5">{{#if this.retime}} {{this.retime}} {{else}}NaN{{/if}}</td>
                         <td class="pt-5">{{this.sdate}}</td>
                         <td class="pt-5">{{this.edate}}</td>
                         <td class="pt-5">{{this.max}}</td>
@@ -90,21 +90,28 @@
         /* Padding for cell content */
     }
 
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 2s ease-in-out;
+    }
+
     /* Bounce animation */
     @keyframes bounce {
-
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
+        0%, 20%, 50%, 80%, 100% {
             transform: translateY(0);
         }
-
         40% {
             transform: translateY(-30px);
         }
-
         60% {
             transform: translateY(-15px);
         }

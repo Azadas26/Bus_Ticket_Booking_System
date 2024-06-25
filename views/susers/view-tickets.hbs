@@ -4,8 +4,9 @@
             <h1 class="mr-5 text-light">BUS TICKETS</h1>
         </div>
         {{#each tickets}}
+        {{#if pay}}
         <div class="col-md-3 m-auto">
-            <div class="card mt-4"
+            <div class="card mt-4 mb-4"
                 style="width: 18rem; border-radius: 12px; position: relative;box-shadow: rgb(255, 255, 255) 0px 20px 30px -10px;">
                 <div class="card-body">
                     <h3 class="card-title" id="bname">{{this.Bus.bname}}</h3>
@@ -58,11 +59,23 @@
                 </div>
             </div>
         </div>
+        {{/if}}
         {{/each}}
     </div>
 </div>
 
 <style>
+    .container-fluid {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     h1 {
         font-weight: 800;
         font-family: fantasy;

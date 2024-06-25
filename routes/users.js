@@ -141,5 +141,9 @@ router.get('/viewbuss', verifyPrimaryUser,(req, res) => {
     res.render('./users/view-bus', { userhd: true, puser: req.session.user,bus})
   })
 })
+router.get('/about',(req,res)=>
+{
+   return res.render('./users/about-page',{ userhd: true, puser: req.session.user})
+})
 
 module.exports = router;

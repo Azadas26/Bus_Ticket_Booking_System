@@ -110,7 +110,7 @@ router.post('/buspay', (req, res) => {
 router.post('/verfy-pay', (req, res) => {
     console.log("findWork ID", req.body);
     suserdb.verify_Payment(req.body).then(() => {
-        suserdb.Update_available_Seats_When_User_paceed_ticket(req.body['order[busid]'], parseInt(req.body['order[tkno]']))
+        suserdb.Update_available_Seats_When_User_paceed_ticket(req.body['order[busid]'], parseInt(req.body['order[tkno]']),req.body['order[receipt]'])
         res.json({ status: true })
     }).catch(() => {
         res.json({ status: 'Payment Failed' })
@@ -121,6 +121,10 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
         console.log(tickets);
         res.render('./susers/view-tickets', { suserhd: true, suser: req.session.suser, tickets })
     })
+})
+router.get('/about',(req,res)=>
+{
+    res.render('./susers/about-page',{suserhd: true, suser: req.session.suser})
 })
 
 module.exports = router;

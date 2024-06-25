@@ -203,6 +203,7 @@ module.exports =
 
             if (generatedSignature == details['payment[razorpay_signature]']) {
                 console.log(" checked");
+
                 resolve()
             }
             else {
@@ -210,7 +211,7 @@ module.exports =
             }
         })
     },
-    Update_available_Seats_When_User_paceed_ticket: (busid, tkno) => {
+    Update_available_Seats_When_User_paceed_ticket: (busid, tkno, id) => {
         return new Promise((resolve, reject) => {
             db.get().collection(consts.busdetails).findOne({ _id: objectId(busid) }).then(async (data) => {
                 var availableis = data.available;
@@ -220,8 +221,17 @@ module.exports =
                         {
                             available: availableis - tkno
                         }
-                    }).then(() => {
-                        resolve()
+                    }).then(async () => {
+                        await db.get().collection(consts.busorder).updateOne({ _id: objectId(id) },
+                            {
+                                $set:
+                                {
+                                    pay: true
+                                }
+                            }).then(() => {
+                                resolve()
+                            })
+
                     })
             })
         })
@@ -253,6 +263,7 @@ module.exports =
                         suserid: 1,
                         isvalidated: 1,
                         date: 1,
+                        pay:1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -264,5 +275,5 @@ module.exports =
             resolve(tickets)
         })
     },
-   
+
 }

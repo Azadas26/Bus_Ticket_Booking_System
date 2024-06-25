@@ -1,4 +1,4 @@
-<div class="container-fluid" id="#proform">
+<div class="container-fluid" id="#proform" style="background-image: url(/images/Ticketsmall.png);">
     <div class="row p-5">
         <div class="col-md-8 m-auto pt-5">
             <div class="pt-5">
@@ -24,10 +24,39 @@
                 {{else}}
                 <div id="myForm" class="p-4 mt-5"
                     style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
-                    <h1 id="hding" style="text-align: center;font-family: sans-serif;font-weight: 800;"
+                    <h1 id="hding" style="text-align: center; font-family: sans-serif; font-weight: 800;"
                         class="mt-2 p-3">
-                        <b>ENTER YOUR BUS DETAILSeeee</b>
+                        <b><span class="word">ENTER</span> <span class="word">YOUR</span> <span class="word">BUS</span>
+                            <span class="word">DETAILS</span></b>
                     </h1>
+
+                    <style>
+                        .word {
+                            display: inline-block;
+                            /* Make each word inline-block */
+                            opacity: 0;
+                            /* Initially hide the words */
+                            animation: fadeInWords 2.5s forwards;
+                            /* Animation definition */
+                            animation-delay: calc(0.2s * var(--index));
+                            /* Delay based on word index */
+                            transform: translateX(-100%);
+                            /* Start off-screen on the left */
+                        }
+
+                        @keyframes fadeInWords {
+                            0% {
+                                opacity: 0;
+                                transform: translateX(-100%);
+                            }
+
+                            100% {
+                                opacity: 1;
+                                transform: translateX(0);
+                            }
+                        }
+                    </style>
+
                     <form id="proform" class="ml-5 mr-5 " action="/proform" method="post" onsubmit="return submitForm()"
                         style="padding-top: 20px;">
                         <div class="row">

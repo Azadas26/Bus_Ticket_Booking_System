@@ -62,7 +62,7 @@ function verfyPayment(payment, order) {
         success: (response) => {
 
             if (response.status) {
-                location.href = '/suser'
+                location.href = '/suser/viewtickets'
             }
             else {
                 alert("Payment Faild...")
