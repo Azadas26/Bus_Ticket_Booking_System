@@ -1,10 +1,10 @@
 <!-- Include flatpickr CSS and JS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<div class="container-fluid" >
+<div class="container-fluid">
     <div class="row">
         {{#each info}}
-        <div id="fdiv" class="col-md-12  p-5" >
+        <div id="fdiv" class="col-md-12  p-5">
             <div class="card m-5 text-center p-5 text-light"
                 style="width: 40%;box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;background-color: #15181e;;">
                 <h1 style="font-weight: 800;">{{bname}}</h1>
@@ -12,7 +12,6 @@
                 <h3 class="mt-3" style="font-weight: 800;">Starting Time : {{stime}}</h3>
                 <h3 class="mt-2" style="font-weight: 800;">Licence Number : {{lino}}</h3>
                 <h3 class="mt-2" style="font-weight: 800;">Maximum Seat Capacity : {{max}}</h3>
-                <h3 class="mt-2" style="font-weight: 800;">Price Pr Head : {{price}} /-</h3>
                 <input id="fee" type="number" value="{{price}}" style="display: none;">
                 <h3 class="mt-2" style="font-weight: 800;">Reg.No : {{_id}}</h3>
                 <div class="card-body" style="font-weight: 800;">
@@ -49,10 +48,15 @@
                                 maxDate: "{{edate}}"
                             });
                         });
+                        var val = 0;
 
                         document.getElementById('myInput').addEventListener('input', function () {
-                            var val = parseInt(this.value)
-                            console.log(val)
+                            val = parseInt(this.value)
+                            document.getElementById('output2').innerHTML = ``
+                            document.getElementById('submit').style.display = "none"
+                            document.getElementById('output').innerHTML = "";
+
+                            //console.log(val)
                             if (val <= 0 || val > '{{available}}' || isNaN(val)) {
                                 document.getElementById('hid').style.display = ''
                                 document.getElementById('output').innerHTML = "Invalid Selection ", val;
@@ -61,14 +65,69 @@
                             }
                             else {
                                 document.getElementById('hid').style.display = ''
-                                var fee = parseInt(document.getElementById('fee').value)
-                                document.getElementById('output2').innerHTML = ` Total Amount is ${(val * fee)}`
                                 document.getElementById('output').innerHTML = '';
-                                document.getElementById('price').value = val;
-                                document.getElementById('total').value = val * fee;
-                                document.getElementById('submit').style.display = ""
+                                document.getElementById('output2').innerHTML = ``
+                                document.getElementById('submit').style.display = "none"
+
+
                             }
                         });
+                        function selectpay() {
+                            let starting = document.getElementById('starting');
+                            let ending = document.getElementById('ending');
+
+                            let startingindex = starting.selectedIndex;
+                            let endingindex = ending.selectedIndex;
+
+                            console.log(startingindex, endingindex)
+                            if (startingindex == endingindex) {
+
+                                document.getElementById('output').innerHTML = "Invalid Selection "
+                                document.getElementById('output2').innerHTML = ``
+                                document.getElementById('submit').style.display = "none"
+
+
+                            }
+                            else {
+                                document.getElementById('output').innerHTML = ""
+
+                                var selectElementpri = document.getElementById("pri");
+                                if (startingindex == 1) {
+                                    var selectedOptionprifirst = selectElementpri.options[startingindex - 1].text;
+                                }
+                                else {
+                                    var selectedOptionprifirst = selectElementpri.options[startingindex - 1].text;
+                                }
+                                var selectedOptionprisecond = selectElementpri.options[endingindex - 2].text;
+
+                                console.log(selectedOptionprifirst, "#####", selectedOptionprisecond)
+
+                                var indexArray = [];
+                                if (selectedOptionprisecond !== -1) { // Check if an option is selected
+                                    indexArray = []; // Clear previous array
+
+                                    // Populate array with indexes from 1 to selectedIndex + 1
+                                    for (var i = startingindex - 1; i < endingindex - 1; i++) {
+                                        indexArray.push(parseInt(selectElementpri.options[i].text));
+                                    }
+
+                                    // Display the updated array
+                                    console.log("Updated array:", indexArray);
+                                }
+                                var sum = 0;
+
+                                for (i = 0; i < indexArray.length; i++) {
+                                    sum = sum + indexArray[i]
+                                }
+
+                                console.log(sum * val)
+                                document.getElementById('output2').innerHTML = ` Total Amount is ${(val * sum)} ₹`
+                                document.getElementById('price').value = val;
+                                document.getElementById('total').value = val * sum;
+                                document.getElementById('submit').style.display = ""
+                            }
+
+                        }
                     </script>
                     <form id="buspay" action="/suser/buspay" class="text-center m-auto">
                         <input id="price" type="number" placeholder="No.of Seats" name="tkno"
@@ -79,8 +138,8 @@
                         <input id="total" type="number" name="total" style="font-weight: 800;display: none;">
                         <div class="mt-3">
                             <label for="">To :</label>
-                            <select name="start" id="">
-                                <option value="null">Starting Stop</option>
+                            <select name="start" id="starting">
+                                <option value="null" selected disabled>Starting Stop</option>
                                 {{#each stops}}
                                 {{#if this.name1}}<option value="{{this.name1}}">{{this.name1}} </option> {{/if}}
                                 {{#if this.name2}}<option value="{{this.name2}}">{{this.name2}} </option> {{/if}}
@@ -95,8 +154,8 @@
                                 {{/each}}
                             </select>
                             <label for="" class="ml-2">From :</label>
-                            <select name="end" id="">
-                                <option value="null">End Stop</option>
+                            <select name="end" id="ending" onchange="selectpay()">
+                                <option value="null" selected disabled>End Stop</option>
                                 {{#each stops}}
                                 {{#if this.name1}}<option value="{{this.name1}}">{{this.name1}} </option> {{/if}}
                                 {{#if this.name2}}<option value="{{this.name2}}">{{this.name2}} </option> {{/if}}
@@ -110,6 +169,28 @@
                                 {{#if this.name10}}<option value="{{this.name10}}">{{this.name10}} </option> {{/if}}
                                 {{/each}}
                             </select>
+                            {{!-- ########################## For Calculating Total With Stops Differance
+                            ############################## --}}
+                            <div style="display: none;">
+                                <select id="pri">
+                                    {{#each pri}}
+                                    {{#if this.pri1}}<option value="{{this.pri1}}">{{this.pri1}} </option> {{/if}}
+                                    {{#if this.pri2}}<option value="{{this.pri2}}">{{this.pri2}} </option> {{/if}}
+                                    {{#if this.pri3}}<option value="{{this.pri3}}">{{this.pri3}} </option> {{/if}}
+                                    {{#if this.pri4}}<option value="{{this.pri4}}">{{this.pri4}} </option> {{/if}}
+                                    {{#if this.pri5}}<option value="{{this.pri5}}">{{this.pri5}} </option> {{/if}}
+                                    {{#if this.pri6}}<option value="{{this.pri6}}">{{this.pri6}} </option> {{/if}}
+                                    {{#if this.pri7}}<option value="{{this.pri7}}">{{this.pri7}} </option> {{/if}}
+                                    {{#if this.pri8}}<option value="{{this.pri8}}">{{this.pri8}} </option> {{/if}}
+                                    {{#if this.pri9}}<option value="{{this.pri9}}">{{this.pri9}} </option> {{/if}}
+                                    {{#if this.pri10}}<option value="{{this.pri10}}">{{this.pri10}} </option> {{/if}}
+                                    {{/each}}
+
+                                </select>
+                            </div>
+                            {{!--
+                            ##################################################################################################
+                            --}}
                             <div id="selectdate" class="mt-3">
                                 <label for="preferredDate"><b>Choose Preferred Dates</b></label>
                                 <input type="text" id="preferredDate-{{_id}}" class="mb-4" name="preferredDates"
@@ -131,7 +212,8 @@
 <style>
     .container-fluid {
         width: 100%;
-        background-color: #15181e;;
+        background-color: #15181e;
+        ;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;

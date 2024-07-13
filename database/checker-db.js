@@ -130,13 +130,14 @@ module.exports =
 
         })
     },
-    Ticket_Verification_AND_Change_Verifyed_STAte: (id) => {
+    Ticket_Verification_AND_Change_Verifyed_STAte: (id,date) => {
         return new Promise((resolve, reject) => {
             db.get().collection(consts.busorder).updateOne({ _id: objectId(id) },
                 {
                     $set:
                     {
-                        isvalidated: true
+                        isvalidated: true,
+                        preferredDates : date
                     }
                 }).then(() => {
                     resolve()

@@ -77,7 +77,7 @@ router.post('/findbus', (req, res) => {
             res.render('./susers/search-bus', { suserhd: true, bus, suser: req.session.suser })
         }
         else {
-            res.render('./susers/search-bus', { suserhd: true, suser: req.session.suser,err : "Bus Not Available" })
+            res.render('./susers/search-bus', { suserhd: true, suser: req.session.suser, err: "Bus Not Available" })
         }
 
 
@@ -110,21 +110,61 @@ router.post('/buspay', (req, res) => {
 router.post('/verfy-pay', (req, res) => {
     console.log("findWork ID", req.body);
     suserdb.verify_Payment(req.body).then(() => {
-        suserdb.Update_available_Seats_When_User_paceed_ticket(req.body['order[busid]'], parseInt(req.body['order[tkno]']),req.body['order[receipt]'])
+        suserdb.Update_available_Seats_When_User_paceed_ticket(req.body['order[busid]'], parseInt(req.body['order[tkno]']), req.body['order[receipt]'])
         res.json({ status: true })
     }).catch(() => {
         res.json({ status: 'Payment Failed' })
     })
 })
 router.get('/viewtickets', verifySecondaryUser, (req, res) => {
-    suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(tickets => {
+    suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(async(tickets) => {
+        // console.log(tickets);
+        await  tickets.map(async(i) => {
+            if (i.isvalidated == true) {
+                console.log(i);
+                let predate = i.preferredDates;
+
+                let today = new Date();
+
+                // Convert to IST (Indian Standard Time)
+                let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+                let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+                let formattedToday = formatter.format(today);
+
+                console.log(formattedToday,predate);
+
+                if (predate < formattedToday) {
+                   
+
+                  await  suserdb.Delete_Verified_Ticket_after_The_Verifyed_Day(i._id, i.suserid).then((resc) => {})
+                }
+            }
+            else
+            {
+                let predate = i.preferredDates;
+                let today = new Date();
+
+                // Convert to IST (Indian Standard Time)
+                let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+                let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+                let formattedToday = formatter.format(today);
+                if (predate < formattedToday) {
+                   
+
+                 await   suserdb.UpDAte_EXPIRE_oBject(i._id, i.suserid).then((resc) => {})
+                }
+
+            }
+        }
+        )
         console.log(tickets);
         res.render('./susers/view-tickets', { suserhd: true, suser: req.session.suser, tickets })
     })
 })
-router.get('/about',(req,res)=>
-{
-    res.render('./susers/about-page',{suserhd: true, suser: req.session.suser})
+router.get('/about', (req, res) => {
+    res.render('./susers/about-page', { suserhd: true, suser: req.session.suser })
 })
 
 module.exports = router;

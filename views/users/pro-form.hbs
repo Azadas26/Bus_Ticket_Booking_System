@@ -1,27 +1,18 @@
 <div class="container-fluid" id="#proform" style="background-image: url(/images/Ticketsmall.png);">
     <div class="row p-5">
         <div class="col-md-8 m-auto pt-5">
+            {{#if info}}
+            <h1 class="mt-5 pt-5" id="notaccept">REQUEST SUCCESSFULLY COMMITED WAIT FOR ADMIN RESPONSE</h1>
+            <style>
+                #notaccept {
+                    font-weight: 800;
+                    font-size: 100px;
+                    text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8)
+                }
+            </style>
+            {{else}}
+
             <div class="pt-5">
-                {{#if info}}
-                <h1 id="hding" style="text-align: center;font-family: sans-serif;font-weight: 800;font-size: 100px;"
-                    class=" p-3">
-                    <b>YOU ALRADY REQUESTED WAITE FOR ADMIN RESPONSE</b>
-                </h1>
-                <style>
-                    #hding {
-                        background-attachment: fixed;
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        height: 80vh;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        /* Ensure the overlay is positioned relative to the container */
-                    }
-                </style>
-                {{else}}
                 <div id="myForm" class="p-4 mt-5"
                     style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
                     <h1 id="hding" style="text-align: center; font-family: sans-serif; font-weight: 800;"
@@ -75,23 +66,8 @@
                                     <input type="time" name="stime" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label style="display: inline-block; margin-bottom: 5px;">Return or No Return
-                                    </label>
-                                    <br <br>
-                                    <input type="radio" value="no" name="isreturn" class="form-control" id="noReturn"
-                                        style="width: 20px;display: inline-block; margin-right: 15px; cursor: pointer;">
-                                    <label for="noReturn"
-                                        style="display: inline-block; margin-right: 15px; cursor: pointer;"
-                                        onclick="noReturn()">No</label>
-                                    <input type="radio" value="yes" name="isreturn" class="form-control" id="yesReturn"
-                                        style="width: 20px;display: inline-block; margin-right: 15px; cursor: pointer;">
-                                    <label for="yesReturn" style="display: inline-block; cursor: pointer;"
-                                        onclick="isreturn()">Yes</label>
-                                    <div id="isreturn" style="display: none; margin-top: 10px;">
-                                        <label for="retime">Return Time</label>
-                                        <input type="time" name="retime" id="retime" class="form-control">
-                                    </div>
-                                    <div class="form-group mt-3">
+
+                                    <div class="form-group ">
                                         <label for="exampleInputEmail1"><b>Service Date</b></label>
                                         <div style="display: flex;justify-content: space-between;">
 
@@ -131,12 +107,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group inline-div ">
                             <label id="stopname"></label>
                             <div id="container">
                                 <!-- Input boxes and labels will be dynamically added here -->
                             </div>
                         </div>
+                        <div class="form-group inline-div ml-3 " id="placeprice" style="display: none;">
+                            <label id="stopname" class="">Stop Distance and Price</label> <br>
+                            <div id="p&p">
+                                <!-- Input boxes and labels will be dynamically added here -->
+                            </div>
+                        </div>
+
+                        <style>
+                            .inline-div {
+                                width: 48%;
+                                display: inline-block;
+                                vertical-align: top;
+                                margin-right: 10px;
+
+                            }
+                        </style>
+
                         <button id="submitButton" type="submit" class="btn btn-primary mb-3"
                             style="display: none; margin-top: 20px;width: 100%;">Submit</button>
                     </form>
@@ -145,9 +138,9 @@
 
                     </div>
                 </div>
-                {{/if}}
 
             </div>
+            {{/if}}
         </div>
     </div>
     <script>
@@ -189,25 +182,54 @@
             var numInputs = parseInt(document.getElementById('numInputs').value);
             var container = document.getElementById('container');
             container.innerHTML = ''; // Clear previous inputs
+            var pandp = document.getElementById('p&p');
+            pandp.innerHTML = ''; // Clear previous inputs
 
             if (numInputs < 21) {
                 for (var i = 1; i <= numInputs; i++) {
                     var label = document.createElement('label');
                     label.textContent = "Stop " + i;
+
                     container.appendChild(label);
 
                     var input = document.createElement('input');
                     input.type = 'text';
-                    input.className = 'input-box form-control';
+                    input.className = 'stops input-box form-control';
                     input.name = 'name' + i;
+                    input.style.marginBottom = "90px"
                     container.appendChild(input);
 
                     // Add <br> tag after each input
                     container.appendChild(document.createElement('br'));
                 }
+                for (var i = 1; i <= numInputs - 1; i++) {
+                    var plabeld = document.createElement('label');
+                    var plabelt = document.createElement('label');
+                    plabeld.textContent = "Distance " + i + " To " + (i + 1);
+                    plabelt.textContent = " Price " + i + " To " + (i + 1);
+                    plabelt.className = 'mt-3';
+                    pandp.appendChild(plabeld);
+
+
+                    var pinputd = document.createElement('input');
+                    pinputd.type = 'text';
+                    pinputd.className = 'd input-box form-control ';
+                    pinputd.name = 'dis' + i;
+                    pandp.appendChild(pinputd);
+                    pandp.appendChild(plabelt);
+                    var pinputp = document.createElement('input');
+                    pinputp.type = 'text';
+                    pinputp.className = 'p input-box form-control';
+                    pinputp.name = 'pri' + i;
+                    pandp.appendChild(pinputp);
+
+                    // Add <br> tag after each input
+                    pandp.appendChild(document.createElement('br'));
+                }
                 document.getElementById('stopname').innerHTML = "Enter Stop Names ";
                 document.getElementById('stopmax').style.display = 'none';
                 document.getElementById('submitButton').style.display = 'block';
+                document.getElementById('placeprice').style.display = ""
             } else {
                 document.getElementById('stopname').innerHTML = "";
                 document.getElementById('stopmax').style.display = 'block';
@@ -225,6 +247,11 @@
     </script>
 
     <style>
+        .p,
+        .d {
+            width: 100%;
+        }
+
         #myForm {
             opacity: 0;
             /* Initially hide the form */
@@ -288,5 +315,9 @@
             to {
                 opacity: 1;
             }
+        }
+
+        .stops {
+            width: 100%;
         }
     </style>

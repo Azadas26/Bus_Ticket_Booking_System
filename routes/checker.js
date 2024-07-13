@@ -60,13 +60,23 @@ router.get('/busticket', verrifyChecker, (req, res) => {
     })
 })
 router.get('/verifybusticket', verrifyChecker, (req, res) => {
-    checkerdb.Ticket_Verification_AND_Change_Verifyed_STAte(req.query.id).then(() => {
+   
+
+    var today = new Date();
+
+    // Convert to IST (Indian Standard Time)
+    var options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+    var formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+    var formattedToday = formatter.format(today);
+
+    checkerdb.Ticket_Verification_AND_Change_Verifyed_STAte(req.query.id,formattedToday).then(() => {
         res.redirect(`/checker/busticket?id=${req.query.id}`);
     })
 })
 router.get('/bushistory', verrifyChecker, (req, res) => {
     checkerdb.Get_all_Verified_Bus_ticket_TO_Shoe_History(req.session.cuser.userid).then((details) => {
-        res.render('./checker/busticket-history', { checkerhd: true, checker: req.session.cuser,details})
+        res.render('./checker/busticket-history', { checkerhd: true, checker: req.session.cuser, details })
     })
 })
 

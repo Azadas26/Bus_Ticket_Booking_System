@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var puserdb = require('../database/pUser-db')
 var objectId = require('mongodb').ObjectId
+var dynamicinput = require('../connection/dynamic-input');
 
 function verifyPrimaryUser(req, res, next) {
   if (req.session.user) {
@@ -95,6 +96,10 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
     return obj;
   }
   await convertAndRemoveNames(req.body)
+ 
+  await dynamicinput.Create_Dynamic_Inputs(req.body,"dis");
+  await dynamicinput.Create_Dynamic_Inputs(req.body,"pri");
+
   console.log(req.body);
   puserdb.Inserty_Bus_AND_Stops_Details(req.body).then(() => {
     res.redirect('/proform')

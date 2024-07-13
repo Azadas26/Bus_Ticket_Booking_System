@@ -157,6 +157,8 @@ module.exports =
                         available: 1,
                         sdate: 1,
                         edate: 1,
+                        dis: 1,
+                        pri: 1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -263,7 +265,8 @@ module.exports =
                         suserid: 1,
                         isvalidated: 1,
                         date: 1,
-                        pay:1,
+                        pay: 1,
+                        expired:1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -275,5 +278,26 @@ module.exports =
             resolve(tickets)
         })
     },
+    Delete_Verified_Ticket_after_The_Verifyed_Day: (id, userid) => {
+        return new Promise((resolve, reject) => {
+            console.log(id, "uuu", userid);
+            db.get().collection(consts.busorder).deleteOne({ _id: objectId(id), suserid: objectId(userid) }).then((resc) => {
+                resolve(resc)
+            })
+        })
+    },
+    UpDAte_EXPIRE_oBject: (id, userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).updateOne({ _id: objectId(id), suserid: objectId(userid) },
+                {
+                    $set:
+                    {
+                        expired : true
+                    }
+                }).then((resc) => {
+                    resolve(resc)
+                })
+        })
+    }
 
 }

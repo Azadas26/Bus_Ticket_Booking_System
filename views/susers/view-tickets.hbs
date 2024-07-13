@@ -13,48 +13,29 @@
                     <h6 class="card-title">Bus Number : {{this.Bus.busnumber}}</h6>
                     <h6 class="card-title">Starting Time : {{this.Bus.stime}} From {{#each this.Bus.stops}}
                         {{this.name1}} {{/each}}</h6>
+                    {{#if expired}}
+                    <img class="card-img-top" src="/images/exp.jpg" alt="QR Code">
+                    {{else}}
                     <img class="card-img-top" src="/javascripts/qrcodes/{{this._id}}.png" alt="QR Code">
+                    {{/if}}
+
                     <h6 class="card-title mt-4">Valid For <span style="font-size: 22px;"
                             id="predate">{{this.preferredDates}}</span> Only</h6>
 
-                    <h6 class="card-title mt-4">Ticket Price : {{this.total}}/-</h6>
+                    <h6 class="card-title mt-4">Ticket Price : {{this.total}}/- for {{tkno}} Tickets</h6>
 
                     <h6 class="card-title mt-4">Your Stops : <i>From</i> {{this.start}} <i>To</i> {{this.end}}</h6>
 
                     <p class="card-title mt-4"><i>Thank you for your cooperation.
                             Have a nice day.</i>
                     </p>
-                    <img id="eximage" src="/images/expired-removebg-preview.png" alt="Validated" class="seal"
-                        style="z-index: 2;display: none;">
                     {{#if this.isvalidated}}
                     <img src="/images/green-seal.png" alt="Validated" class="seal" style="z-index: 2;">
                     {{else}}
-                    <script>
-
-                        const currentDateIST = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-                        const [datePart] = currentDateIST.split(', '); // Extracting only the date part
-
-                        // Splitting datePart by '/' and reformatting to YYYY-MM-DD
-                        const [day, month, year] = datePart.split('/');
-                        const formattedMonth = ('0' + month).slice(-2); // Adding '0' prefix if necessary
-                        const formattedDay = ('0' + day).slice(-2); // Adding '0' prefix if necessary
-                        const formattedDateString = `${year}-${formattedMonth}-${formattedDay}`;
-
-                        console.log(formattedDateString); // Output: Today's date in YYYY-MM-DD format
-
-                        const predate = document.getElementById('predate').innerHTML
-
-                        console.log(predate)
-
-                        if (predate >= formattedDateString) {
-                            console.log(true)
-                        }
-                        else {
-                            document.getElementById('eximage').style.display = ''
-                            console.log(false)
-                        }
-
-                    </script>
+                    {{#if expired}}
+                    <img id="eximage" src="/images/expired-removebg-preview.png" alt="Validated" class="seal"
+                        style="z-index: 2;">
+                    {{/if}}
                     {{/if}}
                 </div>
             </div>
@@ -70,7 +51,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        height: 100vh;
+        height: auto;
         display: flex;
         align-items: center;
         justify-content: center;
