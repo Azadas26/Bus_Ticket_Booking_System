@@ -29,6 +29,11 @@
                     <p class="card-title mt-4"><i>Thank you for your cooperation.
                             Have a nice day.</i>
                     </p>
+                    <div>
+                        {{#if expired}}
+                            <a href="/suser/clearexticket?id={{this._id}}" class="text-danger" style="text-decoration: none;">clear 🗑</a>
+                        {{/if}}
+                    </div>
                     {{#if this.isvalidated}}
                     <img src="/images/green-seal.png" alt="Validated" class="seal" style="z-index: 2;">
                     {{else}}

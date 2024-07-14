@@ -266,7 +266,7 @@ module.exports =
                         isvalidated: 1,
                         date: 1,
                         pay: 1,
-                        expired:1,
+                        expired: 1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -292,11 +292,33 @@ module.exports =
                 {
                     $set:
                     {
-                        expired : true
+                        expired: true
                     }
                 }).then((resc) => {
                     resolve(resc)
                 })
+        })
+    },
+    Remove_Expired_Ticket: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).deleteOne({ _id: objectId(id) }).then(() => {
+                resolve()
+            })
+        })
+    },
+    Compair_Prefered_Date_Ticket_Availabilitys: (id, date) => {
+        return new Promise(async (resolve, reject) => {
+            var info = await db.get().collection(consts.busorder).find({ id: objectId(id), preferredDates: date }).toArray()
+
+            var count = 0;
+            if (info.length > 0) {
+                info.map((i)=>
+                {
+                    count = count+parseInt(i.tkno);
+                })
+            }
+            console.log(count);
+            resolve(count)
         })
     }
 

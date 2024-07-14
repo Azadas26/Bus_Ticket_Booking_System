@@ -166,5 +166,19 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
 router.get('/about', (req, res) => {
     res.render('./susers/about-page', { suserhd: true, suser: req.session.suser })
 })
+router.get('/clearexticket',verifySecondaryUser,(req,res)=>
+{
+    suserdb.Remove_Expired_Ticket(req.query.id).then(()=>
+    {
+        res.redirect('/suser/viewtickets')
+    })
+})
+router.post('/checkdate',(req,res)=>
+{
+    suserdb.Compair_Prefered_Date_Ticket_Availabilitys(req.body.id,req.body.date).then((count)=>
+    {
+        res.json({count})
+    })
+})
 
 module.exports = router;
