@@ -96,9 +96,7 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
     return obj;
   }
   await convertAndRemoveNames(req.body)
- 
-  await dynamicinput.Create_Dynamic_Inputs(req.body,"dis");
-  await dynamicinput.Create_Dynamic_Inputs(req.body,"pri");
+  await dynamicinput.Create_Dynamic_Inputs(req.body, "pri");
 
   console.log(req.body);
   puserdb.Inserty_Bus_AND_Stops_Details(req.body).then(() => {
@@ -140,15 +138,65 @@ router.get('/removechecker', (req, res) => {
     res.redirect('/viewchecker')
   })
 })
-router.get('/viewbuss', verifyPrimaryUser,(req, res) => {
+router.get('/viewbuss', verifyPrimaryUser, (req, res) => {
   puserdb.Get_User_added_Buss_Adnd__Its_Details(req.session.user._id).then((bus) => {
     console.log(bus);
-    res.render('./users/view-bus', { userhd: true, puser: req.session.user,bus})
+    bus.map(async (i) => {
+      var predate = i.edate;
+      var today = new Date();
+
+      var options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+      var formatter = new Intl.DateTimeFormat('en-CA', options);
+
+      var formattedToday = formatter.format(today);
+
+      if (predate < formattedToday) {
+        await puserdb.Enable_Permition_For_Edit(i._id).then(() => { })
+      }
+    })
+    res.render('./users/view-bus', { userhd: true, puser: req.session.user, bus })
   })
 })
-router.get('/about',(req,res)=>
-{
-   return res.render('./users/about-page',{ userhd: true, puser: req.session.user})
+router.get('/about', (req, res) => {
+  return res.render('./users/about-page', { userhd: true, puser: req.session.user })
+})
+router.get('/editbus', verifyPrimaryUser, (req, res) => {
+  puserdb.Get_Date_For_Edit(req.query.id).then((businfo) => {
+    console.log(businfo);
+    res.render('./users/edit-bus', { userhd: true, puser: req.session.user, businfo })
+  })
+})
+router.post('/editbus', verifyPrimaryUser, async (req, res) => {
+  req.body.available = parseInt(req.body.max)
+  req.body.userId = objectId(req.session.user._id);
+  req.body.isaccept = false;
+  req.body.isbus = true;
+  req.body.already = true;
+  function convertAndRemoveNames(obj) {
+    const nameArray = [];
+    const numInputs = parseInt(obj.numInputs, 10);
+
+    for (let i = 1; i <= numInputs; i++) {
+      const key = `name${i}`;
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        nameArray.push({ [key]: obj[key].toUpperCase() });
+        delete obj[key]; // Remove the property from the original object
+      }
+    }
+
+    // Optionally, add the array of objects back to the original object
+    obj.stops = nameArray;
+
+    return obj;
+  }
+  await convertAndRemoveNames(req.body)
+  await dynamicinput.Create_Dynamic_Inputs(req.body, "pri");
+  console.log(req.body);
+  puserdb.Update_Edited_information(req.query.id,req.body).then(()=>
+  {
+      res.redirect('/proform')
+  })
+
 })
 
 module.exports = router;

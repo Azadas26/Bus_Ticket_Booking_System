@@ -9,13 +9,12 @@
                         <th scope="col">Bus Name</th>
                         <th scope="col">Bus Number</th>
                         <th scope="col">Starting Time</th>
-                        <th scope="col">Is Return</th>
-                        <th scope="col">Return Time</th>
                         <th scope="col">Starting Date</th>
                         <th scope="col">Ending Date</th>
                         <th scope="col">Maximum Capacity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Stops</th>
+                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody style="font-weight: 800;">
@@ -25,8 +24,6 @@
                         <td class="pt-5">{{this.bname}}</td>
                         <td class="pt-5">{{this.busnumber}}</td>
                         <td class="pt-5">{{this.stime}}</td>
-                        <td class="pt-5">{{this.isreturn}}</td>
-                        <td class="pt-5">{{#if this.retime}} {{this.retime}} {{else}}NaN{{/if}}</td>
                         <td class="pt-5">{{this.sdate}}</td>
                         <td class="pt-5">{{this.edate}}</td>
                         <td class="pt-5">{{this.max}}</td>
@@ -43,6 +40,19 @@
                             {{#if this.name9}}{{this.name9}},{{/if}}
                             {{#if this.name10}}{{this.name10}},{{/if}}
                             {{/each}}</td>
+                        <td class="pt-5">
+                            {{#if editing}}
+                            <a href="/editbus?id={{this._id}}" class="btn btn-primary"><b>EDIT</b></a>
+                            {{else}}
+                            <small>ⓘ Editing possible only after {{edate}}</small>
+                            <style>
+                                small
+                                {
+                                    font-weight: 800;
+                                }
+                            </style>
+                            {{/if}}
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -95,6 +105,7 @@
         from {
             opacity: 0;
         }
+
         to {
             opacity: 1;
         }
@@ -106,12 +117,19 @@
 
     /* Bounce animation */
     @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
             transform: translateY(0);
         }
+
         40% {
             transform: translateY(-30px);
         }
+
         60% {
             transform: translateY(-15px);
         }

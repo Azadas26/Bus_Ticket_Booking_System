@@ -46,7 +46,7 @@ module.exports =
     },
     Check_Whether_The_PRIMARY_USER_Already_REquested_OR_not: (userid) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.busdetails).findOne({ userId: objectId(userid),isaccept:false }).then((resc) => {
+            db.get().collection(consts.busdetails).findOne({ userId: objectId(userid), isaccept: false }).then((resc) => {
                 console.log(resc);
                 if (resc) {
                     resolve(resc)
@@ -85,9 +85,60 @@ module.exports =
         })
     },
     Get_User_added_Buss_Adnd__Its_Details: (userid) => {
-        return new Promise(async(resolve, reject) => {
-          var buss =await  db.get().collection(consts.busdetails).find({userId : objectId(userid)}).toArray()
-          resolve(buss)
+        return new Promise(async (resolve, reject) => {
+            var buss = await db.get().collection(consts.busdetails).find({ userId: objectId(userid) }).toArray()
+            resolve(buss)
+        })
+    },
+    Enable_Permition_For_Edit: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        editing: true
+                    }
+                }).then(() => {
+                    resolve()
+                })
+        })
+    },
+    Get_Date_For_Edit: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).findOne({ _id: objectId(id) }).then((info) => {
+                resolve(info)
+            })
+        })
+    },
+    Update_Edited_information: (id, info) => {
+        return new Promise(async(resolve,reject)=>
+        {
+            await db.get().collection(consts.busdetails).updateOne({_id:objectId(id)},
+        {
+            $set:
+            {
+                bname: info.bname,
+                busnumber: info.busnumber,
+                stime: info.stime,
+                sdate: info.sdate,
+                edate: info.edate,
+                lino: info.lino,
+                max: info.max,
+                price: info.price,
+                numInputs: info.numInputs,
+                available:info.available,
+                userId:info.userId,
+                isaccept:info.isaccept,
+                isbus:info.isbus,
+                already:info.already,
+                stops: [...info.stops],
+                pri: [...info.pri],
+                editing:false
+            }
+        }).then(()=>
+        {
+            resolve()
+        })
         })
     }
 }

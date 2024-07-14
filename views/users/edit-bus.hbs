@@ -17,7 +17,7 @@
                     style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
                     <h1 id="hding" style="text-align: center; font-family: sans-serif; font-weight: 800;"
                         class="mt-2 p-3">
-                        <b><span class="word">ENTER</span> <span class="word">YOUR</span> <span class="word">BUS</span>
+                        <b><span class="word">EDIT</span> <span class="word">YOUR</span> <span class="word">BUS</span>
                             <span class="word">DETAILS</span></b>
                     </h1>
 
@@ -48,24 +48,32 @@
                         }
                     </style>
 
-                    <form id="proform" class="ml-5 mr-5 " action="/proform" method="post" onsubmit="return submitForm()"
-                        style="padding-top: 20px;">
+                    <form id="proform" class="ml-5 mr-5 " action="/editbus?id={{businfo._id}}" method="post"
+                        onsubmit="return submitForm()" style="padding-top: 20px;">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="bname">Enter Bus Name</label>
-                                    <input type="text" name="bname" class="form-control" placeholder="Name" required>
+                                    <input type="text" name="bname" class="form-control" placeholder="Name"
+                                        value="{{businfo.bname}}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="busnumber">BUS Number</label>
                                     <input type="text" name="busnumber" class="form-control" placeholder="KL XX XXXX"
+                                        value="{{businfo.busnumber}}" required>
+                                </div>
+                                <div class="form-group">
+                                     <p><b>Previous Starting Time <span class="p-2"
+                                                style="background-color: yellow;">{{businfo.stime}}</span></b></p>
+                                    <label for="stime">Starting Time</label>
+                                    <input type="time" name="stime" class="form-control" 
                                         required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="stime">Starting Time</label>
-                                    <input type="time" name="stime" class="form-control" required>
-                                </div>
-                                <div class="form-group">
+
+                                    <p><b>Previous Starting and Ending Date <span class="p-2"
+                                                style="background-color: yellow;">{{businfo.sdate}} To
+                                                {{businfo.edate}}</span></b></p>
 
                                     <div class="form-group ">
                                         <label for="exampleInputEmail1"><b>Service Date</b></label>
@@ -85,18 +93,48 @@
                                 <div class="form-group">
                                     <label for="lino">Bus Licence Number</label>
                                     <input type="text" name="lino" class="form-control" placeholder="LI :- 23XXXXXXXX56"
-                                        required>
+                                        value="{{businfo.lino}}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="max">Maximum Capacity</label>
-                                    <input type="number" name="max" class="form-control" placeholder="40" required>
+                                    <input type="number" value="{{businfo.max}}" name="max" class="form-control"
+                                        placeholder="40" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="price">Ticket Rate</label>
-                                    <input type="text" name="price" class="form-control" placeholder="Rate" required>
+                                    <input type="text" value="{{businfo.price}}" name="price" class="form-control"
+                                        placeholder="Rate" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="numInputs">Enter Number of Stops</label>
+                                    <p><b>Previous Stops And Prices</b></p>
+                                    <p style="font-weight: 800;background-color: yellow;" class="p-2 text-center">
+                                        {{#each businfo.stops}}
+                                        {{#if this.name1}}{{this.name1}},{{/if}}
+                                        {{#if this.name2}}{{this.name2}},{{/if}}
+                                        {{#if this.name3}}{{this.name3}},{{/if}}
+                                        {{#if this.name4}}{{this.name4}},{{/if}}
+                                        {{#if this.name5}}{{this.name5}},{{/if}}
+                                        {{#if this.name6}}{{this.name6}},{{/if}}
+                                        {{#if this.name7}}{{this.name7}},{{/if}}
+                                        {{#if this.name8}}{{this.name8}},{{/if}}
+                                        {{#if this.name9}}{{this.name9}},{{/if}}
+                                        {{#if this.name10}}{{this.name10}},{{/if}}
+                                        {{/each}}
+                                        <br>
+                                        {{#each businfo.pri}}
+                                        {{#if this.pri1}}{{this.pri1}},{{/if}}
+                                        {{#if this.pri2}}{{this.pri2}},{{/if}}
+                                        {{#if this.pri3}}{{this.pri3}},{{/if}}
+                                        {{#if this.pri4}}{{this.pri4}},{{/if}}
+                                        {{#if this.pri5}}{{this.pri5}},{{/if}}
+                                        {{#if this.pri6}}{{this.pri6}},{{/if}}
+                                        {{#if this.pri7}}{{this.pri7}},{{/if}}
+                                        {{#if this.pri8}}{{this.pri8}},{{/if}}
+                                        {{#if this.pri9}}{{this.pri9}},{{/if}}
+                                        {{#if this.pri10}}{{this.pri10}},{{/if}}
+                                        {{/each}}
+                                    </p><br>
+                                    <label for="numInputs" class="mt-2">Enter Number of Stops</label>
                                     <input type="number" id="numInputs" name="numInputs" min="1" class="form-control"
                                         required onchange="generateInputs()"> <br>
                                     <div class="typing-container">
@@ -204,7 +242,7 @@
                 for (var i = 1; i <= numInputs - 1; i++) {
                     var plabelt = document.createElement('label');
                     plabelt.textContent = " Price " + i + " To " + (i + 1);
-                    
+
 
 
                     pandp.appendChild(plabelt);
