@@ -1,0 +1,84 @@
+<div class="container-fluid" style="background-color: #15181E;height: 100vh;">
+    <div class="row pl-5 pr-5 pt-5">
+        <div class="col-md-12 mt-5 p-4">
+
+            {{#if info}}
+            {{#each info}}
+            <div class="col-md-6  message-box" style="background-color: red;">
+                <div style="width: 100%;" class="text-center">
+                    <h3><b>BUS CANCELED</b></h3>
+                </div>
+                <!-- Added offset-md-6 to align to the right -->
+                <div class="mt-3">
+                    <h5 class="text-light ml-5">BUS NAME &nbsp;:&nbsp;&nbsp; {{bus.bname}}</h5>
+                    <h5 class="text-light ml-5">Total Tickets &nbsp;:&nbsp;&nbsp; {{tkno}}</h5>
+                    <h5 class="text-light ml-5">Total Price &nbsp;:&nbsp;&nbsp; {{total}}</h5>
+                    <h5 class="text-light ml-5">STARTING &nbsp;&nbsp;FROM &nbsp;&nbsp;{{start}} &nbsp;&nbsp;TO
+                        &nbsp;&nbsp; {{end}}</h5>
+                    <h5 class="text-light ml-5">Date &nbsp;:&nbsp;&nbsp; {{preferredDates}}</h5>
+                </div>
+                <div class="mt-5">
+                    <h4 class="ml-5">Reason :</h4>
+                    <h6 class="ml-5 p-2">{{emdescription}}</h6>
+                </div>
+                 <div class="mt-5">
+                    <h4 class="ml-5">Attention :</h4>
+                    <h6 class="ml-5 p-2">* {{two}}</h6>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+                <div class="m-5 p-5">
+                    <h1 class="text-light m-5"><b>NOTHING FOUND</b></h1>
+                </div>
+            {{/if}}
+
+        </div>
+    </div>
+
+    <style>
+        h5 {
+            font-weight: 800;
+        }
+
+        h4 {
+            font-weight: 800;
+        }
+
+        .message-box {
+            width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            color: white;
+        }
+
+
+        .message-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            border-width: 0 10px 10px 0;
+            border-style: solid;
+            border-color: red white;
+            background: transparent;
+            width: 20px;
+            height: 20px;
+            transform: rotate(135deg);
+        }
+
+        .message-box-no::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            border-width: 0 10px 10px 0;
+            border-style: solid;
+            border-color: green white;
+            background: transparent;
+            width: 20px;
+            height: 20px;
+            transform: rotate(135deg);
+        }
+    </style>

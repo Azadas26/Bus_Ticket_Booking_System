@@ -13,11 +13,16 @@
                     <h6 class="card-title">Bus Number : {{this.Bus.busnumber}}</h6>
                     <h6 class="card-title">Starting Time : {{this.Bus.stime}} From {{#each this.Bus.stops}}
                         {{this.name1}} {{/each}}</h6>
+                    {{#if emergency}}
+                    <img class="card-img-top" src="/images/no-qr.png" alt="QR Code">
+                    {{else}}
                     {{#if expired}}
                     <img class="card-img-top" src="/images/exp.jpg" alt="QR Code">
                     {{else}}
                     <img class="card-img-top" src="/javascripts/qrcodes/{{this._id}}.png" alt="QR Code">
                     {{/if}}
+                    {{/if}}
+
 
                     <h6 class="card-title mt-4">Valid For <span style="font-size: 22px;"
                             id="predate">{{this.preferredDates}}</span> Only</h6>
@@ -31,9 +36,13 @@
                     </p>
                     <div>
                         {{#if expired}}
-                            <a href="/suser/clearexticket?id={{this._id}}" class="text-danger" style="text-decoration: none;">clear 🗑</a>
+                        <a href="/suser/clearexticket?id={{this._id}}" class="text-danger"
+                            style="text-decoration: none;">clear 🗑</a>
                         {{/if}}
                     </div>
+                    {{#if emergency}}
+                    <img src="/images/cancelled.png" alt="Validated" class="seal" style="z-index: 2;">
+                    {{else}}
                     {{#if this.isvalidated}}
                     <img src="/images/green-seal.png" alt="Validated" class="seal" style="z-index: 2;">
                     {{else}}
@@ -42,6 +51,8 @@
                         style="z-index: 2;">
                     {{/if}}
                     {{/if}}
+                    {{/if}}
+
                 </div>
             </div>
         </div>

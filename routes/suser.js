@@ -16,7 +16,15 @@ function verifySecondaryUser(req, res, next) {
 router.get('/', function (req, res, next) {
     if (req.session.suser) {
         //console.log(req.session.suser);
-        res.render('./susers/first-page', { suserhd: true, suser: req.session.suser })
+        suserdb.Check_Is_anY_nOtification_Coming_Or_not(req.session.suser._id).then((notfy) => {
+            if (notfy) {
+
+                res.render('./susers/first-page', { suserhd: true, suser: req.session.suser, notfy })
+            }
+            else {
+                res.render('./susers/first-page', { suserhd: true, suser: req.session.suser })
+            }
+        })
     }
     else {
         res.render('./susers/first-page', { suserhd: true })
@@ -86,6 +94,7 @@ router.post('/findbus', (req, res) => {
 router.get('/busticket', (req, res) => {
     console.log(req.query.userid);
     suserdb.Get_Buse_info_Whe_User_Chose_a_BUS(req.query.id, req.query.userid).then((info) => {
+        info.dateArray = JSON.stringify(info.dateArray);
         res.render('./susers/bus-info', { suserhd: true, info, suser: req.session.suser })
     })
 })
@@ -117,9 +126,9 @@ router.post('/verfy-pay', (req, res) => {
     })
 })
 router.get('/viewtickets', verifySecondaryUser, (req, res) => {
-    suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(async(tickets) => {
+    suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(async (tickets) => {
         // console.log(tickets);
-        await  tickets.map(async(i) => {
+        await tickets.map(async (i) => {
             if (i.isvalidated == true) {
                 console.log(i);
                 let predate = i.preferredDates;
@@ -132,16 +141,15 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
 
                 let formattedToday = formatter.format(today);
 
-                console.log(formattedToday,predate);
+                console.log(formattedToday, predate);
 
                 if (predate < formattedToday) {
-                   
 
-                  await  suserdb.Delete_Verified_Ticket_after_The_Verifyed_Day(i._id, i.suserid).then((resc) => {})
+
+                    await suserdb.Delete_Verified_Ticket_after_The_Verifyed_Day(i._id, i.suserid).then((resc) => { })
                 }
             }
-            else
-            {
+            else {
                 let predate = i.preferredDates;
                 let today = new Date();
 
@@ -151,9 +159,9 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
 
                 let formattedToday = formatter.format(today);
                 if (predate < formattedToday) {
-                   
 
-                 await   suserdb.UpDAte_EXPIRE_oBject(i._id, i.suserid).then((resc) => {})
+
+                    await suserdb.UpDAte_EXPIRE_oBject(i._id, i.suserid).then((resc) => { })
                 }
 
             }
@@ -166,18 +174,24 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
 router.get('/about', (req, res) => {
     res.render('./susers/about-page', { suserhd: true, suser: req.session.suser })
 })
-router.get('/clearexticket',verifySecondaryUser,(req,res)=>
-{
-    suserdb.Remove_Expired_Ticket(req.query.id).then(()=>
-    {
+router.get('/clearexticket', verifySecondaryUser, (req, res) => {
+    suserdb.Remove_Expired_Ticket(req.query.id).then(() => {
         res.redirect('/suser/viewtickets')
     })
 })
-router.post('/checkdate',(req,res)=>
-{
-    suserdb.Compair_Prefered_Date_Ticket_Availabilitys(req.body.id,req.body.date).then((count)=>
-    {
-        res.json({count})
+router.post('/checkdate', (req, res) => {
+    suserdb.Compair_Prefered_Date_Ticket_Availabilitys(req.body.id, req.body.date).then((count) => {
+        res.json({ count })
+    })
+})
+router.get('/notification', verifySecondaryUser, (req, res) => {
+    suserdb.Update_Notfy_object_When_User_Viewed(req.session.suser._id).then(() => {
+
+        suserdb.Get_Notification_InformationBy_Emergency(req.session.suser._id).then((notfinfo)=>
+        {
+            console.log(notfinfo);
+            res.render('./susers/notfication-page', { suserhd: true, suser: req.session.suser,info:notfinfo })
+        })
     })
 })
 

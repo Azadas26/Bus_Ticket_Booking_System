@@ -92,8 +92,8 @@
                                     <input type="number" name="max" class="form-control" placeholder="40" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="price">Ticket Rate</label>
-                                    <input type="text" name="price" class="form-control" placeholder="Rate" required>
+                                    <label for="price">Reg.no</label>
+                                    <input type="text" name="price" class="form-control" placeholder="564XXXXX234224XXXX123" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="numInputs">Enter Number of Stops</label>
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="form-group inline-div ml-3 " id="placeprice" style="display: none;">
-                            <label id="stopname" class="">Stop Price</label> <br>
+                            <label id="stopname" class="">Stop Price and Distance</label> <br>
                             <div id="p&p">
                                 <!-- Input boxes and labels will be dynamically added here -->
                             </div>
@@ -196,23 +196,34 @@
                     input.type = 'text';
                     input.className = 'stops input-box form-control';
                     input.name = 'name' + i;
+                    input.style.marginBottom = "90px"
+                    
                     container.appendChild(input);
 
                     // Add <br> tag after each input
                     container.appendChild(document.createElement('br'));
                 }
                 for (var i = 1; i <= numInputs - 1; i++) {
+                    var plabeld = document.createElement('label');
                     var plabelt = document.createElement('label');
+                    plabeld.textContent = "Distance " + i + " To " + (i + 1);
                     plabelt.textContent = " Price " + i + " To " + (i + 1);
-                    
+                    plabelt.className = 'mt-3';
+                    pandp.appendChild(plabeld);
 
 
+                    var pinputd = document.createElement('input');
+                    pinputd.type = 'text';
+                    pinputd.className = 'd input-box form-control ';
+                    pinputd.name = 'dis' + i;
+                    pandp.appendChild(pinputd);
                     pandp.appendChild(plabelt);
                     var pinputp = document.createElement('input');
                     pinputp.type = 'text';
                     pinputp.className = 'p input-box form-control';
                     pinputp.name = 'pri' + i;
                     pandp.appendChild(pinputp);
+
 
                     // Add <br> tag after each input
                     pandp.appendChild(document.createElement('br'));

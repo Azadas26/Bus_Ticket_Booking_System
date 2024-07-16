@@ -48,4 +48,19 @@ $(document).ready(() => {
             }
         },
     });
+
+    $("#emergencyform").validate({
+        rules: {
+            date:
+            {
+                required: true
+            },
+            description:
+            {
+                required: true,
+            }
+        },
+    });
+
+
 });

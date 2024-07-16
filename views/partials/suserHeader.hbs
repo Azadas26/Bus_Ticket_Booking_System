@@ -21,6 +21,11 @@
                 </a>
             </li>
         </ul>
+        <div class="shake-icon mr-4">
+            <a href="/suser/notification" class="icon-button" style="text-decoration: none;">
+                <span class="material-icons">notifications</span>
+            </a>
+        </div>
         <div class="dropdown">
             <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"
@@ -45,6 +50,38 @@
     </div>
 </nav>
 
+{{#if notfy}}
+<style>
+    .shake-icon {
+        animation: shake 0.5s infinite;
+        border-radius: 50%;
+    }
+
+    @keyframes shake {
+        0% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform:
+                translateX(-5px);
+        }
+
+        50% {
+            transform: translateX(5px);
+        }
+
+        75% {
+            transform:
+                translateX(-5px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+</style>
+{{/if}}
 <style>
     /* CSS for nav-item hover effect */
     .nav-hover-effect {

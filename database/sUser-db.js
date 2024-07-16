@@ -159,6 +159,7 @@ module.exports =
                         edate: 1,
                         dis: 1,
                         pri: 1,
+                        dateArray:1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -267,6 +268,7 @@ module.exports =
                         date: 1,
                         pay: 1,
                         expired: 1,
+                        emergency:1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -312,14 +314,75 @@ module.exports =
 
             var count = 0;
             if (info.length > 0) {
-                info.map((i)=>
-                {
-                    count = count+parseInt(i.tkno);
+                info.map((i) => {
+                    count = count + parseInt(i.tkno);
                 })
             }
             console.log(count);
             resolve(count)
         })
+    },
+    Check_Is_anY_nOtification_Coming_Or_not: (userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).findOne({ suserid: objectId(userid), isnotify: true }).then((notfy) => {
+                resolve(notfy)
+            })
+        })
+    },
+    Update_Notfy_object_When_User_Viewed: (userid) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busorder).updateOne({ suserid: objectId(userid), emergency: true, isnotify: true },
+                {
+                    $set:
+                    {
+                        isnotify: false
+                    }
+                }).then(() => {
+                    resolve()
+                })
+        })
+    },
+    Get_Notification_InformationBy_Emergency: (userid) => {
+        return new Promise(async(resolve,reject)=>
+        {
+           var notfy = await db.get().collection(consts.busorder).aggregate([
+            {
+                $match:
+                {
+                    suserid:objectId(userid),
+                    emergency:true
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: consts.busdetails,
+                    localField: "id",
+                    foreignField: "_id",
+                    as: "bus",
+                }
+            },
+            {
+                $project:
+                {
+                    tkno:1,
+                    total:1,
+                    start:1,
+                    end:1,
+                    preferredDates:1,
+                    date:1,
+                    emdescription:1,
+                    one:1,
+                    two:1,
+                    bus:
+                    {
+                        $arrayElemAt: ["$bus", 0],
+                    }
+                }
+            }
+           ]).toArray()
+           //console.log(notfy);
+           resolve(notfy)
+        })
     }
-
 }

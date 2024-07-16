@@ -14,7 +14,7 @@
                 <h3 class="mt-2" style="font-weight: 800;">Maximum Seat Capacity : <h3 id="max">{{max}}</h3>
                 </h3>
                 <input id="fee" type="number" value="{{price}}" style="display: none;">
-                <h3 class="mt-2" style="font-weight: 800;">Reg.No : {{_id}}</h3>
+                <h3 class="mt-2" style="font-weight: 800;">Reg.No : {{price}}</h3>
                 <div class="card-body" style="font-weight: 800;">
                     <h3 class="mt-2" style="font-weight: 800;">Bus Stops</h3> <br>
                     {{#each stops}}
@@ -48,10 +48,16 @@
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             // Initialize flatpickr with the range from sdate to edate
+                            const dateString = '{{dateArray}}';
+                            const dateArray = dateString.split(',')
+
+                            const disabledDates = dateArray.map(date => date.trim());
                             flatpickr('#preferredDate-{{_id}}', {
                                 dateFormat: "Y-m-d",
                                 minDate: "{{sdate}}",
-                                maxDate: "{{edate}}"
+                                maxDate: "{{edate}}",
+                                disable: disabledDates
+
                             });
                         });
                         var val = 0;
@@ -137,8 +143,7 @@
 
                                     document.getElementById('submit').style.display = ""
                                 }
-                                else
-                                {
+                                else {
                                     document.getElementById('output').innerHTML = 'seats not available'
                                 }
                             }
@@ -164,7 +169,14 @@
                                     id: '{{_id}}'
                                 },
                                 success: (response) => {
-                                    setseats.innerHTML = parseInt(maxget) - response.count
+                                    //alert(response)
+                                    if (parseInt(maxget) - response.count == 0 || parseInt(maxget) - response.count < 0) {
+                                        setseats.innerHTML = 0
+                                    }
+                                    else {
+                                        setseats.innerHTML = parseInt(maxget) - response.count
+                                    }
+
                                 }
                             })
                         }
@@ -177,7 +189,7 @@
                         <input id="id" type="text" name="id" value="{{_id}}" style="font-weight: 800;display: none;">
                         <input id="total" type="number" name="total" style="font-weight: 800;display: none;">
                         <div class="mt-3">
-                            <label for="">To :</label>
+                            <label for="">From :</label>
                             <select name="start" id="starting">
                                 <option value="null" selected disabled>Starting Stop</option>
                                 {{#each stops}}
@@ -193,7 +205,7 @@
                                 {{#if this.name10}}<option value="{{this.name10}}">{{this.name10}} </option> {{/if}}
                                 {{/each}}
                             </select>
-                            <label for="" class="ml-2">From :</label>
+                            <label for="" class="ml-2">To :</label>
                             <select name="end" id="ending" onchange="selectpay()">
                                 <option value="null" selected disabled>End Stop</option>
                                 {{#each stops}}

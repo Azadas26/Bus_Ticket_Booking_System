@@ -111,34 +111,82 @@ module.exports =
         })
     },
     Update_Edited_information: (id, info) => {
-        return new Promise(async(resolve,reject)=>
-        {
-            await db.get().collection(consts.busdetails).updateOne({_id:objectId(id)},
-        {
-            $set:
-            {
-                bname: info.bname,
-                busnumber: info.busnumber,
-                stime: info.stime,
-                sdate: info.sdate,
-                edate: info.edate,
-                lino: info.lino,
-                max: info.max,
-                price: info.price,
-                numInputs: info.numInputs,
-                available:info.available,
-                userId:info.userId,
-                isaccept:info.isaccept,
-                isbus:info.isbus,
-                already:info.already,
-                stops: [...info.stops],
-                pri: [...info.pri],
-                editing:false
-            }
-        }).then(()=>
-        {
-            resolve()
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busdetails).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        bname: info.bname,
+                        busnumber: info.busnumber,
+                        stime: info.stime,
+                        sdate: info.sdate,
+                        edate: info.edate,
+                        lino: info.lino,
+                        max: info.max,
+                        price: info.price,
+                        numInputs: info.numInputs,
+                        available: info.available,
+                        userId: info.userId,
+                        isaccept: info.isaccept,
+                        isbus: info.isbus,
+                        already: info.already,
+                        stops: [...info.stops],
+                        pri: [...info.pri],
+                        dis: [...info.dis],
+                        editing: false
+                    }
+                }).then(() => {
+                    resolve()
+                })
         })
+    },
+    Redrive_Bus_informtion_For_Emergency: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).findOne({ _id: objectId(id) }).then((info) => {
+                resolve(info)
+            })
+        })
+    },
+    Emergency_Object_Information_SetUp: (id, info) => {
+        return new Promise(async (resolve, reject) => {
+            console.log(info);
+            await db.get().collection(consts.busorder).updateMany({ id: objectId(id), preferredDates: info.date, isvalidated: false },
+                {
+                    $set:
+                    {
+                        emergency: true,
+                        isnotify: true,
+                        emdescription: info.description,
+                        one: info.one,
+                        two: info.two
+                    }
+                }
+            ).then(() => {
+                resolve()
+            })
+        })
+    },
+    Update_Emergence_Date_TO_Notuse: (id, date) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busdetails).findOne({ _id: objectId(id) }).then((bus) => {
+                if (bus.dateArray) {
+                    db.get().collection(consts.busdetails).updateOne({ _id: objectId(id) },
+                        {
+                            $push:
+                            {
+                                dateArray: date
+                            }
+                        }).then(() => resolve())
+                } else {
+                    db.get().collection(consts.busdetails).updateOne({ _id: objectId(id) },
+                        {
+                            $set:
+                            {
+                                dateArray: [date]
+                            }
+                        }).then(() => resolve())
+                }
+            })
         })
     }
 }

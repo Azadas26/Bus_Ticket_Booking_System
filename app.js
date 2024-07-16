@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 db.Database_Connection().then((resc) => {
   console.log(resc);
 }).catch((err) => {

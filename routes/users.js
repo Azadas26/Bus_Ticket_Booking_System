@@ -96,6 +96,7 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
     return obj;
   }
   await convertAndRemoveNames(req.body)
+  await dynamicinput.Create_Dynamic_Inputs(req.body, "dis");
   await dynamicinput.Create_Dynamic_Inputs(req.body, "pri");
 
   console.log(req.body);
@@ -190,13 +191,31 @@ router.post('/editbus', verifyPrimaryUser, async (req, res) => {
     return obj;
   }
   await convertAndRemoveNames(req.body)
+  await dynamicinput.Create_Dynamic_Inputs(req.body, "dis");
   await dynamicinput.Create_Dynamic_Inputs(req.body, "pri");
   console.log(req.body);
-  puserdb.Update_Edited_information(req.query.id,req.body).then(()=>
-  {
-      res.redirect('/proform')
+  puserdb.Update_Edited_information(req.query.id, req.body).then(() => {
+    res.redirect('/proform')
   })
 
+})
+router.post('/emergency', (req, res) => {
+  res.json({ id: req.body.id })
+})
+router.get('/emergency', (req, res) => {
+  puserdb.Redrive_Bus_informtion_For_Emergency(req.query.id).then((businfo) => {
+    console.log(businfo);
+    res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo })
+  })
+})
+router.post('/emergencyform', verifyPrimaryUser, (req, res) => {
+  puserdb.Emergency_Object_Information_SetUp(req.query.id, req.body).then(() => {
+    puserdb.Redrive_Bus_informtion_For_Emergency(req.query.id).then((businfo) => {
+      puserdb.Update_Emergence_Date_TO_Notuse(req.query.id, req.body.date).then(() => {
+        res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo, succ: true })
+      })
+    })
+  })
 })
 
 module.exports = router;

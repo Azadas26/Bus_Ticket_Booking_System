@@ -1,0 +1,223 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="container-fluid" id="em">
+    <div class="row">
+        <div class="col-md-8 m-auto ">
+            <div class="" id="emergencydiv">
+                <div id="myForm" class="p-5"
+                    style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
+                    <h1 id="hding" style="text-align: center; font-family: sans-serif; font-weight: 800;"
+                        class="mt-2 pt-3 pr-3 pl-3">
+                        <b><span class="word">ENTER</span> <span class="word">DETAILS</span> <span
+                                class="word">ABOUT</span>
+                            <span class="word">EMERGENCY </span> <span class="word">SITUVATION</span></b>
+                    </h1>
+
+                    <style>
+                        .word {
+                            display: inline-block;
+                            /* Make each word inline-block */
+                            opacity: 0;
+                            /* Initially hide the words */
+                            animation: fadeInWords 2.5s forwards;
+                            /* Animation definition */
+                            animation-delay: calc(0.2s * var(--index));
+                            /* Delay based on word index */
+                            transform: translateX(-100%);
+                            /* Start off-screen on the left */
+                        }
+
+                        @keyframes fadeInWords {
+                            0% {
+                                opacity: 0;
+                                transform: translateX(-100%);
+                            }
+
+                            100% {
+                                opacity: 1;
+                                transform: translateX(0);
+                            }
+                        }
+                    </style>
+
+                    <form action="/emergencyform?id={{businfo._id}}" method="post" id="emergencyform"
+                        class="pl-5 pb-5 pr-5 pt-3" style="width: 100%;">
+                        <div class="pl-5 pr-5">
+                            {{#if succ}}
+                            <div class="text-center" style="width: 100%;">
+                                <p style="color: green;"><b>Successfully Updated !</b></p>
+                            </div>
+                            {{/if}}
+                            <div>
+                                <label for="">Bus Name : &nbsp;&nbsp;{{businfo.bname}}</label> <br>
+                            </div>
+                            <div id="selectdate" class="mt-3">
+                                <label for="preferredDate"><b>Choose Service Stoping Date :&nbsp;&nbsp;</b></label>
+                                <input name="date" type="text" id="preferredDate-{{_id}}" class="mb-4"
+                                    placeholder="Select dates" required onchange="emdate()">
+                                <small id="errr" style="color: red;display: none;">This day is already overe</small>
+                            </div>
+                            <div>
+                                <label for="">Detailed Description About Situvation Point By Point</label> <br>
+                                <input name="description" id="reson" type="text" style="width: 100%;"
+                                    class="mt-2 multiline-placeholder"
+                                    placeholder="ex : Due to unforeseen engine trouble,our service is regrettably not possible at this time.We deeply apologize for this unforeseen inconvenience.Please accept our sincerest apologies for any disruption this may cause.Rest assured, we are working diligently to resolve the issue and restore our services promptly.We appreciate your understanding and patience in this matter.">
+                            </div>
+                            <div class="mt-4 inline">
+                                <input id="one" type="checkbox" onclick="choose1(this)">
+                                <label for="" class="ml-2">The responsibility rests on your shoulders. 'Ticket Sure'
+                                    shall bear no
+                                    blame
+                                    for the
+                                    fallout.</label>
+                            </div>
+                            <div class="mt-4 inline">
+                                <input id="two" type="checkbox" onclick="choose2(this)">
+                                <label for="" class="ml-2">We shall replace your ticket or refund the amount. You may
+                                    reach out directly to our checker or our esteemed authority</label>
+                            </div>
+                            <div style="display: none;">
+                                <input type="text" name="one" value="The responsibility rests on your shoulders. 'Ticket Sure'
+                                    shall bear no
+                                    blame
+                                    for the
+                                    fallout.">
+                                <input type="text" name="two" value="We shall replace your ticket or refund the amount. You may
+                                    reach out directly to our checker or our esteemed authority">
+                            </div>
+                            <div class="mt-3">
+                                <input id="sub" type="submit" class="btn" value="Submit"
+                                    style="background-color: rgba(66, 94, 237, 0.8);font-weight: 800;width: 100%;display: none;">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        var dayerr = false;
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize flatpickr with the range from sdate to edate
+            const dateString = '{{businfo.dateArray}}';
+            const dateArray = dateString.split(',')
+
+            const disabledDates = dateArray.map(date => date.trim());
+            flatpickr('#preferredDate-{{_id}}', {
+                dateFormat: "Y-m-d",
+                minDate: "{{businfo.sdate}}",
+                maxDate: "{{businfo.edate}}",
+                disable: disabledDates
+
+            });
+        });
+        let one = null;
+        let two = null;
+        function choose1(obj) {
+            if (obj.checked) {
+                one = true
+            }
+            else {
+                one = false;
+            }
+            comon()
+        }
+        function choose2(obj) {
+            if (obj.checked) {
+                two = true
+            }
+            else {
+                two = false;
+            }
+            comon()
+        }
+        function comon() {
+            var sub = document.getElementById('sub')
+            if (one == true && two == true && dayerr == true) {
+                sub.style.display = ''
+            }
+            else {
+                sub.style.display = 'none'
+            }
+        }
+        function emdate() {
+            let currentdate = document.getElementById('preferredDate-{{_id}}').value;
+
+            let today = new Date();
+
+            // Convert to IST (Indian Standard Time)
+            let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+            let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+            let formattedToday = formatter.format(today);
+            if (currentdate > formattedToday) {
+                dayerr = true;
+                document.getElementById('errr').style.display = 'none'
+            }
+            else {
+                dayerr = false;
+                document.getElementById('errr').style.display = ''
+            }
+            comon()
+        }
+    </script>
+
+    <style>
+        .multiline-placeholder {
+            white-space: pre-line;
+        }
+
+        .inline {
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 800;
+            font-family: fantasy;
+        }
+
+        #reson {
+            height: 10vh;
+        }
+
+        #em {
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #emergencydiv {
+            opacity: 0;
+            /* Initially hide the form */
+            transform: rotateX(90deg) translateY(-100%);
+            /* Start with the form rolled up and off-screen */
+            animation: rollIn 2s ease-in-out forwards;
+        }
+
+        @keyframes rollIn {
+            0% {
+                opacity: 0;
+                transform: rotateX(90deg) translateY(-100%);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: rotateX(-20deg) translateY(10%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: rotateX(0deg) translateY(0);
+            }
+        }
+    </style>

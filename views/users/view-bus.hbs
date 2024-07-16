@@ -12,9 +12,10 @@
                         <th scope="col">Starting Date</th>
                         <th scope="col">Ending Date</th>
                         <th scope="col">Maximum Capacity</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Reg.no</th>
                         <th scope="col">Stops</th>
                         <th scope="col">Edit</th>
+                        <th scope="col">Emergency</th>
                     </tr>
                 </thead>
                 <tbody style="font-weight: 800;">
@@ -27,7 +28,7 @@
                         <td class="pt-5">{{this.sdate}}</td>
                         <td class="pt-5">{{this.edate}}</td>
                         <td class="pt-5">{{this.max}}</td>
-                        <td class="pt-5">{{this.price}}/-</td>
+                        <td class="pt-5">{{this.price}}</td>
                         <td class="pt-5">{{#each this.stops}}
                             {{#if this.name1}}{{this.name1}},{{/if}}
                             {{#if this.name2}}{{this.name2}},{{/if}}
@@ -46,12 +47,14 @@
                             {{else}}
                             <small>ⓘ Editing possible only after {{edate}}</small>
                             <style>
-                                small
-                                {
+                                small {
                                     font-weight: 800;
                                 }
                             </style>
                             {{/if}}
+                        </td>
+                        <td class="pt-4">
+                            <button href="" class="btn btn-outline-danger" onclick="toggleChatPopup('{{_id}}')">inform</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -64,6 +67,74 @@
             </h1>
             {{/if}}
         </div>
+        <!-- Chat popup -->
+        <div id="chatPopup" class="chat-popup text-center" style="border-radius: 20px;">
+            <span class="close" onclick="closeChatPopup()">&times;</span>
+            <h2><b class="text-danger"><i class="text-danger">Warning</i> ⚠</b></h2>
+            <div id="chatMessages" class="chat-messages">
+                <!-- Example chat messages -->
+                <div class="chat-message">
+                    <p style="font-weight: 800;"><i>"This option is reserved for dire need alone. Should you misuse it
+                            for
+                            unlawful deeds, consequences shall be your own. Should any troubles befall your clients, the
+                            weight
+                            of responsibility rests on your shoulders. 'Ticket Sure' shall bear no blame for the
+                            fallout."</i></p>
+                </div>
+            </div>
+
+            <button style="font-weight: 800;" class="submit-button" onclick="sendMessage(); return false;">I
+                Agree</button>
+
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay" onclick="closeChatPopup()"></div>
+
+        <script>
+            var ids = null;
+            function toggleChatPopup(id) {
+                ids = id;
+                var popup = document.getElementById("chatPopup");
+                var overlay = document.getElementById("overlay");
+                var button = document.querySelector(".chat-button");
+
+                if (popup.style.display === "block") {
+                    popup.style.display = "none";
+                    overlay.style.display = "none";
+                    button.classList.remove("clicked");
+                } else {
+                    popup.style.display = "block";
+                    overlay.style.display = "block";
+                    button.classList.add("clicked");
+                }
+            }
+
+            function closeChatPopup() {
+                var popup = document.getElementById("chatPopup");
+                var overlay = document.getElementById("overlay");
+                var button = document.querySelector(".chat-button");
+
+                popup.style.display = "none";
+                overlay.style.display = "none";
+                button.classList.remove("clicked");
+            }
+
+            function sendMessage() {
+                //alert(ids)
+                $.ajax({
+                    url: '/emergency',
+                    method: 'post',
+                    data: 
+                    {
+                        id:ids
+                    },
+                    success: (response) => {
+                        window.location.href = `http://localhost:3000/emergency?id=${response.id}`
+                    }
+                })
+            }
+        </script>
     </div>
 </div>
 
@@ -137,5 +208,124 @@
 
     .bounce {
         animation: bounce 2s infinite;
+    }
+</style>
+
+<style>
+    /* Styles for the chat button */
+    .chat-button {
+        position: fixed;
+        bottom: 25px;
+        right: 20px;
+        z-index: 1000;
+        /* Higher z-index to ensure it's above other content */
+        background-color: #151a1f;
+        /* Change color as needed */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        font-size: 36px;
+        /* Increased font size for larger icon */
+        cursor: pointer;
+        box-shadow: rgb(215, 123, 212) 0px 20px 30px -10px;
+        animation: bounce 1s infinite;
+        /* Add bounce animation */
+    }
+
+
+
+    /* Chat button icon when clicked */
+    .chat-button.clicked {
+        background-color: #007bff;
+        /* Change color when clicked */
+    }
+
+    /* Chat button icon when clicked */
+    .chat-button.clicked i.material-icons::before {
+        content: "message";
+        /* Change icon to message symbol when clicked */
+    }
+
+    /* Styles for the chat popup */
+    .chat-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        /* Higher z-index than overlay */
+        background-color: white;
+        border: 1px solid #ccc;
+        width: 500px;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Close button style */
+    .close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Styles for chat messages */
+    .chat-messages {
+        max-height: 200px;
+        /* Adjust as needed */
+        overflow-y: auto;
+    }
+
+    .chat-message {
+        margin-bottom: 10px;
+    }
+
+    /* Styles for the input box */
+    .chat-input {
+        width: calc(100% - 40px);
+        padding: 5px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    /* Styles for the submit button */
+    .submit-button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Overlay styles */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black */
+        backdrop-filter: blur(5px);
+        /* Blur effect */
+        z-index: 1000;
+        /* Same as chat button */
+        display: none;
+        /* Initially hidden */
+    }
+
+    /* Styles for user messages */
+    .user-message {
+        text-align: right;
+        /* Align user messages to the right */
     }
 </style>

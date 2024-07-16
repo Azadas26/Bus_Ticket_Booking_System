@@ -63,11 +63,10 @@
                                         value="{{businfo.busnumber}}" required>
                                 </div>
                                 <div class="form-group">
-                                     <p><b>Previous Starting Time <span class="p-2"
+                                    <p><b>Previous Starting Time <span class="p-2"
                                                 style="background-color: yellow;">{{businfo.stime}}</span></b></p>
                                     <label for="stime">Starting Time</label>
-                                    <input type="time" name="stime" class="form-control" 
-                                        required>
+                                    <input type="time" name="stime" class="form-control" required>
                                 </div>
                                 <div class="form-group">
 
@@ -101,13 +100,14 @@
                                         placeholder="40" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="price">Ticket Rate</label>
+                                    <label for="price">Reg.no</label>
                                     <input type="text" value="{{businfo.price}}" name="price" class="form-control"
-                                        placeholder="Rate" required>
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <p><b>Previous Stops And Prices</b></p>
                                     <p style="font-weight: 800;background-color: yellow;" class="p-2 text-center">
+                                       
                                         {{#each businfo.stops}}
                                         {{#if this.name1}}{{this.name1}},{{/if}}
                                         {{#if this.name2}}{{this.name2}},{{/if}}
@@ -121,17 +121,32 @@
                                         {{#if this.name10}}{{this.name10}},{{/if}}
                                         {{/each}}
                                         <br>
+                                         Price : -
                                         {{#each businfo.pri}}
-                                        {{#if this.pri1}}{{this.pri1}},{{/if}}
-                                        {{#if this.pri2}}{{this.pri2}},{{/if}}
-                                        {{#if this.pri3}}{{this.pri3}},{{/if}}
-                                        {{#if this.pri4}}{{this.pri4}},{{/if}}
-                                        {{#if this.pri5}}{{this.pri5}},{{/if}}
-                                        {{#if this.pri6}}{{this.pri6}},{{/if}}
-                                        {{#if this.pri7}}{{this.pri7}},{{/if}}
-                                        {{#if this.pri8}}{{this.pri8}},{{/if}}
-                                        {{#if this.pri9}}{{this.pri9}},{{/if}}
-                                        {{#if this.pri10}}{{this.pri10}},{{/if}}
+                                        {{#if this.pri1}}{{this.pri1}} ₹,{{/if}}
+                                        {{#if this.pri2}}{{this.pri2}} ₹,{{/if}}
+                                        {{#if this.pri3}}{{this.pri3}} ₹,{{/if}}
+                                        {{#if this.pri4}}{{this.pri4}} ₹,{{/if}}
+                                        {{#if this.pri5}}{{this.pri5}} ₹,{{/if}}
+                                        {{#if this.pri6}}{{this.pri6}} ₹,{{/if}}
+                                        {{#if this.pri7}}{{this.pri7}} ₹,{{/if}}
+                                        {{#if this.pri8}}{{this.pri8}} ₹,{{/if}}
+                                        {{#if this.pri9}}{{this.pri9}} ₹,{{/if}}
+                                        {{#if this.pri10}}{{this.pri10}} ₹,{{/if}}
+                                        {{/each}}
+                                        <br>
+                                         Dis : -
+                                        {{#each businfo.dis}}
+                                        {{#if this.dis1}}{{this.dis1}} km,{{/if}}
+                                        {{#if this.dis2}}{{this.dis2}} km,{{/if}}
+                                        {{#if this.dis3}}{{this.dis3}} km,{{/if}}
+                                        {{#if this.dis4}}{{this.dis4}} km,{{/if}}
+                                        {{#if this.dis5}}{{this.dis5}} km,{{/if}}
+                                        {{#if this.dis6}}{{this.dis6}} km,{{/if}}
+                                        {{#if this.dis7}}{{this.dis7}} km,{{/if}}
+                                        {{#if this.dis8}}{{this.dis8}} km,{{/if}}
+                                        {{#if this.dis9}}{{this.dis9}} km,{{/if}}
+                                        {{#if this.dis10}}{{this.dis10}} km,{{/if}}
                                         {{/each}}
                                     </p><br>
                                     <label for="numInputs" class="mt-2">Enter Number of Stops</label>
@@ -234,23 +249,33 @@
                     input.type = 'text';
                     input.className = 'stops input-box form-control';
                     input.name = 'name' + i;
+                    input.style.marginBottom = "90px"
                     container.appendChild(input);
 
                     // Add <br> tag after each input
                     container.appendChild(document.createElement('br'));
                 }
                 for (var i = 1; i <= numInputs - 1; i++) {
+                    var plabeld = document.createElement('label');
                     var plabelt = document.createElement('label');
+                    plabeld.textContent = "Distance " + i + " To " + (i + 1);
                     plabelt.textContent = " Price " + i + " To " + (i + 1);
+                    plabelt.className = 'mt-3';
+                    pandp.appendChild(plabeld);
 
 
-
+                    var pinputd = document.createElement('input');
+                    pinputd.type = 'text';
+                    pinputd.className = 'd input-box form-control ';
+                    pinputd.name = 'dis' + i;
+                    pandp.appendChild(pinputd);
                     pandp.appendChild(plabelt);
                     var pinputp = document.createElement('input');
                     pinputp.type = 'text';
                     pinputp.className = 'p input-box form-control';
                     pinputp.name = 'pri' + i;
                     pandp.appendChild(pinputp);
+
 
                     // Add <br> tag after each input
                     pandp.appendChild(document.createElement('br'));
