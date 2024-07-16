@@ -1,34 +1,25 @@
 <div class="container-fluid" id="logg">
     <div class="row">
-        <div class="col-md-12 text-center p-5">
-            <img id="video" src="/home/welcome to admin pannal (2).gif"
-                style="width: 80%; margin: 0 auto; display: block;" alt="" class="">
-            <img id="img" src="/home/welcome to admin pannal (1).png" style="width: 50%; margin: 0 auto; display: none;"
-                alt="" class="mt-5">
-            <img id="video2" src="/home/ts.gif" style="width: 100%; margin: 0 auto; display: block;" alt="" class="">
-            <img id="img2" src="/home/ts.png" style="width: 70%; margin: 0 auto; display: none;" alt="" class="mt-5">
-            <div>
-                <a href="/suser" target="_blank" class="btn btn-success mr-5"
-                    style="width: 21%;background-color: #4724E3;">CUSTOMER</a>
-                <a href="/" target="_blank" class="btn btn-success mr-5"
-                    style="width: 21%;background-color: #4724E3;">OWNERS</a>
-                <a href="/admin" target="_blank" class="btn btn-success mr-5"
-                    style="width: 21%;background-color: #4724E3;">ADMIN</a>
-                <a href="/checker" target="_blank" class="btn btn-success"
-                    style="width: 21%;background-color: #4724E3;">CHECKER</a>
-
-
+        <div class="col-12 text-center p-5 mt-4">
+            <img id="video" src="/home/welcome to admin pannal (2).gif" class="img-fluid d-block mx-auto" alt="">
+            <img id="img" src="/home/welcome to admin pannal (1).png" class="img-fluid d-none mt-5 mx-auto" alt="">
+            <img id="video2" src="/home/ts.gif" class="img-fluid d-block mx-auto" alt="">
+            <img id="img2" src="/home/ts.png" class="img-fluid d-none mt-5 mx-auto" alt="">
+            <div class="mt-4">
+                <a href="/suser" target="_blank" class="btn btn-success mr-3 mb-2" style="background-color: #4724E3;">CUSTOMER</a>
+                <a href="/" target="_blank" class="btn btn-success mr-0.5 mb-2" style="background-color: #4724E3;">OWNERS</a>
+                <a href="/admin" target="_blank" class="btn btn-success mr-3 mb-2" style="background-color: #4724E3;">ADMIN</a>
+                <a href="/checker" target="_blank" class="btn btn-success mb-2" style="background-color: #4724E3;">CHECKER</a>
             </div>
         </div>
     </div>
-
 </div>
 
 <style>
     a {
         font-weight: 800;
         font-family: fantasy;
-
+        width: 110px;
     }
 
     #logg {
@@ -44,17 +35,18 @@
 </style>
 
 <script>
-    var video = document.getElementById('video')
-    var img = document.getElementById('img')
-    var video2 = document.getElementById('video2')
-    var img2 = document.getElementById('img2')
-    setTimeout(() => {
-        video.style.display = "none"
-        img.style.display = ""
+    var video = document.getElementById('video');
+    var img = document.getElementById('img');
+    var video2 = document.getElementById('video2');
+    var img2 = document.getElementById('img2');
 
-    }, 12000)
     setTimeout(() => {
-        video2.style.display = "none"
-        img2.style.display = ""
-    }, 12000)
+        video.style.display = "none";
+        img.style.display = "block";
+    }, 12000);
+
+    setTimeout(() => {
+        video2.style.display = "none";
+        img2.style.display = "block";
+    }, 12000);
 </script>
