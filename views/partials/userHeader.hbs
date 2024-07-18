@@ -1,35 +1,61 @@
-<nav class="navbar navbar-expand-lg" style="background: transparent; position: fixed; z-index: 2; width: 100%;">
+<nav id="puserhd" class="navbar navbar-expand-lg"
+    style="background: transparent; position: fixed; z-index: 2; width: 100%;">
+    <a class="nav-link text-dark nav-hover-effect mr-4 " href="/"
+        style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+        HOME
+        <span class="sr-only">(current)</span>
+    </a>
+    <button class="navbar-toggler mr-3" style="border: solid; color: #ffff;" onclick="colorchange()" type="button"
+        data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="pt-2">MORE</span>
+    </button>
+    <script>
+        var change = null;
+        function colorchange() {
+            if (change == true) {
+                document.getElementById('puserhd').style.backgroundColor = ""
+                change = null;
+            }
+            else {
+                document.getElementById('puserhd').style.backgroundColor = "white"
+                console.log(change)
+                change = true;
+            }
+
+        }
+    </script>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link text-dark nav-hover-effect mr-4 " href="/" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                    HOME
-                    <span class="sr-only">(current)</span>
-                </a>
-            </li>
             <li class="nav-item ">
-                <a class="nav-link text-dark nav-hover-effect mr-4" href="/proform" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                     APPLY
-                </a>
-            </li>
-             <li class="nav-item">
-                <a class="nav-link text-dark nav-hover-effect mr-4" href="/addchecker" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                     CHECKER
-                </a>
-            </li>
-             <li class="nav-item">
-                <a class="nav-link text-dark nav-hover-effect mr-4" href="/viewbuss" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                     VIEW
+                <a class="nav-link text-dark nav-hover-effect mr-4" href="/proform"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    APPLY
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark nav-hover-effect" href="/about" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                     ABOUT
+                <a class="nav-link text-dark nav-hover-effect mr-4" href="/addchecker"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    CHECKER
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark nav-hover-effect mr-4" href="/viewbuss"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    VIEW
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark nav-hover-effect" href="/about"
+                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+                    ABOUT
                 </a>
             </li>
         </ul>
         <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); background: transparent; font-size: 20px;">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"
+                style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); background: transparent; font-size: 20px;">
                 {{#if puser}}
                 {{puser.name}}
                 {{else}}
@@ -57,16 +83,20 @@
     }
 
     .nav-hover-effect:hover {
-        color: rgba(0, 0, 0, 0.8); /* Change text color on hover */
+        color: rgba(0, 0, 0, 0.8);
+        /* Change text color on hover */
     }
 
     .nav-hover-effect:hover::before {
         content: "";
         position: absolute;
-        width: calc(100% - 20px); /* Adjust the width of the underline */
+        width: calc(100% - 20px);
+        /* Adjust the width of the underline */
         height: 3px;
         bottom: -2px;
-        left: 10px; /* Adjust the left spacing */
-        background-color: black; /* Faded version of text shadow color */
+        left: 10px;
+        /* Adjust the left spacing */
+        background-color: black;
+        /* Faded version of text shadow color */
     }
 </style>

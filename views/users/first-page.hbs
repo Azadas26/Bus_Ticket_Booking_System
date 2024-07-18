@@ -1,37 +1,34 @@
 <div class="container-fluid" id="first">
     <div class="row" style="height: 100%;">
-        <div class="col-md-6 p-5 img-fluid" style="height: 100vh;" id="blank">
-            <img class="mt-5" id="background-image" src="/background/Now! (7).png" alt="" style="height: 90%;display: none;">
-            <video class="mt-5" id="background-video" style="height: 90%;" autoplay loop muted>
+        <div class="col-md-6 pr-5 img-fluid" style="height: 100vh;" id="blank">
+            <img class="mt-5 img-fluid" id="background-image" src="/background/Now! (7).png" alt="" style="display: none;width: 88%;">
+            <video class="mt-5 img-fluid" id="background-video" style="width: 88%;" autoplay loop muted>
                 <source src="/background/Now! (4).mp4" type="video/mp4">
-
             </video>
-
         </div>
-        <div id="bus" class="col-md-6" style="height: 100%;">
+        <div id="bus" class="col-md-6" style="height: 100vh;">
         </div>
     </div>
 </div>
 
 <script>
-  var image = document.getElementById("background-image");
-  var video = document.getElementById("background-video");
-  setTimeout(()=>
-  {
-    video.style.display = 'none'
-    image.style.display = ''
-  },5000)
+    var image = document.getElementById("background-image");
+    var video = document.getElementById("background-video");
+    setTimeout(() => {
+        video.style.display = 'none';
+        image.style.display = 'block';
+    }, 5000);
 </script>
 
 <style>
     #blank {
-
+        display: flex;
         align-items: center;
         justify-content: center;
     }
 
     #first {
-        background-image: url('/images/wave\ bg.png');
+        background-image: url('/images/wave bg.png');
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -43,7 +40,7 @@
         background-image: url('/images/busssss.png');
         background-size: 90%;
         background-repeat: no-repeat;
-        background-position: 50% center;
+        background-position: center;
         height: 100%;
         animation: slideInFromLeft 5s ease-out;
     }
@@ -53,10 +50,36 @@
             opacity: 0;
             transform: translateX(-50%);
         }
-
         100% {
             opacity: 1;
             transform: translateX(0);
+        }
+    }
+
+    /* Media queries for smaller screens */
+    @media (max-width: 768px) {
+        #first {
+            height: auto;
+        }
+        #bus {
+            background-size: cover;
+            background-position: center;
+        }
+        #blank, #bus {
+            height: auto;
+        }
+        video, img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .pt-5 {
+            padding-top: 1rem !important;
+        }
+        .pr-5 {
+            padding-right: 1rem !important;
         }
     }
 </style>

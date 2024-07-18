@@ -64,19 +64,48 @@ router.get('/viewpuser', varifyAdminLogin, (req, res) => {
   //console.log(":hello");
   admindb.View_Primary_Users().then((users) => {
     console.log(users);
-    res.render('./admin/view-puser', { users, adminhd: true, admin: true})
+    res.render('./admin/view-puser', { users, adminhd: true, admin: true, length: users.length })
   })
 })
 router.get('/viewsuser', varifyAdminLogin, (req, res) => {
-  
+
   admindb.View_Secondary_Users().then((users) => {
     console.log(users);
-    res.render('./admin/view-suser', { users, adminhd: true, admin: true})
+    res.render('./admin/view-suser', { users, adminhd: true, admin: true })
   })
 })
 router.get('/viewbus', varifyAdminLogin, (req, res) => {
   admindb.View_all_Bus_DEtails().then((buss) => {
-    res.render('./admin/view-bus', { buss, adminhd: true, admin: true})
+    res.render('./admin/view-bus', { buss, adminhd: true, admin: true })
+  })
+})
+router.get('/inactivate', varifyAdminLogin, (req, res) => {
+  console.log(req.query.id);
+  admindb.DEsable_inactivate_Option(req.query.id).then(() => {
+    admindb.WenInactive_also_desable_Isaccept(req.query.id).then(() => {
+
+      res.redirect('/admin/viewpuser')
+    })
+  })
+})
+router.get('/activate', varifyAdminLogin, (req, res) => {
+  console.log("active", req.query.id);
+  admindb.Enable_inactivate_Option(req.query.id).then(() => {
+    admindb.Wenactive_also_enable_Isaccept(req.query.id).then(() => {
+
+      res.redirect('/admin/viewpuser')
+    })
+  })
+})
+router.post('/emergencybusinfo', (req, res) => {
+  admindb.Get_Owner_bus_info_Basses_Own_Emergency(req.body.id).then((info) => {
+    console.log(info);
+    info.map((i) => {
+      if (!i.dateArray) {
+        i.dateArray =[]
+      }
+    })
+    res.json(info)
   })
 })
 

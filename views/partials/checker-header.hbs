@@ -1,13 +1,31 @@
-<nav class="navbar navbar-expand-lg" style="background: transparent; position: fixed; z-index: 2; width: 100%;">
+<nav id="checkerhd" class="navbar navbar-expand-lg" style="background: transparent; position: fixed; z-index: 2; width: 100%;">
+    <a class="nav-link text-dark nav-hover-effect mr-4 " href="/checker"
+        style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
+        Home
+        <span class="sr-only">(current)</span>
+    </a>
+    <button class="navbar-toggler mr-3" style="border: solid; color: #000000;" onclick="colorchange()" type="button"
+        data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="pt-2">MORE</span>
+    </button>
+    <script>
+        var change = null;
+        function colorchange() {
+            if (change == true) {
+                document.getElementById('checkerhd').style.backgroundColor = ""
+                change = null;
+            }
+            else {
+                document.getElementById('checkerhd').style.backgroundColor = "white"
+                console.log(change)
+                change = true;
+            }
+
+        }
+    </script>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link text-dark nav-hover-effect mr-4 " href="/checker"
-                    style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">
-                    Home
-                    <span class="sr-only">(current)</span>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link text-dark nav-hover-effect" href="/checker/bushistory"
                     style="text-align: center; font-family: sans-serif; font-weight: 800; text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8); font-size: 20px;">

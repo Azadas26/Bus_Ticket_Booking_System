@@ -28,6 +28,8 @@ router.get('/signup', (req, res) => {
 })
 router.post('/signup', (req, res) => {
   console.log(req.body);
+  req.body.inactivate = true;
+  req.body.emergencycount = 0;
   puserdb.Do_Primary_user_signup(req.body).then((id) => {
     res.redirect('/login')
   })
@@ -202,7 +204,7 @@ router.post('/editbus', verifyPrimaryUser, async (req, res) => {
 router.post('/emergency', (req, res) => {
   res.json({ id: req.body.id })
 })
-router.get('/emergency', (req, res) => {
+router.get('/emergency',verifyPrimaryUser, (req, res) => {
   puserdb.Redrive_Bus_informtion_For_Emergency(req.query.id).then((businfo) => {
     console.log(businfo);
     res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo })
@@ -212,7 +214,9 @@ router.post('/emergencyform', verifyPrimaryUser, (req, res) => {
   puserdb.Emergency_Object_Information_SetUp(req.query.id, req.body).then(() => {
     puserdb.Redrive_Bus_informtion_For_Emergency(req.query.id).then((businfo) => {
       puserdb.Update_Emergence_Date_TO_Notuse(req.query.id, req.body.date).then(() => {
-        res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo, succ: true })
+        puserdb.Setup_To_incriment_Emergency_count(req.query.uid).then(() => {
+          res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo, succ: true })
+        })
       })
     })
   })

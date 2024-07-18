@@ -86,25 +86,22 @@ module.exports =
         })
     },
     View_Primary_Users: () => {
-        return new Promise(async(resolve,reject)=>
-        {
-            var users =await db.get().collection(consts.userdb).find().toArray()
+        return new Promise(async (resolve, reject) => {
+            var users = await db.get().collection(consts.userdb).find().toArray()
             console.log(users);
             resolve(users)
         })
     },
     View_Secondary_Users: () => {
-        return new Promise(async(resolve,reject)=>
-        {
-            var users =await db.get().collection(consts.suserdb).find().toArray()
+        return new Promise(async (resolve, reject) => {
+            var users = await db.get().collection(consts.suserdb).find().toArray()
             console.log(users);
             resolve(users)
         })
     },
     View_all_Bus_DEtails: () => {
-        return new Promise(async(resolve,reject)=>
-        {
-            var buss =await db.get().collection(consts.busdetails).aggregate([
+        return new Promise(async (resolve, reject) => {
+            var buss = await db.get().collection(consts.busdetails).aggregate([
                 {
                     $lookup:
                     {
@@ -144,6 +141,59 @@ module.exports =
             ]).toArray()
             //console.log(buss);
             resolve(buss)
+        })
+    }, DEsable_inactivate_Option: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.userdb).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        inactivate: false
+                    }
+                }).then(() => {
+                    resolve()
+                })
+        })
+    }, Enable_inactivate_Option: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.userdb).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        inactivate: true
+                    }
+                }).then(() => {
+                    resolve()
+                })
+        })
+    },
+    WenInactive_also_desable_Isaccept: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busdetails).updateMany({ userId: objectId(id) },
+                {
+                    $set:
+                    {
+                        isaccept: false
+                    }
+                }).then(() => resolve())
+        })
+    },
+    Wenactive_also_enable_Isaccept: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busdetails).updateMany({ userId: objectId(id) },
+                {
+                    $set:
+                    {
+                        isaccept: true
+                    }
+                }).then(() => resolve())
+        })
+    },
+    Get_Owner_bus_info_Basses_Own_Emergency: (uid) => {
+        return new Promise(async(resolve,reject)=>
+        {
+            var info = await db.get().collection(consts.busdetails).find({userId:objectId(uid)}).toArray();
+            resolve(info)
         })
     }
 }

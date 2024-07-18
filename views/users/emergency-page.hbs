@@ -41,7 +41,7 @@
                         }
                     </style>
 
-                    <form action="/emergencyform?id={{businfo._id}}" method="post" id="emergencyform"
+                    <form action="/emergencyform?id={{businfo._id}}&uid={{businfo.userId}}" method="post" id="emergencyform"
                         class="pl-5 pb-5 pr-5 pt-3" style="width: 100%;">
                         <div class="pl-5 pr-5">
                             {{#if succ}}

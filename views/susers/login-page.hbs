@@ -3,9 +3,10 @@
         <div class="col-md-12" id="signuppage">
             <div class="form-container p-5" style="width: auto;box-shadow: #3e54e4 0px 5px 15px;">
                 <div style="width: 100%;" class="text-center">
-                    <h1 class="text-light" style=" text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); "><b>Switch To Your Account</b></h1>
+                    <h1 class="text-light" style=" text-shadow: 2px 2px 4px rgba(0, 42, 255, 0.8); "><b>Switch To Your
+                            Account</b></h1>
                 </div>
-                <form action="/suser/login" method="post" class="text-light"> 
+                <form action="/suser/login" method="post" class="text-light">
                     {{#if logerr}}
                     <h5 class="text-danger"><i>Incorrect Username or Password</i></h5>
                     {{/if}}
@@ -13,24 +14,64 @@
                         <label for="exampleInputEmail1">Email address</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1"
                             aria-describedby="emailHelp" placeholder="Enter email">
-                        <small style="font-weight: 800;" id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small style="font-weight: 800;" id="emailHelp" class="form-text text-muted">We'll never share
+                            your email with anyone else.</small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group password-container">
                         <label for="exampleInputPassword1">Password</label>
-                        <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                        <input name="password" type="password" class="form-control" id="password"
                             placeholder="Password">
+                        <span id="togglePassword" class="eye-icon">👁️</span>
                     </div>
-                     <div class="form-group" style="text-align: right;">
-                    <a href="/suser/signup" class="" style="cursor: pointer;"><b>Create Your Account...</b></a>
-                </div>
-                    <button style="background-color: #3e54e4; width: 100%;font-weight: 800;" type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <div class="form-group" style="text-align: right;">
+                        <a href="/suser/signup" class="" style="cursor: pointer;"><b>Create Your Account...</b></a>
+                    </div>
+                    <button style="background-color: #3e54e4; width: 100%;font-weight: 800;" type="submit"
+                        class="btn btn-primary mt-3">Submit</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+</script>
 
 <style>
+    label
+    {
+        font-weight: 800;
+    }
+    input
+    {
+        font-weight: 800;
+    }
+    .password-container {
+        position: relative;
+       
+    }
+
+    #password {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .eye-icon {
+        position: absolute;
+        right: 10px;
+        top: 67%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
     #signuppage {
         height: 100vh;
         display: flex;
@@ -40,8 +81,10 @@
 
     .form-container {
         width: 100%;
-        max-width: 500px; /* Adjust max-width as needed */
-        animation: fadeInLeft 2s ease-out; /* Animation applied */
+        max-width: 500px;
+        /* Adjust max-width as needed */
+        animation: fadeInLeft 2s ease-out;
+        /* Animation applied */
     }
 
     @keyframes fadeInLeft {
@@ -49,6 +92,7 @@
             opacity: 0;
             transform: translateX(-20px);
         }
+
         100% {
             opacity: 1;
             transform: translateX(0);

@@ -1,28 +1,23 @@
-<div class="container-fluid" id="admin">
+<div class="container-fluid" id="admin" style="border-color: #ffff;">
     <div class="row">
-        <div class="col-md-12">
-            <img id="adimg" src="/temp/welcome to admin pannal.png" style="width: 810px;display: none;" alt="" class="mt-5">
-            <video class="mt-5" id="advideo" style="height: 810px;border: none;" autoplay loop muted>
-                <source src="/temp/welcome to admin pannal.mp4" type="video/mp4">
-
+        <div class="col-md-12 mt-5">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <img id="adimg" src="/temp/welcome to admin pannal.png" style="max-width: 100%; display: none;" alt="" class="mt-5">
+                <video class="mt-5" id="advideo" style="max-width: 100%; height: auto; border: none;" autoplay loop muted>
+                    <source src="/temp/welcome to admin pannal.mp4" type="video/mp4">
+                </video>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-     setTimeout(() => {
-                    var img = document.getElementById('adimg');
-                    var video = document.getElementById('advideo');
-                    video.style.display = 'none';
-                    img.style.display = ''
+    setTimeout(() => {
+        var img = document.getElementById('adimg');
+        var video = document.getElementById('advideo');
+        video.style.display = 'none';
+        img.style.display = '';
 
-                }, 1000)
+    }, 1000);
 </script>
-<style>
-    #admin {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
+

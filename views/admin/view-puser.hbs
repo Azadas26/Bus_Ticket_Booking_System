@@ -9,17 +9,30 @@
                         <th scope="col">Name</th>
                         <th scope="col">Mail Addres</th>
                         <th scope="col">Phone Number</th>
+                        <th scope="col">Emergency Count</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Action</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     {{#each users}}
 
-                    <tr>
+                    <tr id="row{{@index}}" onclick="moredetails({{@index}},'{{_id}}')">
                         <td>{{@index}}</td>
                         <td>{{this.name}}</td>
                         <td>{{this.email}}</td>
                         <td>{{this.ph}}</td>
+                        <td id="emcount{{@index}}" valu>{{this.emergencycount}}</td>
+                        <td id="emlogo{{@index}}"></td>
+                        <td>
+                            {{#if inactivate}}
+                            <a href="/admin/inactivate?id={{_id}}" class="btn btn-outline-danger"
+                                onclick="return confirm('Are You Sure To Desable This User')">Inactivate</a>
+                            {{else}}
+                            <a href="/admin/activate?id={{_id}}" class="btn btn-outline-success">activate</a>
+                            {{/if}}
+                        </td>
                     </tr>
 
                     {{/each}}
@@ -31,8 +44,121 @@
         </div>
     </div>
 </div>
+<div class="container-fluid" id="em2">
+    <div id="busInfoContainer" class="row mt-3">
+
+    </div>
+</div>
+<script>
+    function moredetails(id, objid) {
+        var rows = document.getElementsByTagName('tr')
+        for (let i = 0; i < rows.length; i++) {
+            if (i % 2 == 0) {
+                rows[i].style.backgroundColor = '#e6e9f7';
+            }
+            else {
+                rows[i].style.backgroundColor = 'white';
+            }
+
+        }
+        document.getElementById(`row${id}`).style.backgroundColor = "#a1aff2";
+        $.ajax({
+            url: '/admin/emergencybusinfo',
+            method: 'post',
+            data:
+            {
+                id: objid
+            },
+            success: (response) => {
+                //console.log(response);
+                const busInfoContainer = document.getElementById('busInfoContainer');
+                busInfoContainer.innerHTML = '';
+
+                response.forEach(bus => {
+                    const busElement = document.createElement('div');
+                    busElement.classList.add('col-md-3', 'm-auto', 'pl-3', 'pr-3', 'pt-5', 'pb-4', 'text-center');
+
+                    const stopNames = bus.stops.map(stop => {
+                        return [
+                            stop.name1,
+                            stop.name2,
+                            stop.name3,
+                            stop.name4,
+                            stop.name5,
+                            stop.name6,
+                            stop.name7,
+                            stop.name8,
+                            stop.name9,
+                            stop.name10
+                        ].filter(name => name).join(', ');
+                    }).join(', ');
+
+
+                    busElement.innerHTML = `<h2><b>${bus.bname}</b></h2>
+                <p class="mt-3"><strong>Bus Number:</strong> ${bus.busnumber}</p>
+                <p><strong>Starting Time:</strong> ${bus.stime}</p>
+                <p><strong>Starting Date:</strong> ${bus.sdate}</p>
+                <p><strong>Ending Date:</strong> ${bus.edate}</p>
+                <p><strong>Maximum Capacity:</strong> ${bus.max}</p>
+                <p><strong>Reg.no:</strong> ${bus.price}</p>
+                <p><strong>Emergency Count:</strong> ${bus.dateArray.length}</p>
+                 <p><strong>Emergency Dates:</strong> ${bus.dateArray.join(', ')}</p>
+                 <p><strong>Stops:</strong> ${stopNames}</p>`;
+
+                    busInfoContainer.appendChild(busElement);
+
+                });
+
+            }
+        })
+    }
+
+
+
+    var users = '{{length}}'
+    for (i = 0; i < parseInt(users); i++) {
+        if (parseInt(document.getElementById(`emcount${i}`).textContent) >= 50) {
+            document.getElementById(`emlogo${i}`).innerHTML = "☠︎︎"
+            document.getElementById(`emlogo${i}`).style.color = "red"
+
+            document.getElementById(`emlogo${i}`).style.fontSize = "25px"
+        }
+        else if (parseInt(document.getElementById(`emcount${i}`).textContent) >= 25) {
+            document.getElementById(`emlogo${i}`).innerHTML = "⚠"
+            document.getElementById(`emlogo${i}`).style.color = "chocolate"
+            document.getElementById(`emlogo${i}`).style.fontSize = "25px"
+        }
+        else {
+            document.getElementById(`emlogo${i}`).innerHTML = "★"
+            document.getElementById(`emlogo${i}`).style.color = "green"
+            document.getElementById(`emlogo${i}`).style.fontSize = "25px"
+        }
+    }
+</script>
 
 <style>
+    a:hover
+    {
+        transition: 0.5s ease-in-out;
+        font-size: 20px;
+    }
+    .busInfoContainer {
+        display: flex;
+        flex-wrap: wrap;
+        /* Allows wrapping to the next line if there are too many items */
+        gap: 20px;
+        /* Adds space between each bus-info div */
+    }
+
+    .col-md-3 {
+        flex: 1 0 200px;
+        /* Flex-grow, flex-shrink, and flex-basis values */
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 25% 10%;
+        box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;
+    }
+
     /* Style for the table */
     .table {
         background-color: #ffffff;

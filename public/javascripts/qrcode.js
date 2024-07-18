@@ -13,7 +13,7 @@ module.exports =
 
             // Data to be encoded in the QR code
             let local =  'http://localhost:3000'
-            let ngrock = 'https://ba38-103-149-158-207.ngrok-free.app'
+            let ngrock = 'https://925b-103-149-158-207.ngrok-free.app'
             const data = `${local}/checker/busticket?id=${Id}`; // Replace with your own data
 
             // Options for generating the QR code

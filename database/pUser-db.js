@@ -18,7 +18,7 @@ module.exports =
     },
     Do_Primary_User_Login: (info) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.userdb).findOne({ email: info.email }).then((data) => {
+            db.get().collection(consts.userdb).findOne({ email: info.email, inactivate: true }).then((data) => {
                 if (data) {
                     bcrypt.compare(info.password, data.password).then((iscoorect) => {
                         if (iscoorect) {
@@ -187,6 +187,17 @@ module.exports =
                         }).then(() => resolve())
                 }
             })
+        })
+    },
+    Setup_To_incriment_Emergency_count: (userid) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.userdb).updateOne({ _id: objectId(userid) },
+                {
+                    $inc: { emergencycount: 1 }
+                }).then(()=>
+                {
+                    resolve()
+                })
         })
     }
 }

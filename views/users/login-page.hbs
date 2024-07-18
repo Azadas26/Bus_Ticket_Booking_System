@@ -17,22 +17,62 @@
                     <input name="email" type="email" class="form-control" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="Email" required>
                 </div>
-                <div class="form-group">
-                    <label class="" for="exampleInputPassword1">Password</label>
-                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
-                        placeholder="Password" required>
+                <div class="form-group password-container">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input name="password" type="password" class="form-control" id="password" placeholder="Password">
+                    <span id="togglePassword" class="eye-icon">👁️</span>
                 </div>
                 <div class="form-group" style="text-align: right;">
                     <a href="/signup" class="" style="cursor: pointer;"><b>Create Your Account...</b></a>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;background-color: rgba(38, 28, 180, 0.92);" class="btn text-light">Submit</button>
+                <button type="submit"
+                    style="width: 100%; border-radius: 12px;background-color: rgba(38, 28, 180, 0.92);"
+                    class="btn text-light">Submit</button>
             </form>
         </div>
     </div>
 </div>
 
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+</script>
+
 {{#if logerr}}
 <style>
+    label {
+        font-weight: 800;
+    }
+
+    input {
+        font-weight: 800;
+    }
+
+    .password-container {
+        position: relative;
+
+    }
+
+    #password {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .eye-icon {
+        position: absolute;
+        right: 10px;
+        top: 67%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
     #log {
         background-image: url();
         background-attachment: fixed;
@@ -47,6 +87,33 @@
 </style>
 {{else}}
 <style>
+    label {
+        font-weight: 800;
+    }
+
+    input {
+        font-weight: 800;
+    }
+
+    .password-container {
+        position: relative;
+
+    }
+
+    #password {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .eye-icon {
+        position: absolute;
+        right: 10px;
+        top: 67%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
     #log {
         background-image: url();
         background-attachment: fixed;
