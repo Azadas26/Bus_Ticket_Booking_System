@@ -53,7 +53,7 @@
             </li>
         </ul>
         <div class="shake-icon mr-4">
-            <a href="/notification" class="icon-button" style="text-decoration: none;color: black;">
+            <a href="/notification#end" class="icon-button" style="text-decoration: none;color: black;">
                 <span class="material-icons">notifications</span>
             </a>
         </div>
@@ -81,9 +81,16 @@
 </nav>
 
 {{#if notfy}}
-<audio autoplay>
-    <source src="/sound/iphone_notification.mp3" type="audio/mpeg">
+<audio autoplay id="auto">
+    <source id="audioSource" src="/sound/iphone_notification.mp3" type="audio/mpeg">
 </audio>
+<script>
+    setInterval(() => {
+        document.getElementById('audioSource').src = '/sound/iphone_notification.mp3';
+        document.getElementById('auto').load();
+    }, 5000);
+</script>
+
 {{/if}}
 
 {{#if notfy}}

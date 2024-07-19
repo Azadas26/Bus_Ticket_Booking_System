@@ -1,0 +1,295 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+    /* Styles for the chat button */
+    .chat-button {
+        position: fixed;
+        bottom: 25px;
+        right: 20px;
+        z-index: 1000;
+        /* Higher z-index to ensure it's above other content */
+        background-color: #151a1f;
+        /* Change color as needed */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        font-size: 36px;
+        /* Increased font size for larger icon */
+        cursor: pointer;
+        box-shadow: rgb(31, 53, 173) 0px 20px 30px -10px;
+
+        /* Add bounce animation */
+    }
+
+
+
+    /* Chat button icon when clicked */
+    .chat-button.clicked {
+        background-color: #007bff;
+        /* Change color when clicked */
+    }
+
+    /* Chat button icon when clicked */
+    .chat-button.clicked i.material-icons::before {
+        content: "message";
+        /* Change icon to message symbol when clicked */
+    }
+
+    /* Styles for the chat popup */
+    .chat-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        /* Higher z-index than overlay */
+        background-color: white;
+        border: 1px solid #ccc;
+        width: 60%;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    }
+
+    /* Close button style */
+    .close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Styles for chat messages */
+    .chat-messages {
+        height: 45vh;
+        /* Adjust as needed */
+        overflow-y: scroll;
+    }
+
+    .chat-message {
+        margin-bottom: 10px;
+    }
+
+    /* Styles for the input box */
+    .chat-input {
+        width: calc(100% - 40px);
+        padding: 5px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    /* Styles for the submit button */
+    .submit-button {
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Overlay styles */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black */
+        backdrop-filter: blur(5px);
+        /* Blur effect */
+        z-index: 1000;
+        /* Same as chat button */
+        display: none;
+        /* Initially hidden */
+    }
+
+    /* Styles for user messages */
+    .user-message {
+        text-align: right;
+        /* Align user messages to the right */
+    }
+
+    .left,
+    #firstmessageleft {
+        text-align: left;
+        background-color: #c2d0f5;
+        padding: 15px;
+        margin: 8px;
+        border-radius: 30px 30px 30px 0;
+    }
+
+    .right {
+        text-align: right;
+        background-color: #f0e6e7;
+        padding: 15px;
+        margin: 8px;
+        border-radius: 30px 30px 0 30px;
+    }
+</style>
+
+
+<!-- Chat button -->
+<button class="chat-button p-1 m-2" onclick="toggleChatPopup()" id="ctbtn"><i class="material-icons">forum</i></button>
+
+<!-- Chat popup -->
+<div id="chatPopup" class="chat-popup" style="border-radius: 20px;height: 60vh;">
+    <span class="close" onclick="closeChatPopup()">&times;</span>
+    <h2 style="text-align: center;font-weight: 800;"><i>CHAT WITH ADMIN</i></h2>
+    <div id="chatMessages" class="chat-messages">
+        <!-- Example chat messages -->
+        <div class="chat-message">
+            <p id="firstmessageleft" style="text-align: left;">We are here to resolve any doubts and to maintain a
+                positive relationship with Ticket Sure.</p>
+            <p id="firstmessageleft" style="text-align: left;">Hello, how can I help you?</p>
+        </div>
+    </div>
+    <form id="chatForm" onsubmit="sendMessage(); return false;">
+        <input name="chat" type="text" id="chatInput" class="chat-input pl-3" placeholder="Type your message..."
+            style="height: 39px;width: 94.7%;border-radius: 12px;font-weight: 800;" />
+        <button type="submit" class="submit-button" style="border-radius: 25% 10%;background-color: #05056b;">➤</button>
+    </form>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="closeChatPopup()"></div>
+
+{{#if puser}}
+<script>
+    function toggleChatPopup() {
+
+        var popup = document.getElementById("chatPopup");
+        var overlay = document.getElementById("overlay");
+        var button = document.querySelector(".chat-button");
+
+        if (popup.style.display === "block") {
+            console.log("hiii")
+            popup.style.display = "none";
+            overlay.style.display = "none";
+            button.classList.remove("clicked");
+        } else {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+            button.classList.add("clicked");
+            $.ajax({
+                url: '/adminchatview',
+                method: 'get',
+                success: (response) => {
+                    var chatContainer = document.getElementById('chatMessages');
+                    response.replay.message.forEach(i => {
+
+                        var messageElement = document.createElement('div');
+                        messageElement.className = 'message';
+
+                        if (i.fromadmin) {
+                            messageElement.classList.add('left');
+                            messageElement.innerHTML = i.chat;
+                        } else {
+                            messageElement.classList.add('right');
+                            messageElement.innerHTML = i.chat;
+                        }
+
+                        chatContainer.appendChild(messageElement);
+                    })
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            })
+
+        }
+    }
+
+    function closeChatPopup() {
+
+        var popup = document.getElementById("chatPopup");
+        var overlay = document.getElementById("overlay");
+        var button = document.querySelector(".chat-button");
+
+        popup.style.display = "none";
+        overlay.style.display = "none";
+        button.classList.remove("clicked");
+        setTimeout(() => {
+            location.reload()
+        }, 1500)
+    }
+
+    function sendMessage() {
+        var message = document.getElementById("chatInput").value.trim();
+        if (message !== "") {
+
+            $.ajax({
+                url: '/adminchat',
+                method: 'post',
+                data: { chat: message },
+                success: (response) => {
+                    console.log(response);
+                    if (response.status) {
+                        console.log(response.status)
+                        document.getElementById("chatPopup").style.display = "none";
+                        document.getElementById("chatInput").value = "";
+                        toggleChatPopup()
+                    }
+                }
+            })
+        }
+    }
+    $.ajax({
+        url: '/isadminmesagearraived',
+        method: 'get',
+        success: (response) => {
+            console.log(response);
+            if (response.status) {
+                startBounceAnimation(ctbtn);
+            } else {
+                stopBounceAnimation(ctbtn);
+            }
+        }
+    })
+
+    function startBounceAnimation(element) {
+        element.animate([
+            { transform: 'translateY(0)' },
+            { transform: 'translateY(-30px)' },
+            { transform: 'translateY(0)' }
+        ], {
+            duration: 1000,
+            iterations: Infinity
+        });
+    }
+
+    function stopBounceAnimation(element) {
+        element.getAnimations().forEach(animation => animation.cancel());
+    }
+</script>
+{{else}}
+<script>
+    function toggleChatPopup() {
+        var url = window.location.href
+        window.location.href = `${url}login`
+    }
+
+</script>
+{{/if}}
+
+
+{{#if puser}}
+<style id="bounce">
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-30px);
+        }
+    }
+</style>
+{{/if}}

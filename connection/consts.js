@@ -6,7 +6,8 @@ module.exports=
     checkerbase : "CheckerBus",
     busorder : "BusOrder",
     adminbase : "AdminBase",
-    messageadminandowner:"Message_Admin_And_Owner"
+    messageadminandowner:"Message_Admin_And_Owner",
+    chatwithadmin:"ChatWithAdmin"
 }
 
     

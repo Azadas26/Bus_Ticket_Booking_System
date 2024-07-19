@@ -201,9 +201,9 @@ module.exports =
     },
     Check_wheteher_Any_Notification_Arrived: (userid) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.messageadminandowner).findOne({ ownerid: objectId(userid),isnotview:true }).then((resc) => {
+            db.get().collection(consts.messageadminandowner).findOne({ ownerid: objectId(userid), isnotview: true }).then((resc) => {
                 resolve(resc)
-                console.log(resc,"qqq");
+                console.log(resc, "qqq");
             })
         })
     },
@@ -213,9 +213,97 @@ module.exports =
                 {
                     $set:
                     {
-                        isnotview : false
+                        isnotview: false
                     }
-                }).then(()=>resolve())
+                }).then(() => resolve())
+        })
+    },
+    Get_all_notification_To_Owner: (userid) => {
+        return new Promise(async (resolve, reject) => {
+            var nofy = await db.get().collection(consts.messageadminandowner).aggregate([
+                {
+                    $match: { ownerid: objectId(userid) }
+                },
+                {
+                    $lookup:
+                    {
+                        from: consts.busdetails,
+                        localField: "busid",
+                        foreignField: "_id",
+                        as: "bus",
+                    }
+                },
+                {
+                    $project:
+                    {
+                        _id: 1,
+                        ownerid: 1,
+                        busid: 1,
+                        message: 1,
+                        isnotview: 1,
+                        bus:
+                        {
+                            $arrayElemAt: ["$bus", 0]
+                        }
+                    }
+                }
+            ]).toArray()
+            console.log(nofy);
+            resolve(nofy)
+        })
+    },
+    Owner_Chate_With_Admin: (ownerid, body) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.chatwithadmin).findOne({ ownerid: objectId(ownerid) }).then((chat) => {
+                var state =
+                {
+                    ...body,
+                    fromadmin: false
+                }
+                if (chat) {
+                    db.get().collection(consts.chatwithadmin).updateOne({ ownerid: objectId(ownerid) },
+                        {
+                            $push: { message: state }
+                        }).then(() => resolve())
+                }
+                else {
+                    var putchat =
+                    {
+                        ownerid: objectId(ownerid),
+                        notify: false,
+                        message: [state]
+
+                    }
+                    db.get().collection(consts.chatwithadmin).insertOne(putchat).then(() => resolve())
+                }
+            })
+        })
+    },
+    Get_Message_To_View_In_The_ChtBox: (userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.chatwithadmin).findOne({ ownerid: objectId(userid) }).then(async (messages) => {
+                if (messages) {
+                    await db.get().collection(consts.chatwithadmin).updateOne({ ownerid: objectId(userid) },
+                        {
+                            $set:
+                            {
+                                notify: false
+                            }
+                        }).then(() => resolve(messages))
+                }
+                else {
+                    resolve(messages)
+                }
+            })
+        })
+    },
+    Evaluvate_Is_Admin_Replay_Owner_message: (userid) => {
+        return new Promise((resolve,reject)=>
+        {
+            db.get().collection(consts.chatwithadmin).findOne({ownerid:objectId(userid)}).then((resc)=>
+            {
+                resolve(resc)
+            })
         })
     }
 }

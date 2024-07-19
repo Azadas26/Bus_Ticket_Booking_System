@@ -2,7 +2,7 @@
     <div class="row p-5">
         <div class="col-md-12 m-auto pt-5" style="text-align: center;">
             {{#if bus}}
-            <table class="table text-dark p-5">
+            <table class="table text-dark p-5" style="table-layout: fixed;">
                 <thead class="text-light" style="font-weight: 800;">
                     <tr>
                         <th scope="col">Number</th>
@@ -54,7 +54,7 @@
                             {{/if}}
                         </td>
                         <td class="pt-4">
-                            <button href="" class="btn btn-outline-danger" onclick="toggleChatPopup('{{_id}}')">inform</button>
+                            <button href="" class="btn btn-outline-danger" onclick="toggleChatPopup1('{{_id}}')">inform</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -68,12 +68,12 @@
             {{/if}}
         </div>
         <!-- Chat popup -->
-        <div id="chatPopup" class="chat-popup text-center" style="border-radius: 20px;">
-            <span class="close" onclick="closeChatPopup()">&times;</span>
+        <div id="chatPopup1" class="chat-popup1 text-center" style="border-radius: 20px;">
+            <span class="close1" onclick="closeChatPopup1()">&times;</span>
             <h2><b class="text-danger"><i class="text-danger">Warning</i> ⚠</b></h2>
-            <div id="chatMessages" class="chat-messages">
+            <div id="chatMessages1" class="chat-messages1">
                 <!-- Example chat messages -->
-                <div class="chat-message">
+                <div class="chat-message1">
                     <p style="font-weight: 800;"><i>"This option is reserved for dire need alone. Should you misuse it
                             for
                             unlawful deeds, consequences shall be your own. Should any troubles befall your clients, the
@@ -83,21 +83,21 @@
                 </div>
             </div>
 
-            <button style="font-weight: 800;" class="submit-button" onclick="sendMessage(); return false;">I
+            <button style="font-weight: 800;width: 100%;" class="submit-button" onclick="sendMessage1(); return false;">I
                 Agree</button>
 
         </div>
 
         <!-- Overlay -->
-        <div class="overlay" id="overlay" onclick="closeChatPopup()"></div>
+        <div class="overlay1" id="overlay1" onclick="closeChatPopup1()"></div>
 
         <script>
             var ids = null;
-            function toggleChatPopup(id) {
+            function toggleChatPopup1(id) {
                 ids = id;
-                var popup = document.getElementById("chatPopup");
-                var overlay = document.getElementById("overlay");
-                var button = document.querySelector(".chat-button");
+                var popup = document.getElementById("chatPopup1");
+                var overlay = document.getElementById("overlay1");
+                var button = document.querySelector(".chat-button1");
 
                 if (popup.style.display === "block") {
                     popup.style.display = "none";
@@ -110,17 +110,17 @@
                 }
             }
 
-            function closeChatPopup() {
-                var popup = document.getElementById("chatPopup");
-                var overlay = document.getElementById("overlay");
-                var button = document.querySelector(".chat-button");
+            function closeChatPopup1() {
+                var popup = document.getElementById("chatPopup1");
+                var overlay = document.getElementById("overlay1");
+                var button = document.querySelector(".chat-button1");
 
                 popup.style.display = "none";
                 overlay.style.display = "none";
                 button.classList.remove("clicked");
             }
 
-            function sendMessage() {
+            function sendMessage1() {
                 //alert(ids)
                 $.ajax({
                     url: '/emergency',
@@ -185,71 +185,24 @@
     .fade-in {
         animation: fadeIn 2s ease-in-out;
     }
-
-    /* Bounce animation */
-    @keyframes bounce {
-
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-            transform: translateY(0);
-        }
-
-        40% {
-            transform: translateY(-30px);
-        }
-
-        60% {
-            transform: translateY(-15px);
-        }
-    }
-
-    .bounce {
-        animation: bounce 2s infinite;
-    }
 </style>
 
 <style>
     /* Styles for the chat button */
-    .chat-button {
-        position: fixed;
-        bottom: 25px;
-        right: 20px;
-        z-index: 1000;
-        /* Higher z-index to ensure it's above other content */
-        background-color: #151a1f;
-        /* Change color as needed */
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 75px;
-        height: 75px;
-        font-size: 36px;
-        /* Increased font size for larger icon */
-        cursor: pointer;
-        box-shadow: rgb(215, 123, 212) 0px 20px 30px -10px;
-        animation: bounce 1s infinite;
-        /* Add bounce animation */
-    }
-
-
-
     /* Chat button icon when clicked */
-    .chat-button.clicked {
+    .chat-button1.clicked {
         background-color: #007bff;
         /* Change color when clicked */
     }
 
     /* Chat button icon when clicked */
-    .chat-button.clicked i.material-icons::before {
+    .chat-button1.clicked i.material-icons::before {
         content: "message";
         /* Change icon to message symbol when clicked */
     }
 
     /* Styles for the chat popup */
-    .chat-popup {
+    .chat-popup1 {
         display: none;
         position: fixed;
         top: 50%;
@@ -261,11 +214,11 @@
         border: 1px solid #ccc;
         width: 500px;
         padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 4px 8px rgba(176, 17, 17, 0.1);
     }
 
     /* Close button style */
-    .close {
+    .close1 {
         position: absolute;
         top: 5px;
         right: 10px;
@@ -274,18 +227,18 @@
     }
 
     /* Styles for chat messages */
-    .chat-messages {
+    .chat-messages1 {
         max-height: 200px;
         /* Adjust as needed */
         overflow-y: auto;
     }
 
-    .chat-message {
+    .chat-message1 {
         margin-bottom: 10px;
     }
 
     /* Styles for the input box */
-    .chat-input {
+    .chat-input1 {
         width: calc(100% - 40px);
         padding: 5px;
         margin-top: 10px;
@@ -295,7 +248,7 @@
     }
 
     /* Styles for the submit button */
-    .submit-button {
+    .submit-button1 {
         width: 100%;
         padding: 10px;
         margin-top: 10px;
@@ -307,7 +260,7 @@
     }
 
     /* Overlay styles */
-    .overlay {
+    .overlay1 {
         position: fixed;
         top: 0;
         left: 0;
@@ -324,7 +277,7 @@
     }
 
     /* Styles for user messages */
-    .user-message {
+    .user-message1 {
         text-align: right;
         /* Align user messages to the right */
     }

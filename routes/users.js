@@ -231,7 +231,28 @@ router.post('/emergencyform', verifyPrimaryUser, (req, res) => {
 })
 router.get('/notification', verifyPrimaryUser, (req, res) => {
   puserdb.Turn_Of_Nofication_When_ViewIt(req.session.user._id).then(() => {
-    res.render('./users/notification-page', { userhd: true, puser: req.session.user})
+    puserdb.Get_all_notification_To_Owner(req.session.user._id).then((notfy) => {
+      res.render('./users/notification-page', { userhd: true, puser: req.session.user, info: notfy })
+    })
+  })
+})
+router.post('/adminchat', (req, res) => {
+  puserdb.Owner_Chate_With_Admin(req.session.user._id, req.body).then(() => {
+    res.json({ status: true })
+  })
+})
+router.get('/adminchatview', (req, res) => {
+  puserdb.Get_Message_To_View_In_The_ChtBox(req.session.user._id).then((replay) => {
+    res.json({ replay })
+  })
+})
+router.get('/isadminmesagearraived', (req, res) => {
+  puserdb.Evaluvate_Is_Admin_Replay_Owner_message(req.session.user._id).then((isadminreplay) => {
+    if (isadminreplay.notify == true) {
+      res.json({status:true})
+    } else {
+      res.json({status:false})
+    }
   })
 })
 
