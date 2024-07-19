@@ -87,8 +87,32 @@ module.exports =
     },
     View_Primary_Users: () => {
         return new Promise(async (resolve, reject) => {
-            var users = await db.get().collection(consts.userdb).find().toArray()
-            console.log(users);
+            var users = await db.get().collection(consts.userdb).aggregate([
+                {
+                    $lookup:
+                    {
+                        from: consts.busdetails,
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "businfo"
+                    }
+                },
+                {
+                    $project:
+                    {
+                        _id: 1,
+                        name: 1,
+                        email: 1,
+                        ph: 1,
+                        password: 1,
+                        inactivate: 1,
+                        emergencycount: 1,
+                        businfo: 1
+
+                    }
+                },
+            ]).toArray()
+            //console.log(users);
             resolve(users)
         })
     },
@@ -190,10 +214,49 @@ module.exports =
         })
     },
     Get_Owner_bus_info_Basses_Own_Emergency: (uid) => {
-        return new Promise(async(resolve,reject)=>
-        {
-            var info = await db.get().collection(consts.busdetails).find({userId:objectId(uid)}).toArray();
+        return new Promise(async (resolve, reject) => {
+            var info = await db.get().collection(consts.busdetails).find({ userId: objectId(uid) }).toArray();
             resolve(info)
+        })
+    },
+    Report_Problem_TO_Customer: (userid, busid, body) => {
+        let today = new Date();
+
+        // Convert to IST (Indian Standard Time)
+        let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+        let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+        let formattedToday = formatter.format(today);
+
+        return new Promise((resolve, reject) => {
+            var state =
+            {
+
+                ...body,
+                date : formattedToday
+            }
+            db.get().collection(consts.messageadminandowner).findOne({ ownerid: objectId(userid), busid: objectId(busid) }).then((info) => {
+                if (info) {
+                    db.get().collection(consts.messageadminandowner).updateOne({ ownerid: objectId(userid), busid: objectId(busid) },
+                        {
+                            $push: { message: state }
+                        }).then(()=>
+                        {
+                            resolve()
+                        })
+                }
+                else {
+                    var first =
+                    {
+                        ownerid: objectId(userid),
+                        busid: objectId(busid),
+                        message: [state]
+                    }
+                    db.get().collection(consts.messageadminandowner).insertOne(first).then(() => {
+                        resolve()
+                    })
+                }
+            })
         })
     }
 }

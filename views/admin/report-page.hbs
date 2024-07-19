@@ -1,0 +1,117 @@
+<div class="container-fluid" id="report">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="" id="emergencydiv">
+                <div id="myForm" class="p-5"
+                    style="box-shadow: #a1aff2 0px 8px 24px, #bec7f2 0px 16px 56px, #e2e3e7 0px 24px 80px;">
+                    <h1 id="hding" style="text-align: center; font-family: sans-serif; font-weight: 800;"
+                        class="mt-2 pt-3 pr-3 pl-3">
+                        <b><span class="word">REPORT</span> <span class="word">ISSUES</span> <span
+                                class="word">TO</span>
+                            <span class="word">BUS </span> <span class="word">OWNERS</span></b>
+                    </h1>
+
+                    <style>
+                        .word {
+                            display: inline-block;
+                            /* Make each word inline-block */
+                            opacity: 0;
+                            /* Initially hide the words */
+                            animation: fadeInWords 2.5s forwards;
+                            /* Animation definition */
+                            animation-delay: calc(0.2s * var(--index));
+                            /* Delay based on word index */
+                            transform: translateX(-100%);
+                            /* Start off-screen on the left */
+                        }
+
+                        @keyframes fadeInWords {
+                            0% {
+                                opacity: 0;
+                                transform: translateX(-100%);
+                            }
+
+                            100% {
+                                opacity: 1;
+                                transform: translateX(0);
+                            }
+                        }
+                    </style>
+
+                    <form action="/admin/reportform?userid={{userid}}&busid={{busid}}" method="post" id="emergencyform"
+                        class="pl-5 pb-5 pr-5 pt-3" style="width: 100%;">
+                        <div class="pl-5 pr-5 pt-3">
+                            <h5 style="font-weight: 800;"><i>Select that which resonates with you :</i></h5>
+                            <div class="mt-4 inline" style="font-weight: 800;">
+                                <input id="one" name="rep1" type="checkbox" value="Frequent use of emergency dates may lead to your account being frozen. Tread carefully, lest you find yourself locked out.">
+                                <label for="" class="ml-2">Frequent use of emergency dates may lead to your account
+                                    being frozen. Tread carefully, lest you find yourself locked out.</label>
+                            </div>
+                            <div class="mt-4 inline" style="font-weight: 800;">
+                                <input name="rep2" id="one" type="checkbox" value="You have made several incorrect bus requests to the admin.Please ensure their accuracy before sending. If you are found to be deceitful,your account will be removed.">
+                                <label for="" class="ml-2">You have made several incorrect bus requests to the admin.
+                                    Please ensure their accuracy before sending. If you are found to be deceitful, <br>
+                                    your
+                                    account will be removed.</label>
+                            </div>
+                            <div class="mt-4 inline" style="font-weight: 800;">
+                                <input name="rep3" id="one" type="checkbox" value="We have detected malicious activity on your account. Should this happen again, your account will be banned, and we will proceed with legal action under the Indian IT Act.">
+                                <label for="" class="ml-2">We have detected malicious activity on your account. Should
+                                    this happen again, your account will be banned, and we will proceed with legal
+                                    action <br> under the Indian IT Act.</label>
+                            </div>
+                            <div class="mt-4 inline" style="font-weight: 800;">
+                                <input name="rep3" id="two" type="checkbox" value="We have received numerous complaints from our passengers.Remember, customers are our top priority. Should any more complaints arise,we will be compelled to take action against you.">
+                                <label for="" class="ml-2">We have received numerous complaints from our passengers.
+                                    Remember, customers are our top priority. Should any more complaints arise, <br> we
+                                    will
+                                    be compelled to take action against you.</label>
+                            </div>
+                            <div class="mt-3 inline-form">
+                                <label for="" style="font-weight: 800;">Alert Issues To Owner :</label> <br>
+                                <input name="message" id="reson" type="text"
+                                    style="height: 39px;width: 93.8%;border-radius: 12px;font-weight: 800;"
+                                    class="pl-3 mt-2 multiline-placeholder" placeholder="Message here...">
+
+
+                                <input id="sub" type="submit" class="btn ml-2" value="➤"
+                                    style="background-color: rgba(66, 94, 237, 0.8);font-weight: 800;border-radius: 25% 10%;">
+
+                            </div>
+                            {{#if success}}
+                            <div class="mt-4">
+                                <p class="text-success"><i><b>Message send successfully...</b></i></p>
+                            </div>
+                            {{/if}}
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    inline-form {
+        display: inline-block;
+    }
+
+    .inline-form input,
+    .inline-form button {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    #report {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

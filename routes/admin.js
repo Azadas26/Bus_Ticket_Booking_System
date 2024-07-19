@@ -102,11 +102,21 @@ router.post('/emergencybusinfo', (req, res) => {
     console.log(info);
     info.map((i) => {
       if (!i.dateArray) {
-        i.dateArray =[]
+        i.dateArray = []
       }
     })
     res.json(info)
   })
+})
+router.get('/report', varifyAdminLogin, (req, res) => {
+  res.render('./admin/report-page', { adminhd: true, admin: true, userid: req.query.id, busid: req.query.busid })
+})
+router.post('/reportform', varifyAdminLogin, (req, res) => {
+    req.body.isnotview = true;
+    admindb.Report_Problem_TO_Customer(req.query.userid, req.query.busid, req.body).then(() => {
+
+      res.render('./admin/report-page', { adminhd: true, admin: true, userid: req.query.id, busid: req.query.busid, success: true })
+    })
 })
 
 module.exports = router;

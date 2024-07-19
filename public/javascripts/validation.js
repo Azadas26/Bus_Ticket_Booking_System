@@ -63,4 +63,23 @@ $(document).ready(() => {
     });
 
 
+    $("#suserssignupform").validate({
+        rules: {
+            name: {
+                startsWithLetter: true,
+                required: true,
+                minlength: 5,
+                maxlength: 10,
+            },
+            email:
+            {
+                required: true
+            },
+            password:
+            {
+                required: true,
+            }
+        },
+    });
+
 });

@@ -5,7 +5,8 @@ module.exports=
     suserdb : "SuserDb",
     checkerbase : "CheckerBus",
     busorder : "BusOrder",
-    adminbase : "AdminBase"
+    adminbase : "AdminBase",
+    messageadminandowner:"Message_Admin_And_Owner"
 }
 
     

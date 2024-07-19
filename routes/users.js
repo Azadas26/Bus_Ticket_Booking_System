@@ -16,8 +16,16 @@ function verifyPrimaryUser(req, res, next) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   if (req.session.user) {
-    console.log(req.session.user);
-    res.render('./users/first-page', { userhd: true, puser: req.session.user })
+    puserdb.Check_wheteher_Any_Notification_Arrived(req.session.user._id).then((resc) => {
+      if (resc) {
+        res.render('./users/first-page', { userhd: true, puser: req.session.user, notfy: true })
+      }
+      else {
+        res.render('./users/first-page', { userhd: true, puser: req.session.user })
+      }
+    })
+    //console.log(req.session.user);
+
   }
   else {
     res.render('./users/first-page', { userhd: true })
@@ -204,7 +212,7 @@ router.post('/editbus', verifyPrimaryUser, async (req, res) => {
 router.post('/emergency', (req, res) => {
   res.json({ id: req.body.id })
 })
-router.get('/emergency',verifyPrimaryUser, (req, res) => {
+router.get('/emergency', verifyPrimaryUser, (req, res) => {
   puserdb.Redrive_Bus_informtion_For_Emergency(req.query.id).then((businfo) => {
     console.log(businfo);
     res.render('./users/emergency-page', { userhd: true, puser: req.session.user, businfo })
@@ -219,6 +227,11 @@ router.post('/emergencyform', verifyPrimaryUser, (req, res) => {
         })
       })
     })
+  })
+})
+router.get('/notification', verifyPrimaryUser, (req, res) => {
+  puserdb.Turn_Of_Nofication_When_ViewIt(req.session.user._id).then(() => {
+    res.render('./users/notification-page', { userhd: true, puser: req.session.user})
   })
 })
 

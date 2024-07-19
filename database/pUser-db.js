@@ -194,10 +194,28 @@ module.exports =
             await db.get().collection(consts.userdb).updateOne({ _id: objectId(userid) },
                 {
                     $inc: { emergencycount: 1 }
-                }).then(()=>
-                {
+                }).then(() => {
                     resolve()
                 })
+        })
+    },
+    Check_wheteher_Any_Notification_Arrived: (userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.messageadminandowner).findOne({ ownerid: objectId(userid),isnotview:true }).then((resc) => {
+                resolve(resc)
+                console.log(resc,"qqq");
+            })
+        })
+    },
+    Turn_Of_Nofication_When_ViewIt: (userid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.messageadminandowner).updateMany({ ownerid: objectId(userid) },
+                {
+                    $set:
+                    {
+                        isnotview : false
+                    }
+                }).then(()=>resolve())
         })
     }
 }

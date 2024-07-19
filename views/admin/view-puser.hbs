@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <div class="row p-5">
+<div class="container-fluid" style="height: auto; m-5">
+    <div class="row pt-5 pr-5 pl-5">
         <div class="col-md-12 m-auto pt-5" style="text-align: center;">
             {{#if users}}
             <table class="table text-dark">
@@ -39,17 +39,18 @@
                 </tbody>
             </table>
             {{else}}
-            <h1 class="text-dark mt-5 pt-5" style="font-weight: 800; font-size: 90px;">Nothing Found...</h1>
+            <h1 class="text-dark mt-5 pt-5 mb-5" style="font-weight: 800; font-size: 90px;">Nothing Found...</h1>
             {{/if}}
         </div>
     </div>
 </div>
-<div class="container-fluid" id="em2">
-    <div id="busInfoContainer" class="row mt-3">
+<div class="container-fluid m-5" id="em2">
+    <div id="busInfoContainer" class="row mt-2 p-4">
 
     </div>
 </div>
 <script>
+
     function moredetails(id, objid) {
         var rows = document.getElementsByTagName('tr')
         for (let i = 0; i < rows.length; i++) {
@@ -76,7 +77,7 @@
 
                 response.forEach(bus => {
                     const busElement = document.createElement('div');
-                    busElement.classList.add('col-md-3', 'm-auto', 'pl-3', 'pr-3', 'pt-5', 'pb-4', 'text-center');
+                    busElement.classList.add('col-md-3', 'm-auto', 'pl-4', 'pr-4', 'pt-5','pb-4', 'mb-3', 'text-center');
 
                     const stopNames = bus.stops.map(stop => {
                         return [
@@ -91,32 +92,86 @@
                             stop.name9,
                             stop.name10
                         ].filter(name => name).join(', ');
-                    }).join(', ');
+                    }).join(' →  ');
 
+
+                    const pricerate = bus.dis.map(dis => {
+                        return [
+                            dis.dis1,
+                            dis.dis2,
+                            dis.dis3,
+                            dis.dis4,
+                            dis.dis5,
+                            dis.dis6,
+                            dis.dis7,
+                            dis.dis8,
+                            dis.dis9,
+                            dis.dis10
+                        ].filter(dis => dis).join(', ');
+                    }).join(' → ');
+
+
+                    const distance = bus.pri.map(pri => {
+                        return [
+                            pri.pri1,
+                            pri.pri2,
+                            pri.pri3,
+                            pri.pri4,
+                            pri.pri5,
+                            pri.pri6,
+                            pri.pri7,
+                            pri.pri8,
+                            pri.pri9,
+                            pri.pri10
+                        ].filter(pri => pri).join(', ');
+                    }).join('  → ');
 
                     busElement.innerHTML = `<h2><b>${bus.bname}</b></h2>
                 <p class="mt-3"><strong>Bus Number:</strong> ${bus.busnumber}</p>
                 <p><strong>Starting Time:</strong> ${bus.stime}</p>
                 <p><strong>Starting Date:</strong> ${bus.sdate}</p>
-                <p><strong>Ending Date:</strong> ${bus.edate}</p>
+                <p><strong>Ending Date:</strong> <span id="edate${bus._id}">${bus.edate}</span></p>
+                <p class="p-2" id="active${bus._id}"><strong> </strong></p>
+                <p class="p-2" id="notactive${bus._id}"> <strong> </strong></p>
                 <p><strong>Maximum Capacity:</strong> ${bus.max}</p>
                 <p><strong>Reg.no:</strong> ${bus.price}</p>
                 <p><strong>Emergency Count:</strong> ${bus.dateArray.length}</p>
                  <p><strong>Emergency Dates:</strong> ${bus.dateArray.join(', ')}</p>
-                 <p><strong>Stops:</strong> ${stopNames}</p>`;
+                 <p><strong>Stops:</strong> ${stopNames}</p>
+                 <p><strong>Price ₹:</strong> ${distance}</p>
+                 <p><strong>Distance (KM):</strong> ${pricerate}</p>
+                 <a href="/admin/report?id=${bus.userId}&busid=${bus._id}" class="btn btn-primary" style="width:40%">Report</a>`;
 
                     busInfoContainer.appendChild(busElement);
+                    console.log(`${bus._id}`)
+                    var edate = document.getElementById(`edate${bus._id}`).textContent;
+                    console.log(edate)
+                    let today = new Date();
+
+                    // Convert to IST (Indian Standard Time)
+                    let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+                    let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+                    let formattedToday = formatter.format(today);
+                    if (formattedToday > edate) {
+                        document.getElementById(`notactive${bus._id}`).innerHTML = "Service Finish"
+                        document.getElementById(`notactive${bus._id}`).style.backgroundColor = "green"
+                    }
+                    else {
+                        document.getElementById(`active${bus._id}`).innerHTML = "Service Running..."
+                        document.getElementById(`active${bus._id}`).style.backgroundColor = "red"
+                    }
 
                 });
+
 
             }
         })
     }
 
-
-
     var users = '{{length}}'
     for (i = 0; i < parseInt(users); i++) {
+
         if (parseInt(document.getElementById(`emcount${i}`).textContent) >= 50) {
             document.getElementById(`emlogo${i}`).innerHTML = "☠︎︎"
             document.getElementById(`emlogo${i}`).style.color = "red"
@@ -137,11 +192,11 @@
 </script>
 
 <style>
-    a:hover
-    {
+    a:hover {
         transition: 0.5s ease-in-out;
         font-size: 20px;
     }
+
     .busInfoContainer {
         display: flex;
         flex-wrap: wrap;
