@@ -159,7 +159,7 @@ module.exports =
                         edate: 1,
                         dis: 1,
                         pri: 1,
-                        dateArray:1,
+                        dateArray: 1,
                         user:
                         {
                             $arrayElemAt: ["$User", 0],
@@ -268,7 +268,7 @@ module.exports =
                         date: 1,
                         pay: 1,
                         expired: 1,
-                        emergency:1,
+                        emergency: 1,
                         Bus:
                         {
                             $arrayElemAt: ["$Bus", 0],
@@ -343,46 +343,54 @@ module.exports =
         })
     },
     Get_Notification_InformationBy_Emergency: (userid) => {
-        return new Promise(async(resolve,reject)=>
-        {
-           var notfy = await db.get().collection(consts.busorder).aggregate([
-            {
-                $match:
+        return new Promise(async (resolve, reject) => {
+            var notfy = await db.get().collection(consts.busorder).aggregate([
                 {
-                    suserid:objectId(userid),
-                    emergency:true
-                }
-            },
-            {
-                $lookup:
-                {
-                    from: consts.busdetails,
-                    localField: "id",
-                    foreignField: "_id",
-                    as: "bus",
-                }
-            },
-            {
-                $project:
-                {
-                    tkno:1,
-                    total:1,
-                    start:1,
-                    end:1,
-                    preferredDates:1,
-                    date:1,
-                    emdescription:1,
-                    one:1,
-                    two:1,
-                    bus:
+                    $match:
                     {
-                        $arrayElemAt: ["$bus", 0],
+                        suserid: objectId(userid),
+                        emergency: true
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: consts.busdetails,
+                        localField: "id",
+                        foreignField: "_id",
+                        as: "bus",
+                    }
+                },
+                {
+                    $project:
+                    {
+                        tkno: 1,
+                        total: 1,
+                        start: 1,
+                        end: 1,
+                        preferredDates: 1,
+                        date: 1,
+                        emdescription: 1,
+                        one: 1,
+                        two: 1,
+                        bus:
+                        {
+                            $arrayElemAt: ["$bus", 0],
+                        }
                     }
                 }
-            }
-           ]).toArray()
-           //console.log(notfy);
-           resolve(notfy)
+            ]).toArray()
+            //console.log(notfy);
+            resolve(notfy)
+        })
+    },
+    TO_Get_How_Many_Credit_Score_User_HAVE: (id) => {
+        return new Promise(async(resolve,reject)=>
+        {
+            var starts = await db.get().collection(consts.busorder).find({suserid:objectId(id),emergency:true}).toArray()
+            var sum=0;
+            await starts.map(i=>{sum += parseInt(i.total)})
+            resolve(sum)
         })
     }
 }

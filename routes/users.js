@@ -38,7 +38,16 @@ router.post('/signup', (req, res) => {
   console.log(req.body);
   req.body.inactivate = true;
   req.body.emergencycount = 0;
+  console.log(req.files.image);
   puserdb.Do_Primary_user_signup(req.body).then((id) => {
+    var img = req.files.image
+    if (img) {
+      img.mv("public/owner-image/" + id + ".jpg", (err, data) => {
+        if (err) {
+          console.log("err", err);
+        }
+      });
+    }
     res.redirect('/login')
   })
 })
@@ -249,9 +258,9 @@ router.get('/adminchatview', (req, res) => {
 router.get('/isadminmesagearraived', (req, res) => {
   puserdb.Evaluvate_Is_Admin_Replay_Owner_message(req.session.user._id).then((isadminreplay) => {
     if (isadminreplay.notify == true) {
-      res.json({status:true})
+      res.json({ status: true })
     } else {
-      res.json({status:false})
+      res.json({ status: false })
     }
   })
 })

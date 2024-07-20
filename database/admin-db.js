@@ -233,15 +233,14 @@ module.exports =
             {
 
                 ...body,
-                date : formattedToday
+                date: formattedToday
             }
             db.get().collection(consts.messageadminandowner).findOne({ ownerid: objectId(userid), busid: objectId(busid) }).then((info) => {
                 if (info) {
                     db.get().collection(consts.messageadminandowner).updateOne({ ownerid: objectId(userid), busid: objectId(busid) },
                         {
                             $push: { message: state }
-                        }).then(()=>
-                        {
+                        }).then(() => {
                             resolve()
                         })
                 }
@@ -258,5 +257,102 @@ module.exports =
                 }
             })
         })
-    }
+    },
+    Get_Messaging_wners: () => {
+        return new Promise(async (resolve, reject) => {
+            var chainfo = await db.get().collection(consts.chatwithadmin).aggregate([
+                {
+                    $lookup:
+                    {
+                        from: consts.userdb,
+                        localField: "ownerid",
+                        foreignField: "_id",
+                        as: "User",
+                    }
+                },
+                {
+                    $project:
+                    {
+                        _id: 1,
+                        ownerid: 1,
+                        count: 1,
+                        notify: 1,
+                        message: 1,
+                        iszerochat: true,
+                        user: { $arrayElemAt: ["$User", 0] }
+                    }
+                }
+            ]).toArray()
+            console.log(chainfo);
+            resolve(chainfo)
+        })
+    },
+    Get_Single_Owner_cHats: (id) => {
+        return new Promise(async (resolve, reject) => {
+            var chatdetails = await db.get().collection(consts.chatwithadmin).aggregate([
+                {
+                    $match: { _id: objectId(id) }
+                },
+                {
+                    $lookup:
+                    {
+                        from: consts.userdb,
+                        localField: "ownerid",
+                        foreignField: "_id",
+                        as: "User",
+                    }
+                },
+                {
+                    $project:
+                    {
+                        _id: 1,
+                        ownerid: 1,
+                        count: 1,
+                        notify: 1,
+                        message: 1,
+                        iszerochat: 1,
+                        user: { $arrayElemAt: ["$User", 0] }
+                    }
+                }
+            ]).toArray()
+            resolve(chatdetails[0])
+        })
+    },
+    Replay_Message_To_wner: (id, body) => {
+        console.log(body);
+        return new Promise(async (resolve, reject) => {
+            var state =
+            {
+                chat: body,
+                fromadmin: true
+            }
+            await db.get().collection(consts.chatwithadmin).updateOne({ _id: objectId(id) },
+                {
+                    $push:
+                    {
+                        message: state
+                    }
+                }).then(() => {
+                    db.get().collection(consts.chatwithadmin).updateOne({ _id: objectId(id) },
+                        {
+                            $set:
+                            {
+                                notify: true
+                            }
+                        }).then(() => resolve())
+                })
+        })
+    },
+    Desable_NotificationCount: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.chatwithadmin).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        count: 0,
+                        iszerochat:false
+                    }
+                }).then(() => resolve())
+        })
+    },
 }

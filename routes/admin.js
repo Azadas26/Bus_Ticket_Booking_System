@@ -112,11 +112,31 @@ router.get('/report', varifyAdminLogin, (req, res) => {
   res.render('./admin/report-page', { adminhd: true, admin: true, userid: req.query.id, busid: req.query.busid })
 })
 router.post('/reportform', varifyAdminLogin, (req, res) => {
-    req.body.isnotview = true;
-    admindb.Report_Problem_TO_Customer(req.query.userid, req.query.busid, req.body).then(() => {
+  req.body.isnotview = true;
+  admindb.Report_Problem_TO_Customer(req.query.userid, req.query.busid, req.body).then(() => {
 
-      res.render('./admin/report-page', { adminhd: true, admin: true, userid: req.query.id, busid: req.query.busid, success: true })
+    res.render('./admin/report-page', { adminhd: true, admin: true, userid: req.query.id, busid: req.query.busid, success: true })
+  })
+})
+router.get('/chat', varifyAdminLogin, (req, res) => {
+  admindb.Get_Messaging_wners().then((chatinfo) => {
+    res.render('./admin/chat-page', { adminhd: true, admin: true, chatinfo })
+  })
+})
+router.post('/getownerchats', (req, res) => {
+  //console.log(req.body.id);
+  admindb.Get_Single_Owner_cHats(req.body.id).then((chat) => {
+    admindb.Desable_NotificationCount(req.body.id).then(() => {
+      console.log(chat);
+      res.json({ chat })
     })
+  })
+})
+router.post('/adminchat', (req, res) => {
+  console.log(req.body);
+  admindb.Replay_Message_To_wner(req.body.id,req.body.chat).then(() => {
+    res.json({ status: true })
+  })
 })
 
 module.exports = router;

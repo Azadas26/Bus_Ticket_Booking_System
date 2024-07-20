@@ -194,5 +194,16 @@ router.get('/notification', verifySecondaryUser, (req, res) => {
         })
     })
 })
+router.get('/getstarscore',(req,res)=>
+{
+    suserdb.TO_Get_How_Many_Credit_Score_User_HAVE(req.session.suser._id).then((stars)=>
+    {
+        res.json({stars:stars})
+    })
+})
+router.get('/creditstar',verifySecondaryUser,(req,res)=>
+{
+    res.render('./susers/credit-star',{suserhd: true, suser: req.session.suser})
+})
 
 module.exports = router;

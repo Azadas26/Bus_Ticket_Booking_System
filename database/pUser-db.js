@@ -264,13 +264,21 @@ module.exports =
                     db.get().collection(consts.chatwithadmin).updateOne({ ownerid: objectId(ownerid) },
                         {
                             $push: { message: state }
-                        }).then(() => resolve())
+                        }).then(() => {
+                            db.get().collection(consts.chatwithadmin).updateOne({ ownerid: objectId(ownerid) },
+                                {
+                                    $inc: { count: 1 },
+                                    $set:{iszerochat:true}
+                                }).then(()=>resolve())
+                        })
                 }
                 else {
                     var putchat =
                     {
                         ownerid: objectId(ownerid),
                         notify: false,
+                        count: 1,
+                        iszerochat:true,
                         message: [state]
 
                     }
@@ -298,10 +306,8 @@ module.exports =
         })
     },
     Evaluvate_Is_Admin_Replay_Owner_message: (userid) => {
-        return new Promise((resolve,reject)=>
-        {
-            db.get().collection(consts.chatwithadmin).findOne({ownerid:objectId(userid)}).then((resc)=>
-            {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.chatwithadmin).findOne({ ownerid: objectId(userid) }).then((resc) => {
                 resolve(resc)
             })
         })

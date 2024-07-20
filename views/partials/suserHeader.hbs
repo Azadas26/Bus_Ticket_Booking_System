@@ -39,10 +39,20 @@
                 </a>
             </li>
         </ul>
-        <div class="shake-icon mr-4">
+        <div class="shake-icon mr-5 mt-2">
             <a href="/suser/notification" class="icon-button" style="text-decoration: none;">
                 <span class="material-icons">notifications</span>
             </a>
+        </div>
+        <div class="star-point mr-4 mt-2">
+            <div class="p-2 text-dark"
+                style="box-shadow: rgba(22, 22, 23, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; display: flex; align-items: center; padding: 2px; border-radius: 50%; background-color: white;">
+                <a class="text-dark" href="/suser/creditstar" style="text-decoration: none; color: dark;">
+                    <i class="fa fa-star mr-2" style="font-size: 18px; font-weight: 800;color: rgb(191, 164, 7);"></i>
+
+                </a>
+                <p id="credstar" style="margin-left: 8px; font-size: 16px; margin: 0;font-weight: 800;">&ensp;0</p>
+            </div>
         </div>
         <div class="dropdown">
             <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -125,3 +135,20 @@
         /* Faded version of text shadow color */
     }
 </style>
+
+{{#if suser}}
+<script>
+    $.ajax({
+        url: '/suser/getstarscore',
+        method: 'get',
+        success: (response) => {
+            if (response.stars > 0) {
+                document.getElementById('credstar').innerHTML = response.stars
+            }
+            else {
+                 document.getElementById('credstar').innerHTML = 0
+            }
+        }
+    })
+</script>
+{{/if}}
