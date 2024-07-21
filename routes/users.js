@@ -32,23 +32,34 @@ router.get('/', function (req, res, next) {
   }
 });
 router.get('/signup', (req, res) => {
-  res.render('./users/signup-page')
+  if (req.session.errsignup) {
+    res.render('./users/signup-page',{existemail:"This mail address already existing"})
+    req.session.errsignup = false;
+  }
+  else {
+    res.render('./users/signup-page')
+  }
 })
 router.post('/signup', (req, res) => {
-  console.log(req.body);
-  req.body.inactivate = true;
-  req.body.emergencycount = 0;
-  console.log(req.files.image);
-  puserdb.Do_Primary_user_signup(req.body).then((id) => {
-    var img = req.files.image
-    if (img) {
-      img.mv("public/owner-image/" + id + ".jpg", (err, data) => {
-        if (err) {
-          console.log("err", err);
-        }
-      });
-    }
-    res.redirect('/login')
+  puserdb.ChecK_whethet_THE_Email_Already_Existing_or_Not(req.body.email).then(() => {
+    req.session.errsignup = true;
+    res.redirect('/signup')
+  }).catch(() => {
+    console.log(req.body);
+    req.body.inactivate = true;
+    req.body.emergencycount = 0;
+    console.log(req.files.image);
+    puserdb.Do_Primary_user_signup(req.body).then((id) => {
+      if (req.files.image) {
+        var img = req.files.image
+        img.mv("public/owner-image/" + id + ".jpg", (err, data) => {
+          if (err) {
+            console.log("err", err);
+          }
+        });
+      }
+      res.redirect('/login')
+    })
   })
 })
 router.get('/login', (req, res) => {

@@ -122,6 +122,8 @@
 
             function sendMessage1() {
                 //alert(ids)
+                var local = 'http://localhost:3000';
+                var ngrock = '';
                 $.ajax({
                     url: '/emergency',
                     method: 'post',
@@ -130,7 +132,7 @@
                         id:ids
                     },
                     success: (response) => {
-                        window.location.href = `http://localhost:3000/emergency?id=${response.id}`
+                        window.location.href = `${local}/emergency?id=${response.id}`
                     }
                 })
             }

@@ -31,12 +31,23 @@ router.get('/', function (req, res, next) {
     }
 });
 router.get('/signup', (req, res) => {
-    res.render('./susers/signup-page')
+    if (req.session.suseremailexist) {
+        res.render('./susers/signup-page',{existemail:"This mail address already existing"})
+        req.session.suseremailexist = false
+    }
+    else {
+        res.render('./susers/signup-page')
+    }
 })
 router.post('/signup', (req, res) => {
     console.log(req.body);
-    suserdb.Do_Secondary_user_signup(req.body).then((id) => {
-        res.redirect('/suser/login')
+    suserdb.ChecK_whethet_THE_Email_Already_Existing_or_Not(req.body.email).then(() => {
+        req.session.suseremailexist = true
+        res.redirect('/suser/signup')
+    }).catch(() => {
+        suserdb.Do_Secondary_user_signup(req.body).then((id) => {
+            res.redirect('/suser/login')
+        })
     })
 })
 router.get('/login', (req, res) => {
@@ -187,23 +198,19 @@ router.post('/checkdate', (req, res) => {
 router.get('/notification', verifySecondaryUser, (req, res) => {
     suserdb.Update_Notfy_object_When_User_Viewed(req.session.suser._id).then(() => {
 
-        suserdb.Get_Notification_InformationBy_Emergency(req.session.suser._id).then((notfinfo)=>
-        {
+        suserdb.Get_Notification_InformationBy_Emergency(req.session.suser._id).then((notfinfo) => {
             console.log(notfinfo);
-            res.render('./susers/notfication-page', { suserhd: true, suser: req.session.suser,info:notfinfo })
+            res.render('./susers/notfication-page', { suserhd: true, suser: req.session.suser, info: notfinfo })
         })
     })
 })
-router.get('/getstarscore',(req,res)=>
-{
-    suserdb.TO_Get_How_Many_Credit_Score_User_HAVE(req.session.suser._id).then((stars)=>
-    {
-        res.json({stars:stars})
+router.get('/getstarscore', (req, res) => {
+    suserdb.TO_Get_How_Many_Credit_Score_User_HAVE(req.session.suser._id).then((stars) => {
+        res.json({ stars: stars })
     })
 })
-router.get('/creditstar',verifySecondaryUser,(req,res)=>
-{
-    res.render('./susers/credit-star',{suserhd: true, suser: req.session.suser})
+router.get('/creditstar', verifySecondaryUser, (req, res) => {
+    res.render('./susers/credit-star', { suserhd: true, suser: req.session.suser })
 })
 
 module.exports = router;

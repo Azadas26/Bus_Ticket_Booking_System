@@ -37,6 +37,7 @@
                         <div class="chat-messages">
                             <div id="chatMessages" class="chatmessag p-5"
                                 style="height: 420px; display: flex; flex-direction: column;">
+
                             </div>
                         </div>
                     </div>
@@ -126,7 +127,6 @@
     .scrollable {
         overflow-y: auto;
     }
-
 </style>
 
 <script>
@@ -186,9 +186,16 @@
                         messageElement.innerHTML = i.chat;
                     }
                     chatContainer.appendChild(messageElement);
-                    chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
-                });
 
+                    // Scroll to the bottom
+                });
+                var p = document.createElement('small');
+                p.id = 'chatview'; // Set an ID to easily find and delete the element
+                p.textContent = 'Sending messages will be end-to-end encrypted.';
+                p.className = "mt-4"
+                chatContainer.appendChild(p);
+                var newMessage = document.getElementById('chatview');
+                newMessage.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }

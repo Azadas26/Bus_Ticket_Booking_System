@@ -9,6 +9,9 @@
                         <b>CREATE YOUR ACCOUNT</b>
                     </h1>
                 </div>
+                {{#if existemail}}
+                    <p class="text-danger">{{existemail}}</p>
+                {{/if}}
                 <form id="pusersignup" action="/signup" method="post" enctype="multipart/form-data" style="font-weight: 800;" >
                     <div class="form-group">
                         <label for="exampleInputName1">Enter Your Name</label>

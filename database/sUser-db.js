@@ -392,5 +392,16 @@ module.exports =
             await starts.map(i=>{sum += parseInt(i.total)})
             resolve(sum)
         })
+    },
+    ChecK_whethet_THE_Email_Already_Existing_or_Not: (email) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.suserdb).findOne({ email }).then((email) => {
+                if (email) {
+                    resolve()
+                } else {
+                    reject()
+                }
+            })
+        })
     }
 }
