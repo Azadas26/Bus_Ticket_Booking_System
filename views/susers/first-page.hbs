@@ -1,208 +1,56 @@
-<div id="first" class="container-fluid" style="background-color: #15181E; scroll-behavior: smooth; background-attachment: fixed;">
-    <div class="row" style="width: 100%;">
-        <div class="col-md-6 mt-5 img-fluid m-auto">
-            <img id="vimg" src="/temp/Now! (13).png" style="width: 90%; display: none;" alt="" class="mt-5">
-            <img id="video" src="/temp/Now! (1).gif" style="width: 90%;" alt="" class="mt-5">
-            <script>
-                setTimeout(() => {
-                    var img = document.getElementById('vimg');
-                    var video = document.getElementById('video');
-                    video.style.display = 'none';
-                    img.style.display = 'block';
-                }, 3800);
-            </script>
-        </div>
-        <div class="col-md-6">
-            <div class="mt-5">
-                <div class="float-right d-flex justify-content-center align-items-center"
-                     style="font-family: serif; margin-top: 205px; height: 128px; width: 136px; border: 5px solid white; animation: zoomIn 6s;">
-                    <div class="text-center">
-                        <p class="text-light" style="font-weight: 900;"><b>E D I T I O N</b></p>
-                        <p class="text-light" style="font-weight: 900; font-size: 20px;">2 0 2 4</p>
-                    </div>
-                </div>
-            </div>
-            <div class="ml-5 pl-5 pt-5" style="margin-top: 350px; max-width: 400px;">
-               <div class="mt-5 pt-5">
-                 <p class="text-light" style="font-size: 20px; font-family: sans-serif; animation: fadeIn 2s; font-weight: 800;">
-                    <b>WE CAN PROVIDE ANY TYPE<br><span>OF TICKETS</span></b>
-                </p>
-                <p class="text-light" style="font-size: 16px; font-family: sans-serif;">
-                    <b id="animated-text" class="typewriter">Here you can purchase bus tickets online to reserve <br>
-                        your bus seat. If you are on the bus, you should <br>show the ticket to the checker for verification</b>
-                </p>
-                <a class="btn mr-3 fade-in mt-1" style="width: 110px; background-color: rgba(47, 0, 255, 0.8); text-decoration: none;" href="/suser/about"><b>About Me</b></a>
-                <a class="btn text-dark fade-in mt-1" style="width: 110px; background-color: #ffffff; text-decoration: none; font-weight: 800;" href="#footer">Read More</a>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const animatedText = document.getElementById('animated-text');
-                        animatedText.addEventListener('animationend', function () {
-                            animatedText.classList.add('hide-cursor');
-                        });
-                    });
-                </script>
-               </div>
-            </div>
-        </div>
-    </div>
+<div class="video-container">
+    <a href="/suser/about">
+        <img class="img-fluid" id="suserbackground-image" src="/home/tiffany's birthday! (2).png"
+            style="width: 100%;height: 100vh;display: none;">
+    </a>
+    <video id="suserbackground-video" autoplay loop muted>
+        <source src="/home/tiffany's birthday! (3).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 
-<div class="container-fluid" style="width: 100%;">
-    <div class="row">
-        <div class="col-md-12 text-center" style="background-color: #15181e;">
-            <link rel="stylesheet" href="/stylesheets/footer.css">
-            <footer style="width: 100%;" id="footer">
-                <div class="footer text-center" style="width: 100%;">
-                    <div class="p-5">
-                        <a href="#" class="m-5"><i class="fa fa-facebook" style="font-size: 30px;"></i></a>
-                        <a href="#" class="m-5"><i class="fa fa-instagram" style="font-size: 30px;"></i></a>
-                        <a href="#" class="m-5"><i class="fa fa-youtube" style="font-size: 30px;"></i></a>
-                        <a href="#" class="m-5"><i class="fa fa-twitter" style="font-size: 30px;"></i></a>
-                    </div>
-                    <div class="text-center">
-                        <p class="pl-5 text-light">TICKET_SURE Copyright © 2024 Ticket_Sure - All rights reserved || Developed By: XXXX X X</p>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
-</div>
+<script>
+    var img = document.getElementById('suserbackground-image');
+    var video = document.getElementById('suserbackground-video');
+    setTimeout(() => {
+        video.style.direction = 'none';
+        img.style.display = '';
+    }, 5000)
+</script>
 
 <style>
+    html,
     body {
-        background-color: #15181E;
-        transition: background-color 6s;
-    }
-
-    #first {
-        background-image: url(/bgimage/bgless\ \(1\).png);
-        background-attachment: scroll;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: bottom;
-        height: 100vh;
-        display: flex;
-        animation: fadeIn 1.0s ease-in-out forwards;
-    }
-
-    .card {
-        border-radius: 20px;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-        height: 648px;
-    }
-
-    .card-img {
-        border-radius: 20px;
-    }
-
-    a {
-        color: #fcfbfb;
-    }
-
-    .card-img-top {
-        height: 250px;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideInLeft {
-        from {
-            transform: translateX(-100%);
-        }
-
-        to {
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-        }
-
-        to {
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes bounceIn {
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-            transform: translateY(0);
-        }
-        40% {
-            transform: translateY(-30px);
-        }
-        60% {
-            transform: translateY(-15px);
-        }
-    }
-
-    @keyframes zoomIn {
-        from {
-            transform: scale(0);
-        }
-
-        to {
-            transform: scale(1);
-        }
-    }
-
-    @keyframes typewriter {
-        from {
-            width: 0;
-        }
-        to {
-            width: 100%;
-        }
-    }
-
-    .typewriter {
-        display: inline-block;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
-        white-space: nowrap;
-        border-right: 2px solid;
-        animation: typewriter 4s steps(40) 1s 1 normal both, blinkTextCursor 500ms steps(40) infinite normal;
+        /* Prevent any overflow */
     }
 
-    @keyframes blinkTextCursor {
-        from { border-right-color: rgba(255, 255, 255, 0.75); }
-        to { border-right-color: transparent; }
+    .video-container {
+        position: fixed;
+        /* Ensure the container stays fixed in the viewport */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        /* Full viewport width */
+        height: 100vh;
+        /* Full viewport height */
+        overflow: hidden;
+        background-color: white;
+        /* Ensures the background is white */
     }
 
-    .hide-cursor {
-        border-right: none;
-    }
-
-    .fade-in {
-        animation: fadeIn 2s;
-    }
-
-    /* Media queries for smaller screens */
-    @media (max-width: 768px) {
-        #first {
-            height: auto;
-        }
-        .col-md-6 {
-            margin-top: 20px;
-        }
-        .ml-5, .pl-5 {
-            margin-left: 0;
-            padding-left: 0;
-        }
-        #blank, #bus {
-            height: auto;
-        }
+    #background-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
     }
 </style>

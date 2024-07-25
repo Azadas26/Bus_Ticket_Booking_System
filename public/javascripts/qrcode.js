@@ -14,7 +14,7 @@ module.exports =
             // Data to be encoded in the QR code
             let local =  'http://localhost:3000'
             let ngrock = 'https://3c32-103-149-158-207.ngrok-free.app'
-            const data = `${ngrock}/checker/busticket?id=${Id}`; // Replace with your own data
+            const data = `${local}/checker/busticket?id=${Id}`; // Replace with your own data
 
             // Options for generating the QR code
             const options = {

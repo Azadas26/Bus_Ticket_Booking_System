@@ -18,21 +18,27 @@ module.exports =
     },
     Do_Primary_User_Login: (info) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.userdb).findOne({ email: info.email, inactivate: true }).then((data) => {
+            console.log(info.email, "@@@");
+            db.get().collection(consts.userdb).findOne({ email: info.email }).then((data) => {
                 if (data) {
-                    bcrypt.compare(info.password, data.password).then((iscoorect) => {
-                        if (iscoorect) {
-                            resolve(data)
-                        }
-                        else {
-                            console.log("Password Faild");
-                            reject()
-                        }
-                    })
+                    if (data.inactivate == true) {
+                        bcrypt.compare(info.password, data.password).then((iscoorect) => {
+                            if (iscoorect) {
+                                resolve(data)
+                            }
+                            else {
+                                console.log("Password Faild");
+                                reject(false)
+                            }
+                        })
+                    }
+                    else {
+                        reject(true)
+                    }
                 }
                 else {
-                    console.log("Email Faild");
-                    reject()
+                    console.log("user Email Faild");
+                    reject(false)
                 }
             })
         })

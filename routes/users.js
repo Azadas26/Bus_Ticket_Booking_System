@@ -33,7 +33,7 @@ router.get('/', function (req, res, next) {
 });
 router.get('/signup', (req, res) => {
   if (req.session.errsignup) {
-    res.render('./users/signup-page',{existemail:"This mail address already existing"})
+    res.render('./users/signup-page', { existemail: "This mail address already existing" })
     req.session.errsignup = false;
   }
   else {
@@ -84,10 +84,14 @@ router.post('/login', (req, res) => {
     req.session.user = { ...resc };
     req.session.user.status = true;
     res.redirect('/')
-  }).catch(() => {
-    req.session.failed = true;
-    res.redirect('/login')
-
+  }).catch((e) => {
+    if (e) {
+      res.render('./users/banned-page')
+    }
+    else {
+      req.session.failed = true;
+      res.redirect('/login')
+    }
   })
 })
 router.get('/logout', (req, res) => {
@@ -170,9 +174,9 @@ router.get('/removechecker', (req, res) => {
   })
 })
 router.get('/viewbuss', verifyPrimaryUser, (req, res) => {
-  puserdb.Get_User_added_Buss_Adnd__Its_Details(req.session.user._id).then((bus) => {
+  puserdb.Get_User_added_Buss_Adnd__Its_Details(req.session.user._id).then(async (bus) => {
     console.log(bus);
-    bus.map(async (i) => {
+    await bus.map(async (i) => {
       var predate = i.edate;
       var today = new Date();
 
@@ -182,6 +186,7 @@ router.get('/viewbuss', verifyPrimaryUser, (req, res) => {
       var formattedToday = formatter.format(today);
 
       if (predate < formattedToday) {
+        console.log(predate);
         await puserdb.Enable_Permition_For_Edit(i._id).then(() => { })
       }
     })

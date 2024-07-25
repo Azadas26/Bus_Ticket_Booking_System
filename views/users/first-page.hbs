@@ -1,85 +1,56 @@
-<div class="container-fluid" id="first">
-    <div class="row" style="height: 100%;">
-        <div class="col-md-6 pr-5 img-fluid" style="height: 100vh;" id="blank">
-            <img class="mt-5 img-fluid" id="background-image" src="/background/Now! (7).png" alt="" style="display: none;width: 88%;">
-            <video class="mt-5 img-fluid" id="background-video" style="width: 88%;" autoplay loop muted>
-                <source src="/background/Now! (4).mp4" type="video/mp4">
-            </video>
-        </div>
-        <div id="bus" class="col-md-6" style="height: 100vh;">
-        </div>
-    </div>
+<div class="video-container">
+    <a href="/about">
+        <img class="img-fluid" id="userbackground-image" src="/home/TS (1).png"
+            style="width: 100%;height: 100vh;display: none;">
+    </a>
+    <video id="userbackground-video" autoplay loop muted>
+        <source src="/home/TS (2).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 
 <script>
-    var image = document.getElementById("background-image");
-    var video = document.getElementById("background-video");
+    var img = document.getElementById('userbackground-image');
+    var video = document.getElementById('userbackground-video');
     setTimeout(() => {
-        video.style.display = 'none';
-        image.style.display = 'block';
-    }, 5000);
+        video.style.direction = 'none';
+        img.style.display = '';
+    }, 5000)
 </script>
 
 <style>
-    #blank {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #first {
-        background-image: url('/images/wave bg.png');
-        background-attachment: fixed;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: bottom;
-        height: 100vh;
-    }
-
-    #bus {
-        background-image: url('/images/busssss.png');
-        background-size: 90%;
-        background-repeat: no-repeat;
-        background-position: center;
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
         height: 100%;
-        animation: slideInFromLeft 5s ease-out;
+        overflow: hidden;
+        /* Prevent any overflow */
     }
 
-    @keyframes slideInFromLeft {
-        0% {
-            opacity: 0;
-            transform: translateX(-50%);
-        }
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    .video-container {
+        position: fixed;
+        /* Ensure the container stays fixed in the viewport */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        /* Full viewport width */
+        height: 100vh;
+        /* Full viewport height */
+        overflow: hidden;
+        background-color: white;
+        /* Ensures the background is white */
     }
 
-    /* Media queries for smaller screens */
-    @media (max-width: 768px) {
-        #first {
-            height: auto;
-        }
-        #bus {
-            background-size: cover;
-            background-position: center;
-        }
-        #blank, #bus {
-            height: auto;
-        }
-        video, img {
-            width: 100%;
-            height: auto;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .pt-5 {
-            padding-top: 1rem !important;
-        }
-        .pr-5 {
-            padding-right: 1rem !important;
-        }
+    #background-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
     }
 </style>

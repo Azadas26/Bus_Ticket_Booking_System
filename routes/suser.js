@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var suserdb = require('../database/sUser-db')
 var objectId = require('mongodb').ObjectId
-var qrcode = require('../public/javascripts/qrcode')
+var qrcode = require('../public/javascripts/qrcode');
 
 function verifySecondaryUser(req, res, next) {
     if (req.session.suser) {
