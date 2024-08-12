@@ -1,12 +1,12 @@
 <div class="container-fluid" style="background-color: #15181e;">
     <div class="row p-5 text-center">
-        <div class="col-md-12 m-5 pt-5">
+        <div class="col-md-12 m-5 pt-4">
             <h1 class="mr-5 text-light">BUS TICKETS</h1>
         </div>
         {{#each tickets}}
         {{#if pay}}
         <div class="col-md-3 m-auto">
-            <div class="card mt-4 mb-4"
+            <div class="card mt-5 mb-4 ml-5"
                 style="width: 18rem; border-radius: 12px; position: relative;box-shadow: rgb(255, 255, 255) 0px 20px 30px -10px;">
                 <div class="card-body">
                     <h3 class="card-title" id="bname">{{this.Bus.bname}}</h3>
@@ -35,10 +35,15 @@
                             Have a nice day.</i>
                     </p>
                     <div>
+                        {{#if emergency}}
+
+                        {{else}}
                         {{#if expired}}
                         <a href="/suser/clearexticket?id={{this._id}}" class="text-danger"
                             style="text-decoration: none;">clear 🗑</a>
                         {{/if}}
+                        {{/if}}
+
                     </div>
                     {{#if emergency}}
                     <img src="/images/cancelled.png" alt="Validated" class="seal" style="z-index: 2;">

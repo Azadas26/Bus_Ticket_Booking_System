@@ -385,11 +385,10 @@ module.exports =
         })
     },
     TO_Get_How_Many_Credit_Score_User_HAVE: (id) => {
-        return new Promise(async(resolve,reject)=>
-        {
-            var starts = await db.get().collection(consts.busorder).find({suserid:objectId(id),emergency:true}).toArray()
-            var sum=0;
-            await starts.map(i=>{sum += parseInt(i.total)})
+        return new Promise(async (resolve, reject) => {
+            var starts = await db.get().collection(consts.busorder).find({ suserid: objectId(id), emergency: true }).toArray()
+            var sum = 0;
+            await starts.map(i => { sum += parseInt(i.total) })
             resolve(sum)
         })
     },
@@ -401,6 +400,15 @@ module.exports =
                 } else {
                     reject()
                 }
+            })
+        })
+    },
+    Get_all_Stopname_For_Simplefing_searcH: () => {
+        return new Promise((resolve,reject)=>
+        {
+            db.get().collection(consts.busdetails).find().toArray().then((stops)=>
+            {
+                resolve(stops)
             })
         })
     }

@@ -18,16 +18,16 @@
                 <div class="card-body" style="font-weight: 800;">
                     <h3 class="mt-2" style="font-weight: 800;">Bus Stops</h3> <br>
                     {{#each stops}}
-                    {{#if this.name1}}{{this.name1}} , {{/if}}
-                    {{#if this.name2}}{{this.name2}} , {{/if}}
-                    {{#if this.name3}}{{this.name3}} , {{/if}}
-                    {{#if this.name4}}{{this.name4}} , {{/if}}
-                    {{#if this.name5}}{{this.name5}} , {{/if}}
-                    {{#if this.name6}}{{this.name6}} , {{/if}}
-                    {{#if this.name7}}{{this.name7}} , {{/if}}
-                    {{#if this.name8}}{{this.name8}} , {{/if}}
-                    {{#if this.name9}}{{this.name9}} , {{/if}}
-                    {{#if this.name10}}{{this.name10}} , {{/if}}
+                    {{#if this.name1}}{{this.name1}} 🠖 {{/if}}
+                    {{#if this.name2}}{{this.name2}} 🠖 {{/if}}
+                    {{#if this.name3}}{{this.name3}} 🠖 {{/if}}
+                    {{#if this.name4}}{{this.name4}} 🠖 {{/if}}
+                    {{#if this.name5}}{{this.name5}} 🠖 {{/if}}
+                    {{#if this.name6}}{{this.name6}} 🠖 {{/if}}
+                    {{#if this.name7}}{{this.name7}} 🠖 {{/if}}
+                    {{#if this.name8}}{{this.name8}} 🠖 {{/if}}
+                    {{#if this.name9}}{{this.name9}} 🠖 {{/if}}
+                    {{#if this.name10}}{{this.name10}} 🠖 {{/if}}
                     {{/each}}
                 </div>
                 <h3 class="mt-2" style="font-weight: 800;">Available Seats : <span id="setseats"></span></h3> <br>
@@ -133,7 +133,6 @@
                                 for (i = 0; i < indexArray.length; i++) {
                                     sum = sum + indexArray[i]
                                 }
-
                                 console.log(sum * val)
                                 document.getElementById('output2').innerHTML = ` Total Amount is ${(val * sum)} ₹`
                                 document.getElementById('price').value = val;
@@ -147,9 +146,7 @@
                                     document.getElementById('output').innerHTML = 'seats not available'
                                 }
                             }
-
                         }
-
                         function datechecking() {
                             document.getElementById('submit').style.display = "none"
                             document.getElementById('myInput').value = ''
@@ -237,7 +234,6 @@
                                     {{#if this.pri9}}<option value="{{this.pri9}}">{{this.pri9}} </option> {{/if}}
                                     {{#if this.pri10}}<option value="{{this.pri10}}">{{this.pri10}} </option> {{/if}}
                                     {{/each}}
-
                                 </select>
                             </div>
                             {{!--

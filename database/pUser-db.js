@@ -18,7 +18,7 @@ module.exports =
     },
     Do_Primary_User_Login: (info) => {
         return new Promise((resolve, reject) => {
-            console.log(info.email, "@@@");
+            //console.log(info.email);
             db.get().collection(consts.userdb).findOne({ email: info.email }).then((data) => {
                 if (data) {
                     if (data.inactivate == true) {

@@ -212,5 +212,15 @@ router.get('/getstarscore', (req, res) => {
 router.get('/creditstar', verifySecondaryUser, (req, res) => {
     res.render('./susers/credit-star', { suserhd: true, suser: req.session.suser })
 })
+router.get('/getallstopsname',(req,res)=>
+{
+    suserdb.Get_all_Stopname_For_Simplefing_searcH().then((stops)=>
+    {
+        
+        var filterstops = stops.map(i=>i.stops);
+        const onearray = [...new Set(filterstops.flat().map(obj => Object.values(obj)).flat())]
+        res.json({stops:onearray})
+    })
+})
 
 module.exports = router;

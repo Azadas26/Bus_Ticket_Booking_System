@@ -36,11 +36,26 @@
         </div>
     </div>
 </div>
+<div class="cntainer-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" onsubmit="return false;">
+                <input class="form-control mr-sm-2" name="from" type="text" list="choos" placeholder="Search" id="searchInput"
+                    oninput="redirectToSelectedOption()" />
+                <datalist id="choos">
+
+                </datalist>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 <style>
     .container-fluid {
         background-color: #15181e;
-        
+
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;

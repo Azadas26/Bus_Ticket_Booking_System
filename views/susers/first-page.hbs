@@ -3,19 +3,57 @@
         <img class="img-fluid" id="suserbackground-image" src="/home/tiffany's birthday! (2).png"
             style="width: 100%;height: 100vh;display: none;">
     </a>
-    <video id="suserbackground-video" autoplay loop muted>
+    <video id="suserbackground-video" autoplay loop muted style="display: none;">
         <source src="/home/tiffany's birthday! (3).mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 </div>
 
 <script>
-    var img = document.getElementById('suserbackground-image');
-    var video = document.getElementById('suserbackground-video');
-    setTimeout(() => {
-        video.style.direction = 'none';
-        img.style.display = '';
-    }, 5000)
+    const userAgent = navigator.userAgent;
+
+    // Regular expressions for mobile, tablet, and desktop detection
+    const mobileRegex = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const tabletRegex = /iPad|Android(?!.*Mobile)/i; // Android tablets usually don't have "Mobile" in userAgent
+    const desktopRegex = /Win|Mac|Linux|X11/i;
+
+    if (mobileRegex.test(userAgent) || tabletRegex.test(userAgent)) {
+        tabormobile();
+    } else if (desktopRegex.test(userAgent)) {
+        desctporother();
+    } else {
+        desctporother();
+    }
+
+    function tabormobile() {
+        var img = document.getElementById('suserbackground-image');
+        var video = document.getElementById('suserbackground-video');
+
+        setTimeout(() => {
+            video.style.display = 'none';
+            img.style.display = '';
+        }, 100);
+    }
+
+    function desctporother() {
+        var img = document.getElementById('suserbackground-image');
+        var video = document.getElementById('suserbackground-video');
+        video.style.display = '';
+        setTimeout(() => {
+            video.style.display = 'none';
+            img.style.display = '';
+        }, 5000);
+    }
+    function updateImageSrc() {
+        var img = document.getElementById('suserbackground-image');
+        if (window.innerWidth >= 1000) {
+            img.src = "/home/tiffany's birthday! (2).png";
+        } else {
+            img.src = "/home/Untitled design (13).png";
+        }
+    }
+    updateImageSrc();
+    window.addEventListener('resize', updateImageSrc);
 </script>
 
 <style>

@@ -32,6 +32,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -87,7 +88,34 @@
         margin-bottom: 5px;
     }
 
-    {{#unless bus}}
+        {
+            {
+            #unless bus
+        }
+    }
+</style>
+
+{{#if bus}}
+<style>
+    #busfind {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        {
+            {
+            /unless
+        }
+    }
+</style>
+{{else}}
+<style>
     #busfind {
         background-attachment: fixed;
         background-size: cover;
@@ -98,15 +126,23 @@
         align-items: center;
         justify-content: center;
     }
-    {{/unless}}
+
+        {
+            {
+            /unless
+        }
+    }
 </style>
+{{/if}}
 
 <div id="root" style="background-image: url('/images/newww.jpg">
     <div id="busfind" class="container-fluid">
         <div class="row">
             <div class="col-md-12 mb-5 pb-5">
-                <form {{#if bus}}class="mt-5 pt-5 animated-form"{{else}} class="animated-form" {{/if}} action="/suser/findbus" method="post">
-                    <h1 class="text-center m-5 text-light" style="font-weight: 800; color: rgb(38, 38, 37); text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);">
+                <form {{#if bus}}class="mt-5 pt-5 animated-form" {{else}} class="animated-form" {{/if}}
+                    action="/suser/findbus" method="post">
+                    <h1 class="text-center m-5 text-light"
+                        style="font-weight: 800; color: rgb(38, 38, 37); text-shadow: 2px 2px 4px rgba(66, 94, 237, 0.8);">
                         <b>FIND YOUR BUS</b>
                     </h1>
                     <p style="color: red;">
@@ -117,16 +153,28 @@
                     <div class="form-inline">
                         <div class="form-group mr-2" style="font-weight: 800;">
                             <label class="mr-2 text-light" for="from">From</label>
-                            <input id="from" name="from" type="text" class="form-control" placeholder="Kayamkulam" style="border: solid; font-weight: 800;">
+                            <input class="form-control mr-sm-2" name="from" type="text" list="choos"
+                                placeholder="Kayamkulam" id="searchInput" style="border: solid; font-weight: 800;"
+                                autocomplete="off" />
+                            <datalist id="choos">
+
+                            </datalist>
                         </div>
                         <div class="form-group mr-2">
-                            <button type="button" onclick="reverseFields()" style="border-radius: 50%; font-weight: 800;">Rev</button>
+                            <button type="button" onclick="reverseFields()"
+                                style="border-radius: 50%; font-weight: 800;">Rev</button>
                         </div>
                         <div class="form-group mr-2">
                             <label class="mr-2 text-light" for="to">To</label>
-                            <input id="to" name="to" type="text" class="form-control" placeholder="Ramapuram" style="border: solid; font-weight: 800;">
+                            {{!-- <input id="to" name="to" type="text" class="form-control" placeholder="Ramapuram"
+                                style="border: solid; font-weight: 800;"> --}}
+                            <input class="form-control mr-sm-2" name="to" type="text" list="choos"
+                                placeholder="Ramapuram" id="searchInput" style="border: solid; font-weight: 800;"
+                                autocomplete="off" />
                         </div>
-                        <button type="submit" style="border-radius: 12px; background-color: rgb(60, 60, 149); font-weight: 800;" class="btn text-light">Submit</button>
+                        <button type="submit"
+                            style="border-radius: 12px; background-color: rgb(60, 60, 149); font-weight: 800;"
+                            class="btn text-light">Submit</button>
                     </div>
                 </form>
             </div>
@@ -149,25 +197,27 @@
                     <h3>Stops:</h3>
                     <ul>
                         {{#each stops}}
-                        {{#if this.name1}}<li>{{this.name1}}</li>{{/if}}
-                        {{#if this.name2}}<li>{{this.name2}}</li>{{/if}}
-                        {{#if this.name3}}<li>{{this.name3}}</li>{{/if}}
-                        {{#if this.name4}}<li>{{this.name4}}</li>{{/if}}
-                        {{#if this.name5}}<li>{{this.name5}}</li>{{/if}}
-                        {{#if this.name6}}<li>{{this.name6}}</li>{{/if}}
-                        {{#if this.name7}}<li>{{this.name7}}</li>{{/if}}
-                        {{#if this.name8}}<li>{{this.name8}}</li>{{/if}}
-                        {{#if this.name9}}<li>{{this.name9}}</li>{{/if}}
-                        {{#if this.name10}}<li>{{this.name10}}</li>{{/if}}
+                        {{#if this.name1}}<li>{{this.name1}} 🠗</li>{{/if}}
+                        {{#if this.name2}}<li>{{this.name2}} 🠗</li>{{/if}}
+                        {{#if this.name3}}<li>{{this.name3}} 🠗</li>{{/if}}
+                        {{#if this.name4}}<li>{{this.name4}} 🠗</li>{{/if}}
+                        {{#if this.name5}}<li>{{this.name5}} 🠗</li>{{/if}}
+                        {{#if this.name6}}<li>{{this.name6}} 🠗</li>{{/if}}
+                        {{#if this.name7}}<li>{{this.name7}} 🠗</li>{{/if}}
+                        {{#if this.name8}}<li>{{this.name8}} 🠗</li>{{/if}}
+                        {{#if this.name9}}<li>{{this.name9}} 🠗</li>{{/if}}
+                        {{#if this.name10}}<li>{{this.name10}} 🠗</li>{{/if}}
                         {{/each}}
                     </ul>
                     {{#if this.isaccept}}
-                    
-                        <a href="/suser/busticket?id={{this._id}}&userid={{userId}}" class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">More Info</a>
+
+                    <a href="/suser/busticket?id={{this._id}}&userid={{userId}}" class="btn btn-primary mt-3"
+                        style="background-color: rgb(59, 59, 157);">More Info</a>
                     {{else}}
-                        <button class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">Not Available</button>
+                    <button class="btn btn-primary mt-3" style="background-color: rgb(59, 59, 157);">Not
+                        Available</button>
                     {{/if}}
-                    
+
                 </div>
             </div>
             {{/each}}
@@ -177,6 +227,23 @@
 </div>
 
 <script>
+    $.ajax({
+        url: '/suser/getallstopsname',
+        method: 'get',
+        success: (response) => {
+            const dataList = document.getElementById('choos');
+            dataList.innerHTML = '';
+
+            response.stops.forEach(stop => {
+                const option = document.createElement('option');
+                option.value = stop;
+                dataList.appendChild(option);
+            });
+
+        }
+    })
+
+    
     function reverseFields() {
         var from = document.getElementById('from').value;
         var to = document.getElementById('to').value;
@@ -184,4 +251,6 @@
         document.getElementById('to').value = from;
         console.log(from, to)
     }
+
+
 </script>
