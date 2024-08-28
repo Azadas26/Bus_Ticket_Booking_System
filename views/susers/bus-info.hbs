@@ -49,17 +49,36 @@
                         document.addEventListener('DOMContentLoaded', function () {
                             // Initialize flatpickr with the range from sdate to edate
                             const dateString = '{{dateArray}}';
-                            const dateArray = dateString.split(',')
+                            const dateArray = dateString.split(',');
 
                             const disabledDates = dateArray.map(date => date.trim());
+
+                            // Get the current date in IST
+                            const now = new Date();
+                            const utcOffset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+                            const istOffset = 5.5 * 60 * 60000; // IST is UTC+5:30, offset in milliseconds
+                            const istTime = new Date(now.getTime() + istOffset - utcOffset);
+
+                            // Add one day to get tomorrow's date
+                            istTime.setDate(istTime.getDate() + 1);
+
+                            // Format tomorrow's date as YYYY-MM-DD
+                            const tomorrowIST = istTime.toISOString().split('T')[0];
+
+                            // Get the minimum date from Handlebars template
+                            const sdate = "{{sdate}}";
+
+                            // Determine the final minDate as the later of tomorrow in IST or sdate
+                            const minDate = (new Date(tomorrowIST) > new Date(sdate)) ? tomorrowIST : sdate;
+
                             flatpickr('#preferredDate-{{_id}}', {
                                 dateFormat: "Y-m-d",
-                                minDate: "{{sdate}}",
+                                minDate: minDate,
                                 maxDate: "{{edate}}",
                                 disable: disabledDates
-
                             });
                         });
+
                         var val = 0;
 
                         document.getElementById('myInput').addEventListener('input', function () {
@@ -146,6 +165,22 @@
                                     document.getElementById('output').innerHTML = 'seats not available'
                                 }
                             }
+                            $.ajax({
+                                url: '/suser/activatecreditpay',
+                                method: 'get',
+                                success: (response) => {
+                                    var creditinput = document.getElementById('creditinput');
+                                    var creditlabel = document.getElementById('creditlabel');
+                                    if (response >= sum * val) {
+                                       creditinput.removeAttribute('disabled');
+                                       creditlabel.removeAttribute('disabled');
+                                    } else {
+                                        creditinput.setAttribute('disabled', 'disabled');
+                                        creditlabel.setAttribute('disabled', 'disabled');
+                                    }
+
+                                }
+                            })
                         }
                         function datechecking() {
                             document.getElementById('submit').style.display = "none"
@@ -240,12 +275,24 @@
                             ##################################################################################################
                             --}}
                             <div style="display: none;">
+
                                 <label for="preferredDate"><b>Choose Preferred Dates</b></label>
                                 <input type="text" id="preferredDateorg" class="mb-4" name="preferredDates"
                                     placeholder="Select dates" required onchange="datechecking()">
                             </div>
+
                         </div>
-                        <input id="submit" class="mt-3" type="submit" value="Book Now" style="display: none;">
+                        <div id="submit" style="display: none;">
+                            <br>
+                            <div>
+                                <input type="radio" name="paymethod" value="online">
+                                <label for="">Online
+                                    Pay</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input id="creditinput" type="radio" name="paymethod" value="credit" disabled>
+                                <label id="creditlabel" for="" disabled>Credit Pay</label>
+                            </div>
+                            <input class="mt-3" type="submit" value="Book Now">
+                        </div>
                     </form>
                 </div>
             </div>

@@ -12,7 +12,7 @@ $("#buspay").submit((e) => {
             }
             else
             {
-
+                location.href = '/suser/viewtickets'
             }
         }
     })

@@ -386,10 +386,23 @@ module.exports =
     },
     TO_Get_How_Many_Credit_Score_User_HAVE: (id) => {
         return new Promise(async (resolve, reject) => {
-            var starts = await db.get().collection(consts.busorder).find({ suserid: objectId(id), emergency: true }).toArray()
+            var starts = await db.get().collection(consts.busorder).find({ suserid: objectId(id), emergency: true, creditpointcounted: false }).toArray()
             var sum = 0;
             await starts.map(i => { sum += parseInt(i.total) })
-            resolve(sum)
+            await db.get().collection(consts.suserdb).findOne({ _id: objectId(id) }).then((infos) => {
+                console.log("Total sum",sum + infos.creditpoints);
+                db.get().collection(consts.suserdb).updateOne({ _id: objectId(id) }, { $set: { creditpoints: (sum + infos.creditpoints) } }).then(() => {
+                    db.get().collection(consts.busorder).updateMany({ suserid: objectId(id), emergency: true },
+                        {
+                            $set:
+                            {
+                                creditpointcounted: true
+                            }
+                        }).then(() => {
+                            resolve(sum+infos.creditpoints)
+                        })
+                })
+            })
         })
     },
     ChecK_whethet_THE_Email_Already_Existing_or_Not: (email) => {
@@ -404,12 +417,51 @@ module.exports =
         })
     },
     Get_all_Stopname_For_Simplefing_searcH: () => {
-        return new Promise((resolve,reject)=>
-        {
-            db.get().collection(consts.busdetails).find().toArray().then((stops)=>
-            {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busdetails).find().toArray().then((stops) => {
                 resolve(stops)
             })
+        })
+    },
+    Update_Pay_Status_For_Credit_pay: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(consts.busorder).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        pay: true
+                    }
+                }).then(() => {
+                    resolve()
+                })
+        })
+    },
+    Get_No_of_Creditpoints: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.suserdb).findOne({ _id: objectId(id) }).then((starinfo) => {
+                resolve(starinfo.creditpoints)
+            })
+        })
+    },
+    Update_Credit_point_After_Payment: (id) => {
+        return new Promise((resolve, reject) => {
+            console.log(id);
+            db.get().collection(consts.suserdb).findOne({ _id: objectId(id) }).then(async (creditp) => {
+                console.log(creditp.creditpoints);
+                resolve(creditp.creditpoints)
+            })
+        })
+    },
+    Update_Credit_Points_When_GetTotal_And_Used: (id, updatedpint) => {
+        return new Promise(async (resolve, reject) => {
+            console.log(updatedpint);
+            await db.get().collection(consts.suserdb).updateOne({ _id: objectId(id) },
+                {
+                    $set:
+                    {
+                        creditpoints: updatedpint,
+                    }
+                }).then(() => resolve())
         })
     }
 }

@@ -350,9 +350,67 @@ module.exports =
                     $set:
                     {
                         count: 0,
-                        iszerochat:false
+                        iszerochat: false
                     }
                 }).then(() => resolve())
         })
     },
+    Get_allCredit_Point_for_Bus_Owners: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).aggregate([
+                {
+                    $group: {
+                        _id: "$puser",
+                        totalSum: { $sum: { $toInt: "$total" } },
+                        docs: { $push: "$$ROOT" }
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: consts.userdb,
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "User",
+                    }
+                },
+                {
+                    $project:
+                    {
+                        _id: 1,
+                        totalSum: 1,
+                        User: 1,
+                        docs: { $arrayElemAt: ["$docs", 0] },
+                        User: { $arrayElemAt: ["$User", 0] }
+                    }
+                }
+            ]).toArray().then((info) => {
+                //console.log(info);
+                resolve(info)
+            })
+        })
+    },
+    PutCreditpaymentrequest_To_Owners: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.busorder).aggregate([
+                {
+                    $match: {
+                        puser: objectId(id),
+                        emergency: true
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalSums: { $sum: { $toInt: "$total" } }
+                    }
+                }
+            ]).toArray().then((total)=>
+            {
+                console.log(total);
+                resolve(total)
+            })
+
+        })
+    }
 }

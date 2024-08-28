@@ -34,7 +34,6 @@
                             {{/if}}
                         </td>
                     </tr>
-
                     {{/each}}
                 </tbody>
             </table>
@@ -77,7 +76,7 @@
 
                 response.forEach(bus => {
                     const busElement = document.createElement('div');
-                    busElement.classList.add('col-md-3', 'm-auto', 'pl-4', 'pr-4', 'pt-5','pb-4', 'mb-3', 'text-center');
+                    busElement.classList.add('col-md-4', 'm-auto', 'pl-4', 'pr-4', 'pt-5','pb-4', 'mb-3', 'text-center');
 
                     const stopNames = bus.stops.map(stop => {
                         return [
@@ -164,7 +163,6 @@
 
                 });
 
-
             }
         })
     }
@@ -205,7 +203,7 @@
         /* Adds space between each bus-info div */
     }
 
-    .col-md-3 {
+    .col-md-4 {
         flex: 1 0 200px;
         /* Flex-grow, flex-shrink, and flex-basis values */
         border: 1px solid #ccc;

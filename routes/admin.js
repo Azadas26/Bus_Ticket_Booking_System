@@ -134,9 +134,23 @@ router.post('/getownerchats', (req, res) => {
 })
 router.post('/adminchat', (req, res) => {
   console.log(req.body);
-  admindb.Replay_Message_To_wner(req.body.id,req.body.chat).then(() => {
+  admindb.Replay_Message_To_wner(req.body.id, req.body.chat).then(() => {
     res.json({ status: true })
   })
+})
+router.get('/creditpoints', (req, res) => {
+  admindb.Get_allCredit_Point_for_Bus_Owners().then((info) => {
+    //console.log(info);
+    res.render('./admin/credit-point', { adminhd: true, admin: true, info })
+  })
+})
+router.get('/creditpayrequest',(req,res)=>
+{
+    admindb.PutCreditpaymentrequest_To_Owners(req.query.id).then((resc)=>
+    {
+      
+    })
+    res.redirect('/admin/creditpoints')
 })
 
 module.exports = router;

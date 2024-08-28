@@ -92,46 +92,52 @@
                                     <input type="number" name="max" class="form-control" placeholder="40" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="price">Reg.no</label>
-                                    <input type="text" name="price" class="form-control" placeholder="564XXXXX234224XXXX123" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="numInputs">Enter Number of Stops</label>
-                                    <input type="number" id="numInputs" name="numInputs" min="1" class="form-control"
-                                        required onchange="generateInputs()"> <br>
-                                    <div class="typing-container">
+                                    <label for="exampleInputEmail1"><b>Reg.No and Average Speed</b></label>
+                                    <div style="display: flex;justify-content: space-between;">
 
+                                        <input name="price" type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="KL 29 G 7XXX" style="width: 40%;">
+                                        <label for="exampleInputEmail1"><b>AND </b></label>
+                                        <input name="speed" type="number" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="40 km/hr" style="width: 40%;">
                                     </div>
-                                    <small id="stopmax" class="text-danger" style="display: none;">Maximum Limit
-                                        Reached</small>
+                                    <div class="form-group mt-3">
+                                        <label for="numInputs">Enter Number of Stops</label>
+                                        <input type="number" id="numInputs" name="numInputs" min="1"
+                                            class="form-control" required onchange="generateInputs()"> <br>
+                                        <div class="typing-container">
+
+                                        </div>
+                                        <small id="stopmax" class="text-danger" style="display: none;">Maximum Limit
+                                            Reached</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group inline-div ">
-                            <label id="stopname"></label>
-                            <div id="container">
-                                <!-- Input boxes and labels will be dynamically added here -->
+                            <div class="form-group inline-div ">
+                                <label id="stopname"></label>
+                                <div id="container">
+                                    <!-- Input boxes and labels will be dynamically added here -->
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group inline-div ml-3 " id="placeprice" style="display: none;">
-                            <label id="stopname" class="">Stop Price and Distance</label> <br>
-                            <div id="p&p">
-                                <!-- Input boxes and labels will be dynamically added here -->
+                            <div class="form-group inline-div ml-3 " id="placeprice" style="display: none;">
+                                <label id="stopname" class="">Stop Price and Distance</label> <br>
+                                <div id="p&p">
+                                    <!-- Input boxes and labels will be dynamically added here -->
+                                </div>
                             </div>
-                        </div>
 
-                        <style>
-                            .inline-div {
-                                width: 48%;
-                                display: inline-block;
-                                vertical-align: top;
-                                margin-right: 10px;
+                            <style>
+                                .inline-div {
+                                    width: 48%;
+                                    display: inline-block;
+                                    vertical-align: top;
+                                    margin-right: 10px;
 
-                            }
-                        </style>
+                                }
+                            </style>
 
-                        <button id="submitButton" type="submit" class="btn btn-primary mb-3"
-                            style="display: none; margin-top: 20px;width: 100%;">Submit</button>
+                            <button id="submitButton" type="submit" class="btn btn-primary mb-3"
+                                style="display: none; margin-top: 20px;width: 100%;">Submit</button>
                     </form>
                     <div class="typing-effect text-center" id="typingEffect" style="width: 100%;">
                         <!-- Text will be dynamically inserted here -->
@@ -197,7 +203,7 @@
                     input.className = 'stops input-box form-control';
                     input.name = 'name' + i;
                     input.style.marginBottom = "90px"
-                    
+
                     container.appendChild(input);
 
                     // Add <br> tag after each input

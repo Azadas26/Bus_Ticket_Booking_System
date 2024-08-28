@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
 });
 router.get('/signup', (req, res) => {
     if (req.session.suseremailexist) {
-        res.render('./susers/signup-page',{existemail:"This mail address already existing"})
+        res.render('./susers/signup-page', { existemail: "This mail address already existing" })
         req.session.suseremailexist = false
     }
     else {
@@ -114,16 +114,33 @@ router.post('/buspay', (req, res) => {
     req.body.puser = objectId(req.body.puser)
     req.body.isvalidated = false;
     req.body.date = new Date()
-    req.body.id = objectId(req.body.id)
+    req.body.id = objectId(req.body.id);
+    req.body.creditpointcounted = false;
+    console.log(req.body);
     suserdb.Insert_Secndary_User_Payment_Details(req.body).then(async (id) => {
 
         await qrcode.GenerateOrder_Qr_Code(id).then((data) => {
-            suserdb.generateRazorpay(id, req.body.total).then((response) => {
-                response.tkno = req.body.tkno;
-                response.busid = req.body.id
-                console.log(response);
-                res.json(response)
-            })
+            if (req.body.paymethod == "credit") {
+                suserdb.Update_Pay_Status_For_Credit_pay(id).then(() => {
+                    suserdb.Update_Credit_point_After_Payment(req.session.suser._id).then((currentcreditpoint) => {
+                        var updatedpoint = currentcreditpoint - parseInt(req.body.total)
+                        suserdb.Update_Credit_Points_When_GetTotal_And_Used(req.session.suser._id, parseInt(updatedpoint)).then(() => {
+                            res.json(false)
+                        })
+
+                    })
+                })
+            }
+            else {
+                suserdb.generateRazorpay(id, req.body.total).then((response) => {
+                    response.tkno = req.body.tkno;
+                    response.busid = req.body.id
+                    console.log(response);
+                    res.json(response)
+                })
+
+            }
+
         })
     })
 })
@@ -137,28 +154,78 @@ router.post('/verfy-pay', (req, res) => {
     })
 })
 router.get('/viewtickets', verifySecondaryUser, (req, res) => {
+    var dateobj = require('../extra/ticket-autodelete')
     suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(async (tickets) => {
         // console.log(tickets);
         await tickets.map(async (i) => {
             if (i.isvalidated == true) {
-                console.log(i);
-                let predate = i.preferredDates;
+                // console.log(i);
+                // let predate = i.preferredDates;
 
-                let today = new Date();
+                // let today = new Date();
+
+                // // Convert to IST (Indian Standard Time)
+                // let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+                // let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
+
+                // let formattedToday = formatter.format(today);
+
+                // console.log(formattedToday, predate);
+
+                // if (predate < formattedToday) {
+
+
+                //     await suserdb.Delete_Verified_Ticket_after_The_Verifyed_Day(i._id, i.suserid).then((resc) => { })
+                // }
+                console.log(i);
+                const indices = dateobj.findIndicesByValue(i.Bus.stops, i.start, i.end);
+                console.log(indices);
+
+
+                const values = dateobj.findValuesBetweenIndices(i.Bus.dis, indices[0], indices[1] - 1);
+                console.log("Tadaa", values);
+
+
+                var countdate = dateobj.tocalculatetoataltimebusttraveled(values, i.Bus.speed)
+
+                let today = new Date(i.preferredDates);
+                console.log(today);
+
+                function addDays(date, days) {
+                    let result = new Date(date);
+                    result.setDate(result.getDate() + days); // Add the specified number of days
+                    return result;
+                }
+
+                // Convert a date to the desired format in IST (date only)
+                function formatDateToIST(date) {
+                    let options = {
+                        timeZone: 'Asia/Kolkata',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    };
+
+                    let formatter = new Intl.DateTimeFormat('en-CA', options);
+                    return formatter.format(date);
+                }
+                let twoDaysLater = addDays(today, countdate - 1);
+                let formattedTwoDaysLater = formatDateToIST(twoDaysLater);
+                console.log(formattedTwoDaysLater);
+
+                let todays = new Date();
 
                 // Convert to IST (Indian Standard Time)
                 let options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
                 let formatter = new Intl.DateTimeFormat('en-CA', options); // 'en-CA' for ISO 8601 format (YYYY-MM-DD)
 
-                let formattedToday = formatter.format(today);
-
-                console.log(formattedToday, predate);
-
-                if (predate < formattedToday) {
+                let formattedToday = formatter.format(todays);
+                if (formattedTwoDaysLater < formattedToday) {
 
 
                     await suserdb.Delete_Verified_Ticket_after_The_Verifyed_Day(i._id, i.suserid).then((resc) => { })
                 }
+
             }
             else {
                 let predate = i.preferredDates;
@@ -178,7 +245,7 @@ router.get('/viewtickets', verifySecondaryUser, (req, res) => {
             }
         }
         )
-        console.log(tickets);
+        //console.log(tickets);
         res.render('./susers/view-tickets', { suserhd: true, suser: req.session.suser, tickets })
     })
 })
@@ -212,15 +279,30 @@ router.get('/getstarscore', (req, res) => {
 router.get('/creditstar', verifySecondaryUser, (req, res) => {
     res.render('./susers/credit-star', { suserhd: true, suser: req.session.suser })
 })
-router.get('/getallstopsname',(req,res)=>
-{
-    suserdb.Get_all_Stopname_For_Simplefing_searcH().then((stops)=>
-    {
-        
-        var filterstops = stops.map(i=>i.stops);
+router.get('/getallstopsname', (req, res) => {
+    suserdb.Get_all_Stopname_For_Simplefing_searcH().then((stops) => {
+
+        var filterstops = stops.map(i => i.stops);
         const onearray = [...new Set(filterstops.flat().map(obj => Object.values(obj)).flat())]
-        res.json({stops:onearray})
+        res.json({ stops: onearray })
     })
 })
+router.get('/activatecreditpay', (req, res) => {
+    suserdb.Get_No_of_Creditpoints(req.session.suser._id).then((star) => {
+        res.json(star)
+    })
+})
+// router.get("/testdistance", verifySecondaryUser, (req, res) => {
+//     var dateobj = require('../extra/ticket-autodelete')
+//     suserdb.Show_Users_Purchased_Tickets(req.session.suser._id).then(async (tickets) => {
+//         //console.log(tickets);
+//         await tickets.map(async (i) => {
+//             if (i.isvalidated == true) {
+
+
+//             }
+//         })
+//     })
+// })
 
 module.exports = router;

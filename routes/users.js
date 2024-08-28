@@ -109,6 +109,7 @@ router.post('/proform', verifyPrimaryUser, async (req, res) => {
   //console.log(req.body);
   req.body.available = parseInt(req.body.max)
   req.body.userId = objectId(req.session.user._id);
+  req.body.speed = parseInt(req.body.speed);
   req.body.isaccept = false;
   req.body.isbus = true;
   req.body.already = true;
