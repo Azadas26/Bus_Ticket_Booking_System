@@ -36,6 +36,14 @@ The TICKET SURE project aims to revolutionize the ticket generation and validati
 
 * Checkers can only sign up under an owner. Owners can add their own checkers.
 
+## Sample Over View 
+
+![Local GIF](/public/home/welcome%20to%20admin%20pannal%20(2).gif)
+[Watch the demo video](/public/home/tiffany's%20birthday!%20(3).mp4)
+[Watch the demo video](/public/home/TS%20(2).mp4)
+
+
+
 **Attention**: When an owner adds a bus, it will only be available after the admin accepts the bus request.
 
 For more information, contact: +91 9562441076 (phone/WhatsApp)
