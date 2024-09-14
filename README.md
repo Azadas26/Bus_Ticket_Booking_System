@@ -38,11 +38,9 @@ The TICKET SURE project aims to revolutionize the ticket generation and validati
 
 ## Sample Over View 
 
-![Local GIF](/public/home/welcome%20to%20admin%20pannal%20(2).gif)
-[Watch the demo video](/public/home/tiffany's%20birthday!%20(3).mp4)
-[Watch the demo video](/public/home/TS%20(2).mp4)
-
-
+![Logo](/public/home/welcome%20to%20admin%20pannal%20(2).gif)
+![Customer Interface](/public/home/tiffany's%20birthday!%20(2).png)
+![Owner Interface](/public/home/TS%20(1).png)
 
 **Attention**: When an owner adds a bus, it will only be available after the admin accepts the bus request.
 
