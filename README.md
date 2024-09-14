@@ -44,7 +44,7 @@ experience for bus owners, users, and validation checkers.
 
 How To Run This Project ?
 
-                                                This Softwares Must Need 
+                                                #This Softwares Must Need 
 
 # Nodejs (download from : [Nodejs](https://nodejs.org/en/download/package-manager))
 # mongodb (download from : [MongoDb](https://www.mongodb.com/try/download/community-kubernetes-operator))  sutable version : 6. or 5.
@@ -75,3 +75,6 @@ Attention: When an owner adds a bus, it will only be available after the admin a
 
 For more information, contact:
 +91 9562441076 (phone/WhatsApp)
+
+
+#TicketingSystem #BusTicketing #TicketManagement #TransportationTech #TicketSure #AdminDashboard #BusManagement #NodeJS #FullStackDevelopment #TechSolutions
