@@ -46,8 +46,8 @@ How To Run This Project ?
 
                                                 This Softwares Must Need 
 
-# Nodejs (download from : [text](https://nodejs.org/en/download/package-manager))
-# mongodb (download from : [text](https://www.mongodb.com/try/download/community-kubernetes-operator))  sutable version : 6. or 5.
+# Nodejs (download from : [Nodejs](https://nodejs.org/en/download/package-manager))
+# mongodb (download from : [MongoDb](https://www.mongodb.com/try/download/community-kubernetes-operator))  sutable version : 6. or 5.
 
 To run the project, follow these steps:
 
