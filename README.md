@@ -39,6 +39,7 @@ The TICKET SURE project aims to revolutionize the ticket generation and validati
 ## Sample Over View 
 
 ![Logo](/public/home/welcome%20to%20admin%20pannal%20(2).gif)
+![Logo2](/public/home/ts.gif)
 ![Customer Interface](/public/home/tiffany's%20birthday!%20(2).png)
 ![Owner Interface](/public/home/TS%20(1).png)
 
