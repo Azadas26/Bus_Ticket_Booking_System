@@ -10,23 +10,25 @@
                     </h1>
                 </div>
                 {{#if existemail}}
-                    <p class="text-danger">{{existemail}}</p>
+                <p class="text-danger">{{existemail}}</p>
                 {{/if}}
-                <form id="pusersignup" action="/signup" method="post" enctype="multipart/form-data" style="font-weight: 800;" >
+                <form id="pusersignup" action="/signup" method="post" enctype="multipart/form-data"
+                    style="font-weight: 800;">
                     <div class="form-group">
                         <label for="exampleInputName1">Enter Your Name</label>
-                        <input name="name" type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                        <input name="name" type="text" id="name" class="form-control" id="exampleInputName1"
+                            placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                        <input type="email" name="email" id="email" class="form-control" id="exampleInputEmail1"
                             aria-describedby="emailHelp" placeholder="Enter email">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Phone Number</label>
-                        <input name="ph" type="number" class="form-control" id="exampleInputPassword1"
+                        <input name="ph" type="number" id="ph" class="form-control" id="exampleInputPassword1"
                             placeholder="+91 95XXXXXX76">
                     </div>
                     <div class="form-group password-container">
@@ -37,29 +39,23 @@
                     </div>
                     <div class="form-group password-container">
                         <label>Upload Profile Pic</label>
-                        <input name="image" type="file" class="form-control">
+                        <input name="image" type="file" id="image" class="form-control">
                     </div>
-                    <div class="form-group text-right" style="width: 100%;">
+                    <div id="beforotp" class="form-group text-right" style="width: 100%;">
                         <a href="/login">Already have an account!</a>
+                        <button type="submit" class="btn btn-primary mt-2"
+                            style="font-weight: 800; width: 100%; background-color: rgba(38, 28, 180, 0.92);">Submit</button>
                     </div>
-                    <button type="submit" class="btn btn-primary"
-                        style="font-weight: 800; width: 100%; background-color: rgba(38, 28, 180, 0.92);">Submit</button>
                 </form>
+                
             </div>
+
         </div>
     </div>
 </div>
+</div>
 
-<script>
-    const passwordInput = document.getElementById('password');
-    const togglePassword = document.getElementById('togglePassword');
 
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.textContent = type === 'password' ? '👁️' : '🙈';
-    });
-</script>
 
 <style>
     label {
@@ -130,4 +126,56 @@
     input {
         font-weight: 800;
     }
+
+    .otp-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        margin: 0 5px;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .otp-input:focus {
+        border-color: #007bff;
+    }
 </style>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+    
+   // $("#pusersignup").submit((e) => {
+     //   e.preventDefault()
+       // $.ajax({
+         //   url: '/signup',
+         //   method: 'post',
+           // data: $('#pusersignup').serialize(),
+            //success: (response) => {
+              //  if (response.signup) {
+                    //document.getElementById('beforotp').style.display = 'none';
+                    //document.getElementById('afterotp').style.display = "";
+                    //document.getElementById('name').readOnly = true;
+                    //document.getElementById('email').readOnly = true;
+                    //document.getElementById('ph').readOnly = true;
+                    //document.getElementById('password').readOnly = true;
+                    //document.getElementById('image').readOnly = true;
+                //}
+            //}
+       // })
+    //})
+</script>

@@ -18,7 +18,6 @@ $("#buspay").submit((e) => {
     })
 })
 
-
 function razorpayPayment(order) {
     var options = {
         "key": "rzp_test_NVSZaOyVAMHDJW", // Enter the Key ID generated from the Dashboard

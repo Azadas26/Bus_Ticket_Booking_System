@@ -7,7 +7,7 @@ var objectId = require('mongodb').ObjectId;
 module.exports =
 {
     Do_Primary_user_signup: (info) => {
-        console.log(info);
+        console.log("fund", info);
         return new Promise(async (resolve, reject) => {
             info.password = await bcrypt.hash(info.password, 10);
             console.log(info);
@@ -19,7 +19,7 @@ module.exports =
     Do_Primary_User_Login: (info) => {
         return new Promise((resolve, reject) => {
             //console.log(info.email);
-            db.get().collection(consts.userdb).findOne({ email: info.email }).then((data) => {
+            db.get().collection(consts.userdb).findOne({ email: info.email, isotpcheck: true }).then((data) => {
                 if (data) {
                     if (data.inactivate == true) {
                         bcrypt.compare(info.password, data.password).then((iscoorect) => {
@@ -326,6 +326,28 @@ module.exports =
                 } else {
                     reject()
                 }
+            })
+        })
+    },
+    Change_Otp_object: (otp, email) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.userdb).updateOne({ email: email, otp: otp },
+                {
+                    $set:
+                    {
+                        isotpcheck: true
+                    }
+                }
+            ).then((resc) => {
+                db.get().collection(consts.userdb).findOne({ email: email, otp: otp }).then((found) => {
+                    if (found) {
+                        resolve()
+                    }
+                    else {
+                        reject()
+                    }
+                })
+
             })
         })
     }

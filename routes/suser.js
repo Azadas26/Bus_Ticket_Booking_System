@@ -3,6 +3,7 @@ var router = express.Router();
 var suserdb = require('../database/sUser-db')
 var objectId = require('mongodb').ObjectId
 var qrcode = require('../public/javascripts/qrcode');
+var mailotp = require('../connection/mail-sender')
 
 function verifySecondaryUser(req, res, next) {
     if (req.session.suser) {
@@ -11,6 +12,12 @@ function verifySecondaryUser(req, res, next) {
     else {
         res.redirect('/suser/login')
     }
+}
+
+var soutotp =
+{
+    otp: null,
+    email: null
 }
 
 router.get('/', function (req, res, next) {
@@ -45,9 +52,29 @@ router.post('/signup', (req, res) => {
         req.session.suseremailexist = true
         res.redirect('/suser/signup')
     }).catch(() => {
-        suserdb.Do_Secondary_user_signup(req.body).then((id) => {
-            res.redirect('/suser/login')
+        mailotp.mail_sender_api_Call(req.body.email).then((otp) => {
+            req.body.isotpcheck = false;
+            req.body.otp = parseInt(otp);
+            soutotp.otp = parseInt(otp);
+            soutotp.email = req.body.email
+            suserdb.Do_Secondary_user_signup(req.body).then((id) => {
+                res.redirect('/suser/otppage')
+            })
         })
+    })
+})
+router.get('/otppage', (req, res) => {
+    console.log(soutotp);
+    res.render('./susers/otp-page')
+})
+router.post('/otppage', (req, res) => {
+    console.log("OOOOOO");
+    console.log(soutotp);
+    
+    suserdb.Change_Otp_object(parseInt(req.body.one + req.body.two + req.body.three + req.body.four + req.body.five + req.body.six), soutotp.email).then(() => {
+        res.redirect('/suser/login')
+    }).catch(() => {
+        res.render('./susers/otp-page', { otperrr: true })
     })
 })
 router.get('/login', (req, res) => {

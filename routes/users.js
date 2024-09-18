@@ -3,6 +3,7 @@ var router = express.Router();
 var puserdb = require('../database/pUser-db')
 var objectId = require('mongodb').ObjectId
 var dynamicinput = require('../connection/dynamic-input');
+var mailotp = require('../connection/mail-sender')
 
 function verifyPrimaryUser(req, res, next) {
   if (req.session.user) {
@@ -12,9 +13,15 @@ function verifyPrimaryUser(req, res, next) {
     res.redirect('/login')
   }
 }
+var outotp =
+{
+  otp: null,
+  email: null
+}
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  //mailotp.mail_sender_api_Call('asazad9406@gmail.com');
   if (req.session.user) {
     puserdb.Check_wheteher_Any_Notification_Arrived(req.session.user._id).then((resc) => {
       if (resc) {
@@ -48,18 +55,38 @@ router.post('/signup', (req, res) => {
     console.log(req.body);
     req.body.inactivate = true;
     req.body.emergencycount = 0;
+    req.body.isotpcheck = false;
     console.log(req.files.image);
-    puserdb.Do_Primary_user_signup(req.body).then((id) => {
-      if (req.files.image) {
-        var img = req.files.image
-        img.mv("public/owner-image/" + id + ".jpg", (err, data) => {
-          if (err) {
-            console.log("err", err);
-          }
-        });
-      }
-      res.redirect('/login')
+    mailotp.mail_sender_api_Call(req.body.email).then((otp) => {
+      req.body.otp = parseInt(otp);
+      outotp.otp = parseInt(otp);
+      outotp.email = req.body.email
+      puserdb.Do_Primary_user_signup(req.body).then((id) => {
+        if (req.files.image) {
+          var img = req.files.image
+          img.mv("public/owner-image/" + id + ".jpg", (err, data) => {
+            if (err) {
+              console.log("err", err);
+            }
+          });
+        }
+        res.redirect('/otppage')
+      })
+    }).catch((err) => {
+      res.redirect('/signup')
     })
+  })
+})
+router.get('/otppage', (req, res) => {
+  console.log(outotp);
+  res.render('./users/otp-page')
+})
+router.post('/otppage', (req, res) => {
+  puserdb.Change_Otp_object(parseInt(req.body.one + req.body.two + req.body.three + req.body.four + req.body.five + req.body.six), outotp.email).then(() => {
+    res.redirect('/login')
+  }).catch(()=>
+  {
+     res.render('./susers/otp-page',{otperrr:true})
   })
 })
 router.get('/login', (req, res) => {

@@ -25,7 +25,7 @@ module.exports =
     },
     Do_Secondary_User_Login: (info) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(consts.suserdb).findOne({ email: info.email }).then((data) => {
+            db.get().collection(consts.suserdb).findOne({ email: info.email,isotpcheck :true }).then((data) => {
                 if (data) {
                     bcrypt.compare(info.password, data.password).then((iscoorect) => {
                         if (iscoorect) {
@@ -462,6 +462,28 @@ module.exports =
                         creditpoints: updatedpint,
                     }
                 }).then(() => resolve())
+        })
+    },
+    Change_Otp_object: (otp, email) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(consts.suserdb).updateOne({ email: email, otp: otp },
+                {
+                    $set:
+                    {
+                        isotpcheck: true
+                    }
+                }
+            ).then((resc) => {
+                db.get().collection(consts.suserdb).findOne({ email: email, otp: otp }).then((found) => {
+                    if (found) {
+                        resolve()
+                    }
+                    else {
+                        reject()
+                    }
+                })
+
+            })
         })
     }
 }

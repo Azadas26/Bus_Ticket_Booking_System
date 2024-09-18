@@ -1,0 +1,104 @@
+<div class="container-fluid d-flex" id="otpcontainer" style="background-color: #15181E;">
+<div class="row w-100">
+    <div class="col-md-12 d-flex justify-content-center align-items-center">
+        <div class="containerotp text-center p-5"
+            style="width: 30%; height: auto;box-shadow: rgba(232, 232, 232, 0.02) 0px 1px 3px 0px, rgba(175, 175, 175, 0.15) 0px 0px 0px 3px;">
+            <i class="fa fa-envelope" style="font-size:48px;color:rgba(66, 94, 237, 0.8);font-size: 150px;"></i>
+            <h4 class="mt-5" style="font-family: sans-serif;font-weight: 800;color: rgb(255, 255, 255);">Please Check
+                Your Email</h4>
+            <div id="afterotp">
+                {{#if otperrr}}
+                <p style="color: red;">Invalid <span style="color: red;font-weight: 800;">OTP</span> please check your
+                    email</p>
+                {{/if}}
+                <form id="otpForm" action="/suser/otppage" method="POST">
+                    <div class="otp-container">
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="one" />
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="two" />
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="three" />
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="four" />
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="five" />
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, event)"
+                            style="width: 60px;height: 60px;" name="six" />
+                    </div>
+                    <!-- Hidden submit button -->
+                    <button type="submit" style="display: none;">Submit</button>
+                </form>
+            </div>
+            <h6 class="mt-4 text-light">Didn't get the code <a href="" style="color: #007bff;">Click to resend</a></h6>
+            <div class="mt-4">
+                <button href="" class="btn btn-outline-light" style="width: 10rem;" onclick="cancelotp()">Cancel</button>
+                <a href="" class="btn btn-outline-primary ml-4" style="width: 10rem;">Verify</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+    #otpcontainer {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    input {
+        font-weight: 800;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #FF5733;
+        /* Set border color without interaction */
+        border-radius: 5px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+    .otp-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        margin: 0 5px;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .otp-input:focus {
+        border-color: #007bff;
+    }
+</style>
+<script>
+    function cancelotp() {
+        window.location.href = "http://localhost:3000/suser/signup"
+    }
+    function moveToNext(current, event) {
+        if (current.value.length === 1) {
+            const next = current.nextElementSibling;
+            if (next && next.classList.contains('otp-input')) {
+                next.focus();
+            } else {
+                // Automatically submit the form when the last input is filled
+                const form = document.getElementById('otpForm');
+                form.submit();
+            }
+        }
+        if (event.inputType === 'deleteContentBackward') {
+            const prev = current.previousElementSibling;
+            if (prev && prev.classList.contains('otp-input')) {
+                prev.focus();
+            }
+        }
+    }
+</script>
