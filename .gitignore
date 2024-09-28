@@ -1,4 +1,4 @@
 # Ignore the checker_image folder inside public
 /public/checker_image/
 # Ignore the owner-image folder inside public
-/public/owner-image
+/public/owner-image/

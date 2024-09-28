@@ -3,7 +3,8 @@ var router = express.Router();
 var suserdb = require('../database/sUser-db')
 var objectId = require('mongodb').ObjectId
 var qrcode = require('../public/javascripts/qrcode');
-var mailotp = require('../connection/mail-sender')
+var mailotp = require('../connection/mail-sender');
+var url = require('../connection/url')
 
 function verifySecondaryUser(req, res, next) {
     if (req.session.suser) {
@@ -53,6 +54,7 @@ router.post('/signup', (req, res) => {
         res.redirect('/suser/signup')
     }).catch(() => {
         mailotp.mail_sender_api_Call(req.body.email).then((otp) => {
+            req.body.creditpoints = 0;
             req.body.isotpcheck = false;
             req.body.otp = parseInt(otp);
             soutotp.otp = parseInt(otp);
@@ -65,7 +67,7 @@ router.post('/signup', (req, res) => {
 })
 router.get('/otppage', (req, res) => {
     console.log(soutotp);
-    res.render('./susers/otp-page')
+    res.render('./susers/otp-page',{url:url.localurl})
 })
 router.post('/otppage', (req, res) => {
     console.log("OOOOOO");
@@ -143,6 +145,7 @@ router.post('/buspay', (req, res) => {
     req.body.date = new Date()
     req.body.id = objectId(req.body.id);
     req.body.creditpointcounted = false;
+   
     console.log(req.body);
     suserdb.Insert_Secndary_User_Payment_Details(req.body).then(async (id) => {
 

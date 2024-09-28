@@ -3,7 +3,8 @@ var router = express.Router();
 var puserdb = require('../database/pUser-db')
 var objectId = require('mongodb').ObjectId
 var dynamicinput = require('../connection/dynamic-input');
-var mailotp = require('../connection/mail-sender')
+var mailotp = require('../connection/mail-sender');
+var url = require('../connection/url')
 
 function verifyPrimaryUser(req, res, next) {
   if (req.session.user) {
@@ -79,14 +80,14 @@ router.post('/signup', (req, res) => {
 })
 router.get('/otppage', (req, res) => {
   console.log(outotp);
-  res.render('./users/otp-page')
+  res.render('./users/otp-page',{url:url.localurl})
 })
 router.post('/otppage', (req, res) => {
   puserdb.Change_Otp_object(parseInt(req.body.one + req.body.two + req.body.three + req.body.four + req.body.five + req.body.six), outotp.email).then(() => {
     res.redirect('/login')
   }).catch(()=>
   {
-     res.render('./susers/otp-page',{otperrr:true})
+     res.render('./users/otp-page',{otperrr:true})
   })
 })
 router.get('/login', (req, res) => {
@@ -218,7 +219,7 @@ router.get('/viewbuss', verifyPrimaryUser, (req, res) => {
         await puserdb.Enable_Permition_For_Edit(i._id).then(() => { })
       }
     })
-    res.render('./users/view-bus', { userhd: true, puser: req.session.user, bus })
+    res.render('./users/view-bus', { userhd: true, puser: req.session.user, bus,url:url.localurl })
   })
 })
 router.get('/about', (req, res) => {

@@ -388,9 +388,11 @@ module.exports =
         return new Promise(async (resolve, reject) => {
             var starts = await db.get().collection(consts.busorder).find({ suserid: objectId(id), emergency: true, creditpointcounted: false }).toArray()
             var sum = 0;
+            console.log(starts);
             await starts.map(i => { sum += parseInt(i.total) })
+            console.log(sum);
             await db.get().collection(consts.suserdb).findOne({ _id: objectId(id) }).then((infos) => {
-                console.log("Total sum",sum + infos.creditpoints);
+                console.log("Total sum",sum + infos.creditpoints );
                 db.get().collection(consts.suserdb).updateOne({ _id: objectId(id) }, { $set: { creditpoints: (sum + infos.creditpoints) } }).then(() => {
                     db.get().collection(consts.busorder).updateMany({ suserid: objectId(id), emergency: true },
                         {

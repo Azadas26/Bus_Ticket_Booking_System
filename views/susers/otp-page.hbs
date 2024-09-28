@@ -30,7 +30,7 @@
                     <button type="submit" style="display: none;">Submit</button>
                 </form>
             </div>
-            <h6 class="mt-4 text-light">Didn't get the code <a href="" style="color: #007bff;">Click to resend</a></h6>
+            <h6 class="mt-4 text-light">Didn't get the code <a href="" style="color: #007bff;" desabled>Click to resend</a></h6>
             <div class="mt-4">
                 <button href="" class="btn btn-outline-light" style="width: 10rem;" onclick="cancelotp()">Cancel</button>
                 <a href="" class="btn btn-outline-primary ml-4" style="width: 10rem;">Verify</a>
@@ -81,7 +81,8 @@
 </style>
 <script>
     function cancelotp() {
-        window.location.href = "http://localhost:3000/suser/signup"
+        var url = '{{url}}';
+        window.location.href = `${url}/suser/signup`
     }
     function moveToNext(current, event) {
         if (current.value.length === 1) {

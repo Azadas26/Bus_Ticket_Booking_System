@@ -23,9 +23,9 @@ function razorpayPayment(order) {
         "key": "rzp_test_NVSZaOyVAMHDJW", // Enter the Key ID generated from the Dashboard
         "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
-        "name": "Ticket_Validation",
+        "name": "Ticket Sure",
         "description": "Test Transaction",
-        "image": "https://example.com/your_logo",
+        "image": "https://ibb.co/ysJc8D3",
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
         "handler": function (response) {
 

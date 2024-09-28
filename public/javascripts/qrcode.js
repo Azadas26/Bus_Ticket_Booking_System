@@ -2,6 +2,7 @@ const qr = require('qrcode');
 var promise = require('promise')
 const fs = require('fs');
 const path = require('path');
+const url = require('../../connection/url')
 module.exports =
 {
     GenerateOrder_Qr_Code: (Id) => {
@@ -12,8 +13,7 @@ module.exports =
             // Data to be encoded in the QR code
 
             // Data to be encoded in the QR code
-            let local =  'http://localhost:3000'
-            let ngrock = 'https://3c32-103-149-158-207.ngrok-free.app'
+            let local =  url.localurl;
             const data = `${local}/checker/busticket?id=${Id}`; // Replace with your own data
 
             // Options for generating the QR code
