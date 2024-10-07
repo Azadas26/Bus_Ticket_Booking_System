@@ -30,7 +30,7 @@ app.engine('hbs', hbs.engine({
     allowProtoMethodsByDefault: true      // (Optional) Allows access to prototype methods
   }
 }));
-app.use(session({ secret: "ker", cookie: { maxAge: 86400000 } }))
+app.use(session({name:"azadcookie", secret: "ker", cookie: { maxAge: 86400000 } }))
 app.use(fileUpload())
 
 

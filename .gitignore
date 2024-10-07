@@ -2,3 +2,4 @@
 /public/checker_image/
 # Ignore the owner-image folder inside public
 /public/owner-image/
+/node_modules
