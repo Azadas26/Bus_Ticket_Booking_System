@@ -9,7 +9,7 @@ module.exports =
             for (let i = 0; i < 6; i++) {
                 OTP += digits[Math.floor(Math.random() * 10)];
             }
-            //console.log(OTP);
+            console.log("OOOOO",OTP);
             resolve(OTP)
         })
 

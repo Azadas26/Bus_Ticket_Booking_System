@@ -9,7 +9,7 @@ module.exports =
 {
     Database_Connection: () => {
         return new promise((resolve, reject) => {
-            mongoClient.connect('mongodb+srv://ticketsure:3CzrVf7tDjENrLqG@cluster0.e9bzj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true }, (err, data) => {
+            mongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true }, (err, data) => {
                 var dbname = "Ticket_Validation"
                 if (err) {
                     reject(err)

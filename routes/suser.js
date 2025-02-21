@@ -61,7 +61,7 @@ router.post('/signup', (req, res) => {
             soutotp.otp = parseInt(otp);
             soutotp.email = req.body.email
             suserdb.Do_Secondary_user_signup(req.body).then((id) => {
-                
+
                 res.redirect('/suser/otppage')
             })
         })
@@ -69,12 +69,12 @@ router.post('/signup', (req, res) => {
 })
 router.get('/otppage', (req, res) => {
     console.log(soutotp);
-    res.render('./susers/otp-page',{url:url.localurl})
+    res.render('./susers/otp-page', { url: url.localurl })
 })
 router.post('/otppage', (req, res) => {
     console.log("OOOOOO");
     console.log(soutotp);
-    
+
     suserdb.Change_Otp_object(parseInt(req.body.one + req.body.two + req.body.three + req.body.four + req.body.five + req.body.six), soutotp.email).then(() => {
         res.redirect('/suser/login')
     }).catch(() => {
@@ -141,15 +141,16 @@ router.get('/busticket', (req, res) => {
     })
 })
 router.post('/buspay', (req, res) => {
+    console.log(req.body);
     req.body.suserid = objectId(req.session.suser._id);
     req.body.puser = objectId(req.body.puser)
     req.body.isvalidated = false;
     req.body.date = new Date()
     req.body.id = objectId(req.body.id);
     req.body.creditpointcounted = false;
-   
-    console.log(req.body);
+
     suserdb.Insert_Secndary_User_Payment_Details(req.body).then(async (id) => {
+        console.log(req.body);
 
         await qrcode.GenerateOrder_Qr_Code(id).then((data) => {
             if (req.body.paymethod == "credit") {
